@@ -52,3 +52,11 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Visual Studio user prefs
+*.suo
+
+# Emacs backup files
+*~
+
+# Bower
+bower_components/

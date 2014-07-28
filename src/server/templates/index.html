@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="chessRank">
+    <head>
+        <meta charset="utf-8">
+        <title>ChessRank: The Chess Tournament Organizer</title>
+        <link rel="stylesheet" href="{{ static_url('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('style/style.css') }}" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="well" ncy-breadcrumb></div>
+                <div ui-view></div>
+            </div>
+        </div>
+        
+        <script src="{{ static_url('bower_components/angular/angular.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/angular-ui-router/release/angular-ui-router.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/angular-breadcrumb/release/angular-breadcrumb.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/angular-resource/angular-resource.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/moment/min/moment.min.js') }}"></script>
+        <script src="{{ static_url('app.js') }}"></script>
+        <script src="{{ static_url('controllers/home.js') }}"></script>
+    </body>
+</html>
