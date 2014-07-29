@@ -42,9 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client\controllers\" />
+    <Folder Include="client\controllers\tournament\" />
     <Folder Include="client\images\" />
+    <Folder Include="client\filters\" />
+    <Folder Include="client\util\" />
     <Folder Include="client\style\" />
     <Folder Include="client\views\" />
+    <Folder Include="client\views\tournament\" />
     <Folder Include="data\" />
     <Folder Include="client\" />
     <Folder Include="server\" />
@@ -54,8 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="client\controllers\home.js" />
+    <Content Include="client\controllers\tournament\list.js" />
+    <Content Include="client\filters\tournamentFilters.js" />
     <Content Include="client\style\style.css" />
     <Content Include="client\views\home.html" />
+    <Content Include="client\views\tournament\list.html" />
+    <Content Include="client\util\constants.js" />
     <Content Include="data\generateSampleData.js" />
     <Content Include="client\app.js" />
     <Content Include="client\bower.json" />

@@ -1,0 +1,27 @@
+﻿<div ng-controller="tournamentListCtrl">
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>System</th>
+            <th>Rounds</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Details</th>
+            <th>Register</th>
+        </tr>
+        
+        <tr ng-repeat="item in tournaments">
+            <td>{{ item.name }}</td>
+            <td>{{ item.system | tournamentSystem }}</td>
+            <td>{{ item.rounds | tournamentRounds }}</td>
+            <td>{{ item.startDate.$date | date }}</td>
+            <td>{{ item.endDate.$date | date }}</td>
+            <td>
+                <button class="btn btn-xs btn-primary">Details</button>
+            </td>
+            <td>
+                <button class="btn btn-xs btn-primary">Register</button>
+            </td>
+        </tr>
+    </table>
+</div>

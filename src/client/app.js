@@ -8,10 +8,17 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
         $stateProvider
             .state('home', {
                 url: '/home',
-                templateUrl: 'static/views/home.html',
-                controller: 'homeCtrl',
                 data: {
                     ncyBreadcrumbLabel: 'Home'
+                },
+                views: {
+                    '': {
+                        templateUrl: 'static/views/home.html',
+                        controller: 'homeCtrl',
+                    },
+                    'currentTournaments@home': {
+                        templateUrl: 'static/views/tournament/list.html'
+                    }
                 }
             });
     })

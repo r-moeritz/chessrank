@@ -1,19 +1,19 @@
-﻿// Globals
+﻿// Constants
 var Gender = {
-    MALE:   0,
+    MALE: 0,
     FEMALE: 1
 };
 
 var PlaySystem = {
-    ROUND_ROBIN:        0,
+    ROUND_ROBIN: 0,
     DOUBLE_ROUND_ROBIN: 1,
-    SWISS:              2
+    SWISS: 2
 };
 
 var TieBreak = {
-    NEUSTADL:        0,
-    BUCHHOLZ:        1,
-    MEDIAN:          2,
+    NEUSTADL: 0,
+    BUCHHOLZ: 1,
+    MEDIAN: 2,
     MODIFIED_MEDIAN: 3
 };
 
@@ -75,10 +75,10 @@ function getRandomTournaments(count) {
             startDate: startDate,
             endDate:   endDate,
             system:    system,
-            tieBreaks: (system == PlaySystem.SWISS)
+            tieBreaks: (system === PlaySystem.SWISS)
                 ? [getRandomInt(1, 4)]
                 : [TieBreak.NEUSTADL],
-            rounds:    (system == PlaySystem.SWISS) ? 7 : 0
+            rounds:    (system === PlaySystem.SWISS) ? 7 : 0
         });
     }
 
