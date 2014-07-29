@@ -27,7 +27,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="server\main.py" />
-    <Compile Include="server\requesthandlers.py" />
+    <Compile Include="server\requesthandlers\api\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\players.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\tournaments.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client\controllers\" />
@@ -37,6 +48,8 @@
     <Folder Include="data\" />
     <Folder Include="client\" />
     <Folder Include="server\" />
+    <Folder Include="server\requesthandlers\" />
+    <Folder Include="server\requesthandlers\api\" />
     <Folder Include="server\templates\" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,10 @@ import tornado.ioloop
 import tornado.web
 import motor
 from os import path
-from requesthandlers import *
+from requesthandlers import IndexHandler
+from requesthandlers.api import ApiHandler
+from requesthandlers.api.players import PlayersHandler
+from requesthandlers.api.tournaments import TournamentsHandler
 
 def main():
     serverPath   = path.dirname(__file__)
@@ -22,7 +25,7 @@ def main():
                 (r'/api/tournaments(?:/([0-9a-fA-F]{24}))?.*', TournamentsHandler),
                 (r'/api/players(?:/([0-9a-fA-F]{24}))?.*', PlayersHandler),
                 (r'/api.*', ApiHandler),
-                (r'/', RootHandler)
+                (r'/', IndexHandler)
                 ]
 
     app = tornado.web.Application(handlers, **settings)
