@@ -64,9 +64,11 @@
     <Content Include="client\views\home.html" />
     <Content Include="client\views\tournament\list.html" />
     <Content Include="client\util\constants.js" />
+    <Content Include="data\constants.js" />
     <Content Include="data\generateSampleData.js" />
     <Content Include="client\app.js" />
     <Content Include="client\bower.json" />
+    <Content Include="data\util.js" />
     <Content Include="server\templates\index.html" />
   </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />

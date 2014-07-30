@@ -12,8 +12,8 @@
         
         <tr ng-repeat="item in tournaments">
             <td>{{ item.name }}</td>
-            <td>{{ item.system | tournamentSystem }}</td>
-            <td>{{ item.rounds | tournamentRounds }}</td>
+            <td>{{ item | tournamentSystem }}</td>
+            <td>{{ item | tournamentRounds }}</td>
             <td>{{ item.startDate.$date | date }}</td>
             <td>{{ item.endDate.$date | date }}</td>
             <td>
