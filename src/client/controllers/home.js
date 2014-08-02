@@ -1,4 +1,12 @@
 ﻿angular.module('chessRank')
     .controller('homeCtrl', function ($scope) {
-        // TODO
+        $scope.reset = function () {
+            $scope.tournamentOptions = {
+                showCurrent: true,
+                showFuture:  true,
+                showRecent:  true
+            };
+        }
+
+        $scope.reset();
     });

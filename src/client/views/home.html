@@ -1,15 +1,15 @@
 ﻿<h2>Tournament Dashboard</h2>
 
-<accordion>
-    <accordion-group heading="Current Tournaments">
+<accordion close-others="false">
+    <accordion-group heading="Current Tournaments" is-open="tournamentOptions.showCurrent">
         <div ui-view="currentTournaments"></div>
     </accordion-group>
 
-    <accordion-group heading="Upcoming Tournaments">
-        <p><b>TODO:</b> Display upcoming tournament info</p>
+    <accordion-group heading="Upcoming Tournaments" is-open="tournamentOptions.showFuture">
+        <div ui-view="futureTournaments"></div>
     </accordion-group>
 
-    <accordion-group heading="Recently Completed Tournaments">
-        <p><b>TODO:</b> Display recently tournament info</p>
+    <accordion-group heading="Recently Completed Tournaments" is-open="tournamentOptions.showRecent">
+        <div ui-view="recentTournaments"></div>
     </accordion-group>
 </accordion>

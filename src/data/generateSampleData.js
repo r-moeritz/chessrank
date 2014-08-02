@@ -1,28 +1,86 @@
 ﻿load('constants.js')
 load('util.js')
 
-function generatePlayers(count) {
-    var maleNames =  ['Roosevelt', 'Antone', 'Pasquale', 'Tomas', 'Clifford',
-                      'Rocco', 'Thao', 'Saul', 'Brice', 'Pete', 'Osvaldo', 
+function tc(moves, period, increment, delay) {
+    return {
+        moves:     moves,
+        period:    period,
+        increment: increment,
+        delay:     delay
+    };
+}
+
+var stdTimeControls = [
+    [tc(40, 90), tc(0, 30, 30)],
+    [tc(40, 120), tc(0, 60, 0, 5)],
+    [tc(40, 115), tc(0, 60, 0, 5)],
+    [tc(0, 120, 30)],
+    [tc(0, 120, 0, 5)],
+    [tc(0, 115, 0, 5)],
+    [tc(0, 90, 30)],
+    [tc(0, 90, 0, 5)],
+    [tc(0, 60, 30)],
+    [tc(0, 60, 0, 5)],
+    [tc(30, 30), tc(0, 30, 5)],
+    [tc(0, 30, 0, 5)],
+    [tc(0, 25, 0, 5)],
+    [tc(0, 25, 0, 3)],
+    [tc(0, 15, 0, 3)],
+    [tc(0, 10, 0, 3)],
+    [tc(0, 10)],
+    [tc(0, 5)],
+    [tc(0, 3, 2)]
+];
+
+function getTitle(rating, gender) {
+    var stdTitles = ['WCM', 'WFM', 'WIM', 'WGM', 'NM', 'CM', 'FM', 'IM', 'GM'];
+    if (rating < 2000) return null;
+    if (rating < 2100 && gender === constants.gender.female) return 'WCM';
+    if (rating < 2200 && gender === constants.gender.female) return 'WFM';
+    if (rating < 2200) return 'NM';
+    if (rating < 2300 && gender === constants.gender.female) return 'WIM';
+    if (rating < 2300) return 'CM';
+    if (rating < 2400 && gender === constants.gender.female) return 'WGM';
+    if (rating < 2400) return 'FM';
+    if (rating < 2500) return 'IM';
+    return 'GM';
+}
+
+function generateFullName(gender) {
+    var maleNames = ['Roosevelt', 'Antone', 'Pasquale', 'Tomas', 'Clifford',
+                      'Rocco', 'Thao', 'Saul', 'Brice', 'Pete', 'Osvaldo',
                        'Austin', 'Magen', 'Judson', 'Gerard'];
-    var femaleNames = ['Inell', 'Kazuko', 'Hien', 'Aleta', 'Larraine', 
-                       'Bethany', 'Ariel', 'Joana', 'Lorraine', 'Lizette', 
-                       'Emmy', 'Jolynn', 'Maranda', 'Melany', 'Miyoko',];
+    var femaleNames = ['Inell', 'Kazuko', 'Hien', 'Aleta', 'Larraine',
+                       'Bethany', 'Ariel', 'Joana', 'Lorraine', 'Lizette',
+                       'Emmy', 'Jolynn', 'Maranda', 'Melany', 'Miyoko', ];
     var surnames = ['Gleghorn', 'Bishopp', 'Mariacher', 'Fike', 'Popper', 'Schoenbeck', 'Palone', 'Beliard', 'Kinabrew', 'Bohan',
                     'Fedoriw', 'Pannhoff', 'Schaff', 'Seidler', 'Garing', 'Christesen', 'Schooler', 'Hershey', 'Stewardson', 'Roller',
                     'Mirelez', 'Zavadoski', 'Heywood', 'Wyse', 'Condello', 'Brensnan', 'Sippel', 'Dinsmoor', 'Yenglin', 'Trampe'];
+    var name = (gender === constants.gender.female)
+        ? femaleNames[util.randomInt(0, femaleNames.length)]
+        : maleNames[util.randomInt(0, maleNames.length)];
+    var surname = surnames[util.randomInt(0, surnames.length)];
+    return [name, surname];
+}
+
+function generatePlayers(count) {
     var players = [];
 
     for (var i = 0; i != count; ++i) {
+        var rating = util.randomInt(1000, 2600);
         var gender = util.randomInt(0, 2);
+        var fullName = generateFullName(gender);
+        var title = getTitle(rating, gender);
+
         players.push({
-            name: (gender == constants.gender.female) 
-                ? femaleNames[util.randomInt(0, femaleNames.length)] 
-                : maleNames[util.randomInt(0, maleNames.length)],
-            surname: surnames[util.randomInt(0, surnames.length)],
-            gender:  gender,
-            rating:  util.randomInt(1000, 2200),
-            birth:   util.randomDate(new Date(1950, 0, 1), new Date(2000, 0, 1))
+            name:         fullName[0],
+            surname:      fullName[1],
+            gender:       gender,
+            title:        title,
+            fideRating: (title && title !== 'NM') ? rating : null,
+            nationalRating: rating,
+            birth: util.randomDate(new Date(1950, 0, 1), new Date(2000, 0, 1))
+            // TODO: federation
         });
     }
 
@@ -34,6 +92,7 @@ function generateSections(count, tournamentStartDate, tournamentEndDate) {
     
     for (var i = 0; i != count; ++i) {
         var sectionNames = ['A', 'B', 'C', 'D', 'Open', 'Closed', 'Youth', 'Novice', 'Expert'];
+        var fees = [0, 50, 100, 150, 200, 250];
 
         // Determine play system based on no. of participants.
         var maxPlayers = util.randomInt(6, 201);
@@ -50,15 +109,23 @@ function generateSections(count, tournamentStartDate, tournamentEndDate) {
             ? util.swissRounds(maxPlayers)
             : 0;
 
+        var registrationStartDate = new Date(tournamentStartDate);
+        registrationStartDate.setDate(tournamentStartDate.getDate() - 30);
+
         sections.push({
-            name:       sectionNames[util.randomInt(0, sectionNames.length)] + ' Section',
-            playSystem: playSystem,
-            tieBreaks:  tieBreaks,
-            rounds:     rounds,
-            maxPlayers: maxPlayers,
-            startDate:  tournamentStartDate,
-            endDate:    tournamentEndDate
-            // TODO: prizes and time controls
+            name:                  sectionNames[util.randomInt(0, sectionNames.length)] + ' Section',
+            playSystem:            playSystem,
+            tieBreaks:             tieBreaks,
+            rounds:                rounds,
+            maxPlayers:            maxPlayers,
+            startDate:             tournamentStartDate,
+            endDate:               tournamentEndDate,
+            registrationStartDate: registrationStartDate,
+            registrationEndDate:   tournamentStartDate,
+            chiefArbiter:          generateFullName(util.randomInt(0, 2)).join(' '),
+            timeControls:          stdTimeControls[util.randomInt(0, stdTimeControls.length)],
+            entryFee:              fees[util.randomInt(0, fees.length)],
+            // TODO: prizes
         });
     }
 
@@ -67,14 +134,15 @@ function generateSections(count, tournamentStartDate, tournamentEndDate) {
 
 function generateTournaments(count) {
     var cities = ['Durban', 'Johannesburg', 'Cape Town', 'Pretoria', 'Bloemfontein', 'Port Elizabeth', 'Germiston', 'Newcastle',
-                  'Klerksdorp', 'Kimberley', 'Secunda', 'Vereeniging', 'Dundee', 'Kuruman', 'Pietermaritzburg', 'Randfontein'];
+                  'Klerksdorp', 'Kimberley', 'Secunda', 'Vereeniging', 'Dundee', 'Kuruman', 'Pietermaritzburg', 'Randfontein',
+                  'Welkom', 'Pholokwane', 'Wartburg', 'Port Shepstone', 'Richards Bay'];
     var types = ['Open', 'Closed', 'Cup', 'Championship', 'Memorial', 'Rapid', 'Blitz'];
     var durations = [1, 2, 3, 5, 7];
     var tournaments = [];
 
     for (var i = 0; i != count; ++i) {
         var city = cities[util.randomInt(0, cities.length)];
-        var startDate = util.randomDate(new Date(), new Date(2015, 0, 1));
+        var startDate = util.randomDate(new Date(2013, 0, 1), new Date(2015, 0, 1));
         var endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + durations[util.randomInt(0, durations.length)]);
 
@@ -99,7 +167,7 @@ function populateDb() {
     db.players.drop()
     
     // Create sample data
-    var tournaments = generateTournaments(5);
+    var tournaments = generateTournaments(10);
     var players     = generatePlayers(50);
 
     // Bulk populate collections

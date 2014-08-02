@@ -14,10 +14,19 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
                 views: {
                     '': {
                         templateUrl: 'static/views/home.html',
-                        controller: 'homeCtrl',
+                        controller: 'homeCtrl'
                     },
                     'currentTournaments@home': {
-                        templateUrl: 'static/views/tournament/list.html'
+                        templateUrl: 'static/views/tournament/list.html',
+                        controller: 'currentTournamentsCtrl'
+                    },
+                    'futureTournaments@home': {
+                        templateUrl: 'static/views/tournament/list.html',
+                        controller: 'futureTournamentsCtrl'
+                    },
+                    'recentTournaments@home': {
+                        templateUrl: 'static/views/tournament/list.html',
+                        controller: 'recentTournamentsCtrl'
                     }
                 }
             });
