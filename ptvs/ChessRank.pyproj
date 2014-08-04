@@ -45,6 +45,7 @@
     <Folder Include="client\controllers\tournament\" />
     <Folder Include="client\images\" />
     <Folder Include="client\filters\" />
+    <Folder Include="client\directives\" />
     <Folder Include="client\util\" />
     <Folder Include="client\style\" />
     <Folder Include="client\views\" />
@@ -59,7 +60,8 @@
   <ItemGroup>
     <Content Include="client\controllers\home.js" />
     <Content Include="client\controllers\tournament\list.js" />
-    <Content Include="client\filters\tournamentFilters.js" />
+    <Content Include="client\directives\tournament.js" />
+    <Content Include="client\filters\tournament.js" />
     <Content Include="client\style\style.css" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\tournament\list.html" />

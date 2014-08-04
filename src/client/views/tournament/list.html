@@ -1,5 +1,5 @@
 ﻿<table ng-controller="tournamentListCtrl"
-        class="table table-striped">
+       class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>
@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="item in tournaments | filter:selectTournaments">
+        <tr ng-repeat="item in tournaments">
             <td>{{ item.name }}</td>
             <td>{{ item | tournamentSystem }}</td>
             <td>{{ item | tournamentRounds }}</td>

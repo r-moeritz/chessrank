@@ -8,29 +8,13 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
         $stateProvider
             .state('home', {
                 url: '/home',
+                templateUrl: 'static/views/home.html',
+                controller: 'homeCtrl',
                 data: {
                     ncyBreadcrumbLabel: 'Home'
-                },
-                views: {
-                    '': {
-                        templateUrl: 'static/views/home.html',
-                        controller: 'homeCtrl'
-                    },
-                    'currentTournaments@home': {
-                        templateUrl: 'static/views/tournament/list.html',
-                        controller: 'currentTournamentsCtrl'
-                    },
-                    'futureTournaments@home': {
-                        templateUrl: 'static/views/tournament/list.html',
-                        controller: 'futureTournamentsCtrl'
-                    },
-                    'recentTournaments@home': {
-                        templateUrl: 'static/views/tournament/list.html',
-                        controller: 'recentTournamentsCtrl'
-                    }
                 }
             });
     })
-    .factory('tournaments', function ($resource) {
+    .factory('tournamentsResource', function ($resource) {
         return $resource('api/tournaments/:id', { id: '@id' }, { update: { method: 'PUT' } });
     });
