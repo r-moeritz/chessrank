@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>ChessRank: The Chess Tournament Organizer</title>
         <link rel="stylesheet" href="{{ static_url('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" />
-        <link rel="stylesheet" href="{{ static_url('style/style.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('style/custom.css') }}" />
     </head>
     <body>
         <div class="container">
@@ -24,8 +24,11 @@
         <script src="{{ static_url('app.js') }}"></script>
         <script src="{{ static_url('controllers/home.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/list.js') }}"></script>
+        <script src="{{ static_url('controllers/tournament/details.js') }}"></script>
         <script src="{{ static_url('filters/tournament.js') }}"></script>
+        <script src="{{ static_url('filters/section.js') }}"></script>
         <script src="{{ static_url('directives/tournament.js') }}"></script>
         <script src="{{ static_url('util/constants.js') }}"></script>
+        <script src="{{ static_url('rmUtils/filters.js') }}"></script>
     </body>
 </html>

@@ -8,7 +8,7 @@
         doubleRoundRobin: 1,
         swiss: 2
     })
-    .constant('tiebreak', {
+    .constant('tieBreak', {
         neustadl: 0,
         buchholz: 1,
         median: 2,

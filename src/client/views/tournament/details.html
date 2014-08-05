@@ -1,0 +1,61 @@
+﻿<h2 class="text-center">{{ tournament.name }}</h2>
+
+<h3>Details</h3>
+<div class="container-fluid">
+    <div class="row padded-row">
+        <div class="col-xs-6 col-md-4">Location</div>
+        <div class="col-xs-6 col-md-4">{{ tournament.location }}</div>
+        <div class="col-xs-6 col-md-4">
+            <button class="btn btn-xs btn-primary">Register</button>
+        </div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-xs-6 col-md-4">Date</div>
+        <div class="col-xs-6 col-md-4">{{ tournament.startDate.$date | date }} - {{ tournament.endDate.$date | date }}</div>
+        <div class="col-xs-6 col-md-4">
+            <button class="btn btn-xs btn-primary">Instructions</button>
+        </div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-xs-6 col-md-4">Organizer</div>
+        <div class="col-xs-6 col-md-4"><b>TODO</b></div>
+        <div class="col-xs-6 col-md-4">
+            <button class="btn btn-xs btn-primary">Players</button>
+        </div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-xs-6 col-md-4">Status</div>
+        <div class="col-xs-6 col-md-4"><b>TODO</b></div>
+        <div class="col-xs-6 col-md-4"></div>
+    </div>
+</div>
+
+<h3>Sections</h3>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>System</th>
+                <th>Rounds</th>
+                <th>Time Controls</th>
+                <th>Tie Breaks</th>
+                <th>Chief Arbiter</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in tournament.sections">
+                <td>{{ item.name }}</td>
+                <td>{{ item.startDate.$date | date }}</td>
+                <td>{{ item.endDate.$date | date }}</td>
+                <td>{{ item.playSystem | playSystem }}</td>
+                <td>{{ item.rounds }}</td>
+                <td>{{ item.timeControls }}</td>
+                <td>{{ item.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</td>
+                <td>{{ item.chiefArbiter }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

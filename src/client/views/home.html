@@ -1,6 +1,4 @@
-﻿<h2>Tournament Dashboard</h2>
-
-<accordion close-others="false">
+﻿<accordion close-others="false">
     <accordion-group heading="Current Tournaments" is-open="tournamentOptions.showCurrent">
         <p ng-hide="currentTournaments.length">There are no tournaments in progress.</p>
         <tournament-list ng-show="currentTournaments.length" items="currentTournaments" />

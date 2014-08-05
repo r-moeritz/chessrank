@@ -9,37 +9,19 @@
                 }
                 rounds = section.rounds;
             }
-
             return angular.isNumber(rounds) && rounds < 1 ? 'N/A' : rounds;
         }
     })
-    .filter('tournamentSystem', function (playSystem) {
+    .filter('tournamentSystem', function (playSystemFilter) {
         return function (tournament) {
-            var system = null;
+            var systemId = null;
             for (var i = 0; i != tournament.sections.length; ++i) {
                 var section = tournament.sections[i];
-                if (system !== null && system !== section.playSystem) {
+                if (systemId !== null && systemId !== section.playSystem) {
                     return 'Section Specific';
                 }
-                system = section.playSystem;
+                systemId = section.playSystem;
             }
-
-            if (angular.isNumber(system)) {
-                switch (system) {
-                    case playSystem.roundRobin:
-                        return 'Round Robin';
-
-                    case playSystem.doubleRoundRobin:
-                        return 'Double Round Robin';
-
-                    case playSystem.swiss:
-                        return 'Swiss';
-
-                    default:
-                        return system;
-                }
-            } else {
-                return system;
-            }
+            return playSystemFilter(systemId);
         }
     });

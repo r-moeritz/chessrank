@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('homeCtrl', function ($scope, $filter, tournamentsResource) {
+    .controller('homeCtrl', function ($scope, filterFilter, tournamentsResource) {
         function isCurrentTournament(tournament) {
             var now = moment();
             return moment(tournament.startDate.$date).isBefore(now)
@@ -19,9 +19,9 @@
 
         $scope.refresh = function () {
             tournamentsResource.query(function (tournaments) {
-                $scope.currentTournaments = $filter('filter')(tournaments, isCurrentTournament);
-                $scope.futureTournaments  = $filter('filter')(tournaments, isFutureTournament);
-                $scope.recentTournaments  = $filter('filter')(tournaments, isRecentTournament);
+                $scope.currentTournaments = filterFilter(tournaments, isCurrentTournament);
+                $scope.futureTournaments  = filterFilter(tournaments, isFutureTournament);
+                $scope.recentTournaments  = filterFilter(tournaments, isRecentTournament);
             });
         }
 
