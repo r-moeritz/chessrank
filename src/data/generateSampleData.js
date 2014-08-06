@@ -1,35 +1,35 @@
 ﻿load('constants.js')
 load('util.js')
 
-function tc(moves, period, increment, delay) {
+function tc(moves, period, bonus, bonusType) {
     return {
         moves:     moves,
         period:    period,
-        increment: increment,
-        delay:     delay
+        bonus:     bonus,
+        bonusType: bonusType
     };
 }
 
 var stdTimeControls = [
-    [tc(40, 90), tc(0, 30, 30)],
-    [tc(40, 120), tc(0, 60, 0, 5)],
-    [tc(40, 115), tc(0, 60, 0, 5)],
-    [tc(0, 120, 30)],
-    [tc(0, 120, 0, 5)],
-    [tc(0, 115, 0, 5)],
-    [tc(0, 90, 30)],
-    [tc(0, 90, 0, 5)],
-    [tc(0, 60, 30)],
-    [tc(0, 60, 0, 5)],
-    [tc(30, 30), tc(0, 30, 5)],
-    [tc(0, 30, 0, 5)],
-    [tc(0, 25, 0, 5)],
-    [tc(0, 25, 0, 3)],
-    [tc(0, 15, 0, 3)],
-    [tc(0, 10, 0, 3)],
-    [tc(0, 10)],
-    [tc(0, 5)],
-    [tc(0, 3, 2)]
+    [tc(40,  90), tc(constants.tcMoves.suddenDeath, 30, 30, constants.tcBonus.increment)],
+    [tc(40, 120), tc(constants.tcMoves.suddenDeath, 60,  5, constants.tcBonus.delay)],
+    [tc(40, 115), tc(constants.tcMoves.suddenDeath, 60,  5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game, 120, 30, constants.tcBonus.increment)],
+    [tc(constants.tcMoves.game, 120,  5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game, 115,  5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  90, 30, constants.tcBonus.increment)],
+    [tc(constants.tcMoves.game,  90,  5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  60, 30, constants.tcBonus.increment)],
+    [tc(constants.tcMoves.game,  60,  5, constants.tcBonus.delay)],
+    [tc(30, 30), tc(constants.tcMoves.suddenDeath, 30, 5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  30,  5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  25,  5, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  25,  3, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  15,  3, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  10,  3, constants.tcBonus.delay)],
+    [tc(constants.tcMoves.game,  10)],
+    [tc(constants.tcMoves.game,   5)],
+    [tc(constants.tcMoves.game,   3,  2, constants.tcBonus.increment)]
 ];
 
 function getTitle(rating, gender) {
@@ -125,6 +125,7 @@ function generateSections(count, tournamentStartDate, tournamentEndDate) {
             chiefArbiter:          generateFullName(util.randomInt(0, 2)).join(' '),
             timeControls:          stdTimeControls[util.randomInt(0, stdTimeControls.length)],
             entryFee:              fees[util.randomInt(0, fees.length)],
+            invitationOnly:        util.randomBool()
             // TODO: prizes
         });
     }

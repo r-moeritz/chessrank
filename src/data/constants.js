@@ -13,5 +13,13 @@
         buchholz:       1,
         median:         2,
         modifiedMedian: 3
+    },
+    tcMoves: {
+        game:        0,
+        suddenDeath: -1
+    },
+    tcBonus: {
+        increment: 0,
+        delay:     1
     }
 };

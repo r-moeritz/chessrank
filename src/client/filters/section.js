@@ -35,4 +35,15 @@
                     return tieBreakId;
             }
         }
+    })
+    .filter('timeControl', function (tcMoves, tcBonus) {
+        return function (tc) {
+            return (tc.moves > 0)
+                ? sprintf('%d/%d', tc.moves, tc.period)
+                : sprintf('%s/%d %s/%d',
+                    (tc.moves === tcMoves.game) ? 'G' : 'SD',
+                    tc.period,
+                    (tc.bonusType === tcBonus.increment) ? 'inc' : 'd',
+                    (tc.bonus === null) ? 0 : tc.bonus);
+        }
     });
