@@ -50,6 +50,7 @@
     <Folder Include="client\util\" />
     <Folder Include="client\style\" />
     <Folder Include="client\views\" />
+    <Folder Include="client\views\components\" />
     <Folder Include="client\views\tournament\" />
     <Folder Include="data\" />
     <Folder Include="client\" />
@@ -67,6 +68,7 @@
     <Content Include="client\filters\section.js" />
     <Content Include="client\filters\tournament.js" />
     <Content Include="client\style\custom.css" />
+    <Content Include="client\views\components\breadcrumb.html" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\tournament\details.html" />
     <Content Include="client\views\tournament\list.html" />

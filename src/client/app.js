@@ -1,9 +1,12 @@
 ﻿'use strict'
 
 angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb', 'ui.bootstrap', 'rmUtils.filters'])
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider
-            .otherwise('/');
+    .config(function ($stateProvider, $urlRouterProvider, $breadcrumbProvider) {
+        $breadcrumbProvider.setOptions({
+            templateUrl: 'static/views/components/breadcrumb.html'
+        });
+
+        $urlRouterProvider.otherwise('/');
 
         $stateProvider
             .state('home', {
