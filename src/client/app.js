@@ -1,9 +1,10 @@
 ﻿'use strict'
 
-angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb', 'ui.bootstrap', 'rmUtils.filters'])
+angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb',
+    'ui.bootstrap', 'rmUtils.filters'])
     .config(function ($stateProvider, $urlRouterProvider, $breadcrumbProvider) {
         $breadcrumbProvider.setOptions({
-            templateUrl: 'static/views/components/breadcrumb.html'
+            templateUrl: 'static/views/breadcrumb.html'
         });
 
         $urlRouterProvider.otherwise('/');
@@ -20,7 +21,7 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
             .state('tournaments', {
                 url: '/tournaments',
                 views: {
-                    '@': {templateUrl: 'static/views/tournament/list.html'}
+                    '@': { templateUrl: 'static/views/tournament/list.html' }
                 },
                 data: {
                     ncyBreadcrumbLabel: 'Tournaments',
@@ -40,9 +41,4 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
                     ncyBreadcrumbLabel: '{{ tournament.name }}'
                 }
             });
-    })
-    .factory('tournamentsResource', function ($resource) {
-        return $resource('api/tournaments/:tournamentId',
-            { tournamentId: '@id' },
-            { update: { method: 'PUT' } });
     });

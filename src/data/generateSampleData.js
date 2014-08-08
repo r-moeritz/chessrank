@@ -166,7 +166,7 @@ function generateUsers() {
     var users = [{
         name:         'Tester',
         surname:      'Chester',
-        username:     'test',
+        email:        'testerchester@gmail.com',
         passwordHash: '$2a$12$645qA8AOc2N4ac7XIhwOlunepzSa.4kKzZjTYm8VJL2hSdyUDhto6', // password1234$
     }];
 
@@ -203,7 +203,7 @@ function populateDb() {
         bulk.insert(users[i]);
     }
     bulk.execute();
-    db.users.ensureIndex({ username: 1 });
+    db.users.ensureIndex({ email: 1 });
 
     bulk = db.tournaments.initializeUnorderedBulkOp();
     for (var i = 0; i != tournaments.length; ++i) {

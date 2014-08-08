@@ -8,12 +8,14 @@
     </head>
     <body>
         <div class="container">
-            <nav class="navbar navbar-default" role="navigation">
+            <nav class="navbar navbar-default" 
+                 role="navigation"
+                 ng-controller="navbarController">
                 <div class="container-fluid">
                     <div class="collapse navbar-collapse">
                         <ncy-breadcrumb></ncy-breadcrumb>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="">Login</a></li>
+                            <li><a href="" ng-click="showLoginDialog()">Login</a></li>
                             <li><a href="">Register</a></li>
                         </ul>
                         <form class="navbar-form navbar-right" role="search">
@@ -30,21 +32,24 @@
 
         
         <script src="{{ static_url('bower_components/angular/angular.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/angular-resource/angular-resource.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-ui-router/release/angular-ui-router.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-breadcrumb/release/angular-breadcrumb.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
-        <script src="{{ static_url('bower_components/angular-resource/angular-resource.min.js') }}"></script>
         <script src="{{ static_url('bower_components/moment/min/moment.min.js') }}"></script>
         <script src="{{ static_url('bower_components/sprintfjs/sprintf.js') }}"></script>
 
         <script src="{{ static_url('app.js') }}"></script>
         <script src="{{ static_url('controllers/home.js') }}"></script>
+        <script src="{{ static_url('controllers/navbar.js') }}"></script>
+        <script src="{{ static_url('controllers/login.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/list.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/details.js') }}"></script>
         <script src="{{ static_url('filters/tournament.js') }}"></script>
         <script src="{{ static_url('filters/section.js') }}"></script>
         <script src="{{ static_url('directives/tournament.js') }}"></script>
         <script src="{{ static_url('util/constants.js') }}"></script>
+        <script src="{{ static_url('util/resources.js') }}"></script>
         <script src="{{ static_url('rmUtils/filters.js') }}"></script>
     </body>
 </html>

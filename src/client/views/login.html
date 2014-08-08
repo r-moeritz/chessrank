@@ -1,0 +1,28 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Login</h3>
+</div>
+    
+<form name="loginForm" novalidate>
+    <div class="modal-body">
+        <div class="alert alert-danger" ng-show="loginError">
+            Login failed ({{ loginError.status_code }}). Please try again.
+        </div>
+
+        <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input id="emailInput" class="form-control" ng-model="email" placeholder="Enter email" required />
+        </div>
+        <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input id="passwordInput" type="password" class="form-control"
+                    ng-model="password" placeholder="Password" required />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary"
+                ng-click="submit(email, password)"
+                ng-disabled="loginForm.$invalid">OK</button>
+        <button class="btn btn-primary"
+                ng-click="cancel()">Cancel</button>
+    </div>
+</form>

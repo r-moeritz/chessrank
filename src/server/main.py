@@ -21,14 +21,14 @@ def main():
                   'static_path': staticPath,
                 'template_path': templatePath,
                 'cookie_secret': '2Sht+AfTRESND20cSXB4XxXdBsYkOkxUoWCWnoXzVok=',
-                 'xsrf_cookies': True,
+                 'xsrf_cookies': False, # TODO: Enable
                     'login_url': '/'
                 }
 
     handlers = [
                 (r'/api/tournaments(?:/([0-9a-fA-F]{24}))?.*', TournamentHandler),
                 (r'/api/players(?:/([0-9a-fA-F]{24}))?.*', PlayerHandler),
-                (r'/api/session', SessionHandler),
+                (r'/api/session(?:/([0-9a-fA-F]{24}))?.*', SessionHandler),
                 (r'/api.*', ApiHandler),
                 (r'/', IndexHandler)
                 ]
