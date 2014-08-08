@@ -6,8 +6,9 @@ import motor
 from os import path
 from requesthandlers import IndexHandler
 from requesthandlers.api import ApiHandler
-from requesthandlers.api.players import PlayersHandler
-from requesthandlers.api.tournaments import TournamentsHandler
+from requesthandlers.api.player import PlayerHandler
+from requesthandlers.api.tournament import TournamentHandler
+from requesthandlers.api.session import SessionHandler
 
 def main():
     serverPath   = path.dirname(__file__)
@@ -18,12 +19,16 @@ def main():
     settings = {
                            'db': db,
                   'static_path': staticPath,
-                'template_path': templatePath
+                'template_path': templatePath,
+                'cookie_secret': '2Sht+AfTRESND20cSXB4XxXdBsYkOkxUoWCWnoXzVok=',
+                 'xsrf_cookies': True,
+                    'login_url': '/'
                 }
 
     handlers = [
-                (r'/api/tournaments(?:/([0-9a-fA-F]{24}))?.*', TournamentsHandler),
-                (r'/api/players(?:/([0-9a-fA-F]{24}))?.*', PlayersHandler),
+                (r'/api/tournaments(?:/([0-9a-fA-F]{24}))?.*', TournamentHandler),
+                (r'/api/players(?:/([0-9a-fA-F]{24}))?.*', PlayerHandler),
+                (r'/api/session', SessionHandler),
                 (r'/api.*', ApiHandler),
                 (r'/', IndexHandler)
                 ]

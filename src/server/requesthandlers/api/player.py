@@ -1,12 +1,10 @@
-import tornado.web
 from tornado import gen
 import pymongo
 import bson.json_util
 from bson.objectid import ObjectId
 from requesthandlers.api import ApiHandler
 
-class TournamentsHandler(ApiHandler):
-    @tornado.web.asynchronous
+class PlayerHandler(ApiHandler):
     @gen.coroutine
     def get(self, uid):
         # Get optional query args
@@ -31,9 +29,9 @@ class TournamentsHandler(ApiHandler):
 
         # Execute query
         db    = self.settings['db']
-        todos = yield (db.tournaments.find_one(spec) 
+        todos = yield (db.players.find_one(spec) 
                        if uid 
-                       else db.tournaments.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
+                       else db.players.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
         
         # Write response
         self.write(bson.json_util.dumps(todos))

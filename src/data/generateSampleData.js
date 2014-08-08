@@ -162,16 +162,34 @@ function generateTournaments(count) {
     return tournaments;
 }
 
+function generateUsers(count) {
+    var users = [{
+        name:         'Tester',
+        surname:      'Chester',
+        username:     'test',
+        password_hash: '$2a$12$645qA8AOc2N4ac7XIhwOlunepzSa.4kKzZjTYm8VJL2hSdyUDhto6', // password1234$
+    }];
+
+    // TODO: Add more users
+
+    return users;
+}
+
 function populateDb() {
     // Clear collections
+    db.users.drop()
     db.tournaments.drop()
     db.players.drop()
     
     // Create sample data
+    var users       = generateUsers(1);
     var tournaments = generateTournaments(10);
     var players     = generatePlayers(50);
 
-    // Bulk populate collections
+    // Populate collections
+    db.users.insert(users[0]);
+    db.users.ensureIndex({ username: 1 });
+
     var bulk = db.tournaments.initializeUnorderedBulkOp();
     for (var i = 0; i != tournaments.length; ++i) {
         bulk.insert(tournaments[i]);
