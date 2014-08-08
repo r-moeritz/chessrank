@@ -36,3 +36,4 @@ class PlayerHandler(ApiHandler):
         # Write response
         self.write(bson.json_util.dumps(todos))
         self.set_header('Content-Type', 'application/json')
+        self.finish()

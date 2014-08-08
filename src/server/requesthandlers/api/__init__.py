@@ -18,21 +18,17 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @gen.coroutine
     def get_current_user_async(self):
-        session_id = self.get_secure_cookie('session_id')
+        session_id = self.get_secure_cookie('sessionId')
         if session_id is None:
             return None
 
         # 1. Find active session in DB
         db = self.settings['db']
-        session = None
-        try:
-            session = yield db.sessions.find_one({     '_id': ObjectId(session_id),
-                                                   'expires': { '$gt': datetime.utcnow() } })
-        except:
-            pass # Not an error
+        session = yield db.sessions.find_one({     '_id': ObjectId(session_id),
+                                               'expires': { '$gt': datetime.utcnow() } })
 
         if session is None:
             return None
 
         # 2. Return user id
-        return session['user_id']
+        return session['userId']
