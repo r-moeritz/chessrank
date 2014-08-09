@@ -10,17 +10,18 @@
 
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input id="emailInput" class="form-control" ng-model="email" placeholder="Enter email" required />
+            <input id="emailInput" class="form-control" 
+                   ng-model="request.email" placeholder="Enter email" required />
         </div>
         <div class="form-group">
             <label for="passwordInput">Password</label>
             <input id="passwordInput" type="password" class="form-control"
-                    ng-model="password" placeholder="Password" required />
+                    ng-model="request.password" placeholder="Password" required />
         </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary"
-                ng-click="submit(email, password)"
+                ng-click="submit(request)"
                 ng-disabled="loginForm.$invalid">OK</button>
         <button class="btn btn-primary"
                 ng-click="cancel()">Cancel</button>

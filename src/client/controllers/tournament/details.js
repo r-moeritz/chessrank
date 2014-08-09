@@ -1,6 +1,6 @@
 ﻿angular.module('chessRank')
-    .controller('tournamentDetailsCtrl', function ($scope, $state, $stateParams, tournamentsResource) {
+    .controller('tournamentDetailsCtrl', function ($scope, $state, $stateParams, tournamentService) {
         if ($stateParams.tournamentId) {
-            $scope.tournament = tournamentsResource.get({ tournamentId: $stateParams.tournamentId });
+            $scope.tournament = tournamentService.get({ tournamentId: $stateParams.tournamentId });
         }
     });

@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('tournamentListCtrl', function ($scope, $state, tournamentsResource) {
+    .controller('tournamentListCtrl', function ($scope, $state, tournamentService) {
         $scope.registrationClosed = function (tournament) {
             var now = moment();
             angular.forEach(tournament.sections, function (section) {
@@ -15,6 +15,6 @@
         }
 
         if ($state.current.data.queryTournaments) {
-            $scope.tournaments = tournamentsResource.query();
+            $scope.tournaments = tournamentService.query();
         }
     });

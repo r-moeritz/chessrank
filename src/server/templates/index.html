@@ -16,7 +16,7 @@
                         <ncy-breadcrumb></ncy-breadcrumb>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="" ng-click="showLoginDialog()">Login</a></li>
-                            <li><a href="">Register</a></li>
+                            <li><a href="">Sign Up</a></li>
                         </ul>
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -29,7 +29,6 @@
             </nav>
             <div ui-view></div>
         </div>
-
         
         <script src="{{ static_url('bower_components/angular/angular.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-resource/angular-resource.min.js') }}"></script>
@@ -45,11 +44,12 @@
         <script src="{{ static_url('controllers/login.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/list.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/details.js') }}"></script>
+        <script src="{{ static_url('services/auth.js') }}"></script>
+        <script src="{{ static_url('services/resource.js') }}"></script>
         <script src="{{ static_url('filters/tournament.js') }}"></script>
         <script src="{{ static_url('filters/section.js') }}"></script>
         <script src="{{ static_url('directives/tournament.js') }}"></script>
         <script src="{{ static_url('util/constants.js') }}"></script>
-        <script src="{{ static_url('util/resources.js') }}"></script>
         <script src="{{ static_url('rmUtils/filters.js') }}"></script>
     </body>
 </html>

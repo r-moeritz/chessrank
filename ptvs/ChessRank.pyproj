@@ -52,6 +52,7 @@
     <Folder Include="client\images\" />
     <Folder Include="client\filters\" />
     <Folder Include="client\directives\" />
+    <Folder Include="client\services\" />
     <Folder Include="client\rmUtils\" />
     <Folder Include="client\util\" />
     <Folder Include="client\style\" />
@@ -75,8 +76,9 @@
     <Content Include="client\rmUtils\filters.js" />
     <Content Include="client\filters\section.js" />
     <Content Include="client\filters\tournament.js" />
+    <Content Include="client\services\auth.js" />
     <Content Include="client\style\custom.css" />
-    <Content Include="client\util\resources.js" />
+    <Content Include="client\services\resource.js" />
     <Content Include="client\views\breadcrumb.html" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\login.html" />

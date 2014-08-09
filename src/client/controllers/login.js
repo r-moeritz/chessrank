@@ -1,16 +1,12 @@
 ﻿angular.module('chessRank')
-    .controller('loginCtrl', function ($scope, $modalInstance, $http) {
-        $scope.submit = function (email, password) {
-            $http.post('api/session', {
-                   email: email,
-                password: password
-            }, {
-                withCredentials: true
-            }).success(function (data) {
-                $modalInstance.close();
-            }).error(function (error) {
-                $scope.loginError = error;
-            })
+    .controller('loginCtrl', function ($scope, $modalInstance, authEvent, authService) {
+        $scope.submit = function (request) {
+            authService.login(request)
+                .success(function (data) {
+                    $modalInstance.close();
+                }).error(function (error) {
+                    $scope.loginError = error;
+                });
         }
 
         $scope.cancel = function () {

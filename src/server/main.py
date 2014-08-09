@@ -28,7 +28,7 @@ def main():
     handlers = [
                 (r'/api/tournaments(?:/([0-9a-fA-F]{24}))?.*', TournamentHandler),
                 (r'/api/players(?:/([0-9a-fA-F]{24}))?.*', PlayerHandler),
-                (r'/api/session(?:/([0-9a-fA-F]{24}))?.*', SessionHandler),
+                (r'/api/session', SessionHandler),
                 (r'/api.*', ApiHandler),
                 (r'/', IndexHandler)
                 ]

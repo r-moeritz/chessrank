@@ -1,16 +1,16 @@
 ﻿angular.module('chessRank')
-    .controller('homeCtrl', function ($scope, filterFilter, tournamentsResource) {
-        function isCurrentTournament(tournament) {
+    .controller('homeCtrl', function ($scope, filterFilter, tournamentService) {
+        function currentTournament(tournament) {
             var now = moment();
             return moment(tournament.startDate.$date).isBefore(now)
                 && moment(tournament.endDate.$date).isAfter(now);
         }
 
-        function isFutureTournament(tournament) {
+        function futureTournament(tournament) {
             return moment(tournament.startDate.$date).isAfter(moment());
         }
 
-        function isRecentTournament(tournament) {
+        function recentTournament(tournament) {
             var endDate = moment(tournament.endDate.$date);
             var now = moment();
             return endDate.isBefore(now)
@@ -18,18 +18,18 @@
         }
 
         $scope.refresh = function () {
-            tournamentsResource.query(function (tournaments) {
-                $scope.currentTournaments = filterFilter(tournaments, isCurrentTournament);
-                $scope.futureTournaments  = filterFilter(tournaments, isFutureTournament);
-                $scope.recentTournaments  = filterFilter(tournaments, isRecentTournament);
+            tournamentService.query(function (tournaments) {
+                $scope.currentTournaments = filterFilter(tournaments, currentTournament);
+                $scope.futureTournaments  = filterFilter(tournaments, futureTournament);
+                $scope.recentTournaments  = filterFilter(tournaments, recentTournament);
             });
         }
 
         $scope.reset = function () {
             $scope.tournamentOptions = {
                 showCurrent: true,
-                showFuture: true,
-                showRecent: true
+                 showFuture: true,
+                 showRecent: true
             };
         }
 
