@@ -59,8 +59,6 @@ class SessionHandler(ApiHandler):
 
     @util.authenticated_async
     def delete(self):
-        sessionId = self.get_secure_cookie('sessionId')
-        db        = self.settings['db']
-        db.sessions.remove({    '_id': sessionId,
-                             'userId': self.current_user })
-        self.clear_cookie('sessionId') # TODO: Check if remove succeeded
+        db = self.settings['db']
+        db.sessions.remove({ 'userId': self.current_user })
+        self.clear_cookie('sessionId') # TODO: Check if remove succeeded?

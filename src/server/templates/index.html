@@ -9,15 +9,11 @@
     <body>
         <div class="container">
             <nav class="navbar navbar-default" 
-                 role="navigation"
-                 ng-controller="navbarController">
+                 role="navigation">
                 <div class="container-fluid">
                     <div class="collapse navbar-collapse">
                         <ncy-breadcrumb></ncy-breadcrumb>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="" ng-click="showLoginDialog()">Login</a></li>
-                            <li><a href="">Sign Up</a></li>
-                        </ul>
+                        <navbar-auth-links></navbar-auth-links>
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search">
@@ -40,8 +36,8 @@
 
         <script src="{{ static_url('app.js') }}"></script>
         <script src="{{ static_url('controllers/home.js') }}"></script>
-        <script src="{{ static_url('controllers/navbar.js') }}"></script>
-        <script src="{{ static_url('controllers/login.js') }}"></script>
+        <script src="{{ static_url('controllers/auth/navbar.js') }}"></script>
+        <script src="{{ static_url('controllers/auth/login.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/list.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/details.js') }}"></script>
         <script src="{{ static_url('services/auth.js') }}"></script>
@@ -49,6 +45,7 @@
         <script src="{{ static_url('filters/tournament.js') }}"></script>
         <script src="{{ static_url('filters/section.js') }}"></script>
         <script src="{{ static_url('directives/tournament.js') }}"></script>
+        <script src="{{ static_url('directives/auth.js') }}"></script>
         <script src="{{ static_url('util/constants.js') }}"></script>
         <script src="{{ static_url('rmUtils/filters.js') }}"></script>
     </body>

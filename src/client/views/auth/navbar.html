@@ -1,0 +1,7 @@
+﻿<ul class="nav navbar-nav navbar-right" ng-controller="navbarAuthCtrl">
+    <li ng-if="currentUser"><a href="">Hi {{ currentUser.name }}</a></li>
+    <li ng-if="currentUser"><a href="">Logout</a></li>
+
+    <li ng-if="!currentUser"><a href="" ng-click="showLoginDialog()">Login</a></li>
+    <li ng-if="!currentUser"><a href="">Sign Up</a></li>
+</ul>

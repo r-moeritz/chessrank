@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client\controllers\" />
+    <Folder Include="client\controllers\auth\" />
     <Folder Include="client\controllers\tournament\" />
     <Folder Include="client\images\" />
     <Folder Include="client\filters\" />
@@ -57,6 +58,7 @@
     <Folder Include="client\util\" />
     <Folder Include="client\style\" />
     <Folder Include="client\views\" />
+    <Folder Include="client\views\auth\" />
     <Folder Include="client\views\tournament\" />
     <Folder Include="data\" />
     <Folder Include="client\" />
@@ -67,11 +69,12 @@
     <Folder Include="server\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="client\controllers\auth\navbar.js" />
     <Content Include="client\controllers\home.js" />
-    <Content Include="client\controllers\login.js" />
-    <Content Include="client\controllers\navbar.js" />
+    <Content Include="client\controllers\auth\login.js" />
     <Content Include="client\controllers\tournament\details.js" />
     <Content Include="client\controllers\tournament\list.js" />
+    <Content Include="client\directives\auth.js" />
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\rmUtils\filters.js" />
     <Content Include="client\filters\section.js" />
@@ -79,9 +82,10 @@
     <Content Include="client\services\auth.js" />
     <Content Include="client\style\custom.css" />
     <Content Include="client\services\resource.js" />
+    <Content Include="client\views\auth\navbar.html" />
     <Content Include="client\views\breadcrumb.html" />
     <Content Include="client\views\home.html" />
-    <Content Include="client\views\login.html" />
+    <Content Include="client\views\auth\login.html" />
     <Content Include="client\views\tournament\details.html" />
     <Content Include="client\views\tournament\list.html" />
     <Content Include="client\util\constants.js" />
