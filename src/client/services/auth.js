@@ -11,28 +11,32 @@
         return this;
     })
     .factory('authService', function ($http, userService) {
-        return {
-            login: function (request) {
-                return $http
-                    .post('api/session', request, {
-                        withCredentials: true
-                    })
-                    .success(function (user) {
-                        userService.setCurrentUser(user);
-                    });
+        this.login = function (request) {
+            return $http
+                .post('api/session', request, {
+                    withCredentials: true
+                })
+                .success(function (user) {
+                    userService.setCurrentUser(user);
+                });
 
-            },
+        }
 
-            logout: function () {
-                return $http
-                    .delete('api/session')
-                    .success(function () {
-                        userService.clearCurrentUser();
-                    });
-            },
+        this.logout = function () {
+            return $http
+                .delete('api/session')
+                .success(function () {
+                    userService.clearCurrentUser();
+                });
+        }
 
-            isAuthenticated: function () {
-                return !!userService.currentUser;
-            }
-        };
+        this.checkLoginStatus = function () {
+            return $http
+                .get('api/session')
+                .success(function (user) {
+                    userService.setCurrentUser(user);
+                });
+        }
+
+        return this;
     });

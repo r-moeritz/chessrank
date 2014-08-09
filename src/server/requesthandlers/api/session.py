@@ -1,6 +1,5 @@
 import tornado.web
 from tornado import gen
-from bson.objectid import ObjectId
 import json
 import bcrypt
 from datetime import datetime, timedelta
@@ -8,8 +7,22 @@ from requesthandlers.api import ApiHandler
 import util
 
 class SessionHandler(ApiHandler):
+    @util.authenticated_async
+    @gen.coroutine
+    def get(self):
+        """Return details of user associated with active session (logged in user)"""
+        db   = self.settings['db']
+        user = yield db.users.find_one({ '_id': self.current_user })
+        if user is None:
+            raise tornado.web.HTTPError(403)
+        self.write({   'email': user['email'],
+                        'name': user['name'],
+                     'surname': user['surname'] })
+        self.finish()     
+
     @gen.coroutine
     def post(self):
+        """Create a new user session (login)"""
         db        = self.settings['db']
         request   = json.loads(self.request.body.decode('utf-8'))
         email     = request.get('email', None)
@@ -29,7 +42,7 @@ class SessionHandler(ApiHandler):
             raise tornado.web.HTTPError(401)
         
         # 3. Check for existing session
-        session = yield db.sessions.find_one({ 'userId': ObjectId(user['_id']) })
+        session = yield db.sessions.find_one({ 'userId': user['_id'] })
 
         # 4. Delete existing session
         if session is not None:
@@ -58,7 +71,10 @@ class SessionHandler(ApiHandler):
                      'surname': user['surname'] })
 
     @util.authenticated_async
+    @gen.coroutine
     def delete(self):
+        """Destroy active user session (logout)"""
         db = self.settings['db']
-        db.sessions.remove({ 'userId': self.current_user })
+        yield db.sessions.remove({ 'userId': self.current_user })
         self.clear_cookie('sessionId') # TODO: Check if remove succeeded?
+        self.finish()

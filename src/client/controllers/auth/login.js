@@ -2,7 +2,7 @@
     .controller('loginCtrl', function ($scope, $rootScope, $modalInstance, authEvent, authService) {
         $scope.submit = function (request) {
             authService.login(request)
-                .success(function (data) {
+                .success(function () {
                     $modalInstance.close();
                     $rootScope.$broadcast(authEvent.loginSuccess);
                 }).error(function (error) {
