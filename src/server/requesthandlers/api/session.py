@@ -23,11 +23,12 @@ class SessionHandler(ApiHandler):
     @gen.coroutine
     def post(self):
         """Create a new user session (login)"""
-        db        = self.settings['db']
-        request   = json.loads(self.request.body.decode('utf-8'))
-        email     = request.get('email', None)
-        password  = request.get('password', None)
-        overwrite = request.get('overwrite', False)
+        db                = self.settings['db']
+        request           = json.loads(self.request.body.decode('utf-8'))
+        email             = request.get('email', None)
+        password          = request.get('password', None)
+        overwriteExisting = request.get('overwriteExisting', None)
+        persistentCookie  = request.get('persistentCookie', False)
 
         # 1. Verify parameters
         if not email or not password:
@@ -46,8 +47,11 @@ class SessionHandler(ApiHandler):
 
         # 4. Delete existing session
         if session is not None:
-            if session['expires'] < datetime.utcnow() or overwrite:
+            if session['expires'] < datetime.utcnow() or overwriteExisting:
                 yield db.sessions.remove(session)
+            elif overwriteExisting is None:
+                # Let the user decide whether to overwrite the existing session
+                raise tornado.web.HTTPError(300)
             else:
                 raise tornado.web.HTTPError(403)
 
@@ -62,8 +66,9 @@ class SessionHandler(ApiHandler):
                                                'expires': now + timedelta(days=lifespan) })
 
         # 7. Store session id in cookie
-        self.set_secure_cookie('sessionId', str(sessionId), expires_days=lifespan, 
-                               httponly=True) # TODO: secure=True
+        self.set_secure_cookie('sessionId', str(sessionId), 
+                               expires_days = lifespan if persistentCookie else None, 
+                               httponly     = True) # TODO: secure=True
 
         # 8. Return details of logged in user
         self.write({   'email': user['email'],

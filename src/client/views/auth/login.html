@@ -4,10 +4,6 @@
     
 <form name="loginForm" novalidate>
     <div class="modal-body">
-        <div class="alert alert-danger" ng-show="loginError">
-            Login failed ({{ loginError.status_code }}). Please try again.
-        </div>
-
         <div class="form-group">
             <label for="inputEmail">Email</label>
             <input id="emailInput" class="form-control" 
@@ -17,6 +13,19 @@
             <label for="passwordInput">Password</label>
             <input id="passwordInput" type="password" class="form-control"
                     ng-model="request.password" placeholder="Password" required />
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="request.persistentCookie" /> Remember me <small>(for 7 days)</small>
+            </label>
+        </div>
+        <div class="alert alert-danger" ng-show="loginError">
+            Login failed ({{ loginError.status_code }}). Please try again.
+        </div>
+        <div class="alert alert-warning" ng-show="request.overwriteExisting">
+            It appears that you have previously logged in from another device
+            or browser session. By clicking OK you will be overwriting your
+            existing session. <small>(For security reasons you can only have one active session)</small>
         </div>
     </div>
     <div class="modal-footer">
