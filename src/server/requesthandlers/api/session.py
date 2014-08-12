@@ -47,7 +47,7 @@ class SessionHandler(ApiHandler):
 
         # 4. Delete existing session
         if session is not None:
-            if session['expires'] < datetime.utcnow() or overwriteExisting:
+            if overwriteExisting or session['expires'] < datetime.utcnow() or not session['persistentCookie']:
                 yield db.sessions.remove(session)
             elif overwriteExisting is None:
                 # Let the user decide whether to overwrite the existing session
@@ -61,9 +61,10 @@ class SessionHandler(ApiHandler):
 
         # 6. Insert new session
         now = datetime.utcnow()
-        sessionId = yield db.sessions.insert({  'userId': user['_id'],
-                                               'created': now,
-                                               'expires': now + timedelta(days=lifespan) })
+        sessionId = yield db.sessions.insert({ 'userId': user['_id'],
+                                              'created': now,
+                                     'persistentCookie': persistentCookie,
+                                              'expires': now + timedelta(days=lifespan) })
 
         # 7. Store session id in cookie
         self.set_secure_cookie('sessionId', str(sessionId), 
@@ -81,5 +82,5 @@ class SessionHandler(ApiHandler):
         """Destroy active user session (logout)"""
         db = self.settings['db']
         yield db.sessions.remove({ 'userId': self.current_user })
-        self.clear_cookie('sessionId') # TODO: Check if remove succeeded?
+        self.clear_cookie('sessionId')
         self.finish()
