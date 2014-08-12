@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="client\controllers\auth\navbar.js" />
+    <Content Include="client\controllers\auth\signup.js" />
     <Content Include="client\controllers\home.js" />
     <Content Include="client\controllers\auth\login.js" />
     <Content Include="client\controllers\tournament\details.js" />
@@ -83,6 +84,7 @@
     <Content Include="client\style\custom.css" />
     <Content Include="client\services\resource.js" />
     <Content Include="client\views\auth\navbar.html" />
+    <Content Include="client\views\auth\signup.html" />
     <Content Include="client\views\breadcrumb.html" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\auth\login.html" />

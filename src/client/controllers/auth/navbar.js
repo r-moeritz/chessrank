@@ -8,6 +8,13 @@
             });
         }
 
+        $scope.showSignUpDialog = function () {
+            $modal.open({
+                templateUrl: 'static/views/auth/signup.html',
+                 controller: 'signupCtrl'
+            });
+        }
+
         $scope.logout = function () {
             authService.logout()
                 .success(function () {

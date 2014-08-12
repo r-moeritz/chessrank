@@ -1,18 +1,18 @@
 ﻿<div class="modal-header">
     <h3 class="modal-title">Login</h3>
 </div>
-    
-<form name="loginForm" novalidate>
-    <div class="modal-body">
+
+<div class="modal-body">
+    <form name="loginForm" novalidate>
         <div class="form-group">
-            <label for="inputEmail">Email</label>
-            <input id="emailInput" class="form-control" 
-                   ng-model="request.email" placeholder="Enter email" required />
+            <label for="emailInput">Email</label>
+            <input id="emailInput" type="email" class="form-control"
+                   ng-model="request.email" placeholder="e.g. bob@example.com" required />
         </div>
         <div class="form-group">
             <label for="passwordInput">Password</label>
             <input id="passwordInput" type="password" class="form-control"
-                    ng-model="request.password" placeholder="Password" required />
+                   ng-model="request.password" placeholder="Your password" required />
         </div>
         <div class="checkbox">
             <label>
@@ -27,12 +27,12 @@
             or browser session. By clicking OK you will be overwriting your
             existing session. <small>(For security reasons you can only have one active session)</small>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary"
-                ng-click="submit(request)"
-                ng-disabled="loginForm.$invalid">OK</button>
-        <button class="btn btn-primary"
-                ng-click="cancel()">Cancel</button>
-    </div>
-</form>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary"
+            ng-click="submit(request)"
+            ng-disabled="loginForm.$invalid">OK</button>
+    <button class="btn btn-primary"
+            ng-click="cancel()">Cancel</button>
+</div>
