@@ -4,7 +4,7 @@
 
 .table-striped>tbody>tr:nth-child(odd)>td, 
 .table-striped>tbody>tr:nth-child(odd)>th {
-   background-color: #dddddd;
+    background-color: #dddddd;
  }
 
 .padded-row {
@@ -15,4 +15,15 @@
 .form-group .k-widget,
 .form-group .k-textbox {
     width: 100%;
+}
+
+.valdr-message {
+    display: none;
+}
+.has-error.dirty-blurred .valdr-message {
+    display: inline;
+    color: firebrick;
+}
+.has-error.dirty-blurred input {
+    background-color: pink;
 }

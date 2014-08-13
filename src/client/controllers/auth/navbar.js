@@ -16,22 +16,16 @@
 
         $scope.logout = function () {
             authService.logout()
-                .success(function () {
+                .then(function () {
                     $rootScope.$broadcast(authEvent.logoutSuccess);
-                })
-                .error(function (error) {
-                    1 + 1;
                 });
         }
 
         $scope.checkLoginStatus = function () {
             authService.checkLoginStatus()
-                .success(function () {
+                .then(function () {
                     $rootScope.$broadcast(authEvent.loginSuccess);
-                })
-                .error(function (error) {
-                    // TODO: Handle error
-                })
+                });
         }
 
         $scope.$on(authEvent.loginSuccess, function () {

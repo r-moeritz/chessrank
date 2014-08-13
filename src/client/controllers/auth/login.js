@@ -2,14 +2,14 @@
     .controller('loginCtrl', function ($scope, $rootScope, $modalInstance, authEvent, authService) {
         $scope.submit = function (request) {
             authService.login(request)
-                .success(function (data) {
+                .then(function () {
                     $modalInstance.close();
                     $rootScope.$broadcast(authEvent.loginSuccess);
-                }).error(function (error) {
-                    if (error.status_code === 300) {
+                }, function (response) {
+                    if (response.status === 300) {
                         request.overwriteExisting = true;
                     } else {
-                        $scope.loginError = error;
+                        $scope.loginError = response.status;
                         $rootScope.$broadcast(authEvent.loginFailed);
                     }
                 });

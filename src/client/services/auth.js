@@ -7,15 +7,15 @@
                 .post('api/session', request, {
                     withCredentials: true
                 })
-                .success(function (user) {
-                    _this.currentUser = user;
+                .then(function (response) {
+                    _this.currentUser = response.data;
                 });
         }
 
         this.logout = function () {
             return $http
                 .delete('api/session')
-                .success(function () {
+                .then(function () {
                     _this.currentUser = null;
                 });
         }
@@ -23,8 +23,8 @@
         this.checkLoginStatus = function () {
             return $http
                 .get('api/session')
-                .success(function (user) {
-                    _this.currentUser = user;
+                .then(function (response) {
+                    _this.currentUser = response.data;
                 });
         }
 

@@ -13,8 +13,9 @@
             return lookupsService.getLookups().then(function (lookups) {
                 var federations = lookups['fideFederations'];
                 var results = [];
+                var regex = new RegExp(filterText, 'i');
                 angular.forEach(federations, function (item) {
-                    if (item.name.indexOf(filterText) >= 0) {
+                    if (regex.test(item.name)) {
                         results.push(item);
                     }
                 });
