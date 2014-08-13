@@ -20,8 +20,9 @@
     "angular-resource": "~1.2.21",
     "angular-breadcrumb": "~0.2.3",
     "angular-bootstrap":  "~0.11.0",
-    "moment": "~2.7.0",
+    "moment": "~2.8.1",
     "bootstrap": "~3.2.0",
-    "sprintfjs": "~1.1.4"
+    "sprintfjs": "~1.1.4",
+    "kendo-ui-core":  "~2014.2.716"
   }
 }

@@ -11,3 +11,8 @@
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
+.form-group .k-widget,
+.form-group .k-textbox {
+    width: 100%;
+}

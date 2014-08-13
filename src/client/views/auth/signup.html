@@ -9,58 +9,53 @@
             <label for="nameInput" class="col-xs-4 control-label">Name</label>
             <div class="col-xs-8">
                 <input id="nameInput" type="text" class="form-control"
-                       ng-model="request.name" placeholder="e.g. John" required />
+                       ng-model="request.name" placeholder="John" ng-required="true" />
             </div>
         </div>
         <div class="form-group">
             <label for="surnameInput" class="col-xs-4 control-label">Surname</label>
             <div class="col-xs-8">
                 <input id="surnameInput" type="text" class="form-control"
-                       ng-model="request.surname" placeholder="e.g. Smith" required />
+                       ng-model="request.surname" placeholder="Smith" ng-required="true" />
             </div>
         </div>
         <div class="form-group">
             <label for="genderRadioOptions" class="col-xs-4 control-label">Gender</label>
             <div class="col-xs-8">
                 <label class="radio-inline">
-                    <input type="radio" name="genderRadioOptions"
-                           value="0" ng-model="request.gender" checked /> Male
+                    <input type="radio" value="0" ng-model="request.gender" ng-checked="true" /> Male
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="genderRadioOptions"
-                           value="1" ng-model="request.gender" /> Female
+                    <input type="radio" value="1" ng-model="request.gender" /> Female
                 </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="birthInput" class="col-xs-4 control-label">Date of Birth</label>
+            <div class="col-xs-8">
+                <input kendo-date-picker id="birthInput" k-ng-model="request.dateOfBirth" 
+                       k-options="datePickerOptions" ng-required="true" />
             </div>
         </div>
         <div class="form-group">
             <label for="emailInput" class="col-xs-4 control-label">Email</label>
             <div class="col-xs-8">
                 <input id="emailInput" type="email" class="form-control"
-                       ng-model="request.email" placeholder="e.g. bob@example.com" required />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="titleSelect" class="col-xs-4 control-label">Title</label>
-            <div class="col-xs-8">
-                <select id="titleSelect" class="form-control"
-                        ng-model="request.title"
-                        ng-options="item for item in titles">
-                    <option value="">-- Select title --</option>
-                </select>
+                       ng-model="request.email" placeholder="johnsmith@example.com" ng-required="true" />
             </div>
         </div>
         <div class="form-group">
             <label for="contactNumberInput" class="col-xs-4 control-label">Contact Number</label>
             <div class="col-xs-8">
                 <input id="contactNumberInput" type="tel" class="form-control"
-                       ng-model="request.contactNumber" placeholder="e.g. +27726164485" required />
+                       ng-model="request.contactNumber" placeholder="+27726164485" ng-required="true" />
             </div>
         </div>
         <div class="form-group">
             <label for="federationInput" class="col-xs-4 control-label">Federation</label>
             <div class="col-xs-8">
                 <input id="federationInput" type="text" class="form-control"
-                       ng-model="request.federation" placeholder="e.g. Russia"
+                       ng-model="request.federation" placeholder="South Africa"
                        typeahead="fed as fed.name for fed in findFederation($viewValue)"
                        typeahead-wait-ms="500" typeahead-min-length="3"
                        typeahead-editable="false" />
@@ -70,21 +65,38 @@
             <label for="unionInput" class="col-xs-4 control-label">Union</label>
             <div class="col-xs-8">
                 <input id="unionInput" type="text" class="form-control"
-                       ng-model="request.union" placeholder="e.g. Gauteng Chess Union" />
+                       ng-model="request.union" placeholder="Gauteng Chess Union" />
             </div>
         </div>
         <div class="form-group">
             <label for="fideRatingInput" class="col-xs-4 control-label">FIDE Rating</label>
             <div class="col-xs-8">
                 <input id="fideRatingInput" type="number" class="form-control"
-                       ng-model="request.fideRating" placeholder="e.g. 1450" />
+                       ng-model="request.fideRating" placeholder="1800" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fideTitleSelect" class="col-xs-4 control-label">FIDE Title</label>
+            <div class="col-xs-8">
+                <select id="fideTitleSelect" class="form-control"
+                        ng-model="request.fideTitle"
+                        ng-options="item for item in titles">
+                    <option value="">-- Select title --</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
             <label for="fedRatingInput" class="col-xs-4 control-label">Fed. Rating</label>
             <div class="col-xs-8">
                 <input id="fedRatingInput" type="number" class="form-control"
-                       ng-model="request.federationRating" placeholder="e.g. 1600" />
+                       ng-model="request.federationRating" placeholder="2000" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fedTitleInput" class="col-xs-4 control-label">Fed. Title</label>
+            <div class="col-xs-8">
+                <input id="fedTitleInput" type="text" class="form-control"
+                       ng-model="request.fedTitle" placeholder="Provincial Master" />
             </div>
         </div>
     </form>

@@ -1,7 +1,7 @@
 ﻿'use strict'
 
 angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb',
-    'ui.bootstrap', 'rmUtils.filters'])
+    'ui.bootstrap', 'kendo.directives', 'rmUtils.filters'])
     .config(function ($stateProvider, $urlRouterProvider, $breadcrumbProvider) {
         $breadcrumbProvider.setOptions({
             templateUrl: 'static/views/breadcrumb.html'

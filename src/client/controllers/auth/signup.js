@@ -1,6 +1,13 @@
 ﻿angular.module('chessRank')
     .controller('signupCtrl', function ($scope, $modalInstance, authService, lookupsService) {
-        $scope.titles = ['WCM', 'WFM', 'WIM', 'WGM', 'NM', 'CM', 'FM', 'IM', 'GM'];
+        $scope.titles = ['WCM', 'WFM', 'WIM', 'WGM', 'CM', 'FM', 'IM', 'GM'];
+
+        $scope.datePickerOptions = {
+            start: 'year',
+            format: 'dd MMM yyyy',
+            min: moment().subtract(120, 'years').toDate(),
+            max: moment().subtract(4, 'years').toDate()
+        };
 
         $scope.findFederation = function (filterText) {
             return lookupsService.getLookups().then(function (lookups) {

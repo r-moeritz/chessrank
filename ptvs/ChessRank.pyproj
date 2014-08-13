@@ -87,6 +87,7 @@
     <Content Include="client\services\lookups.js" />
     <Content Include="client\style\custom.css" />
     <Content Include="client\services\resource.js" />
+    <Content Include="client\style\kendo-bootstrap.css" />
     <Content Include="client\views\auth\navbar.html" />
     <Content Include="client\views\auth\signup.html" />
     <Content Include="client\views\breadcrumb.html" />

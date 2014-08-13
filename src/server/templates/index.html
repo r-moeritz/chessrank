@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <title>ChessRank: The Chess Tournament Organizer</title>
         <link rel="stylesheet" href="{{ static_url('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('bower_components/kendo-ui-core/styles/kendo.common-bootstrap.core.min.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('bower_components/kendo-ui-core/styles/kendo.bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('style/kendo-bootstrap.css') }}" />
         <link rel="stylesheet" href="{{ static_url('style/custom.css') }}" />
     </head>
     <body>
@@ -26,11 +29,13 @@
             <div ui-view></div>
         </div>
         
+        <script src="{{ static_url('bower_components/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular/angular.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-resource/angular-resource.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-ui-router/release/angular-ui-router.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-breadcrumb/release/angular-breadcrumb.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/kendo-ui-core/js/kendo.ui.core.min.js') }}"></script>
         <script src="{{ static_url('bower_components/moment/min/moment.min.js') }}"></script>
         <script src="{{ static_url('bower_components/sprintfjs/sprintf.js') }}"></script>
 

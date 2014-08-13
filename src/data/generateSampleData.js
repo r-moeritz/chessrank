@@ -946,11 +946,10 @@ function generateLookups() {
 }
 
 function getTitle(rating, gender) {
-    var stdTitles = ['WCM', 'WFM', 'WIM', 'WGM', 'NM', 'CM', 'FM', 'IM', 'GM'];
-    if (rating < 2000) return null;
+    var stdTitles = ['WCM', 'WFM', 'WIM', 'WGM', 'CM', 'FM', 'IM', 'GM'];
+    if (rating < 2000 || gender === constants.gender.male && rating < 2200) return null;
     if (rating < 2100 && gender === constants.gender.female) return 'WCM';
     if (rating < 2200 && gender === constants.gender.female) return 'WFM';
-    if (rating < 2200) return 'NM';
     if (rating < 2300 && gender === constants.gender.female) return 'WIM';
     if (rating < 2300) return 'CM';
     if (rating < 2400 && gender === constants.gender.female) return 'WGM';
@@ -980,18 +979,25 @@ function generatePlayers(count) {
     var players = [];
 
     for (var i = 0; i != count; ++i) {
-        var rating = util.randomInt(1000, 2600);
         var gender = util.randomInt(0, 2);
         var fullName = generateFullName(gender);
-        var title = getTitle(rating, gender);
+        var fedRating = util.randomInt(800, 2900);
+        fedRating = (fedRating < 1000) ? null : fedRating;
+        var fideRating = null;
+        var fideTitle = null;
+        if (fedRating) {
+            fideRating = (fedRating < 1999) ? null : fedRating - 200;
+            fideTitle = (fideRating == null) ? null : getTitle(fideRating, gender);
+        }
 
         players.push({
             name:             fullName[0],
             surname:          fullName[1],
             gender:           gender,
-            title:            title,
-            fideRating:       (title && title !== 'NM') ? rating : null,
-            federationRating: rating,
+            fideRating:       fideRating,
+            fideTitle:        fideTitle,
+            federationRating: fedRating,
+            federationTitle:  null,
             birth:            util.randomDate(new Date(1950, 0, 1), new Date(2000, 0, 1)),
             federation:       fideFederations[util.randomInt(0, fideFederations.length)].value
         });
