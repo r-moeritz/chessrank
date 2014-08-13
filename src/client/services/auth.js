@@ -1,32 +1,22 @@
 ﻿angular.module('chessRank')
-    .service('userService', function () {
-        this.setCurrentUser = function (user) {
-            this.currentUser = user;
-        }
+    .service('authService', function ($http) {
+        var _this = this;
 
-        this.clearCurrentUser = function () {
-            this.currentUser = null;
-        }
-
-        return this;
-    })
-    .factory('authService', function ($http, userService) {
         this.login = function (request) {
             return $http
                 .post('api/session', request, {
                     withCredentials: true
                 })
                 .success(function (user) {
-                    userService.setCurrentUser(user);
+                    _this.currentUser = user;
                 });
-
         }
 
         this.logout = function () {
             return $http
                 .delete('api/session')
                 .success(function () {
-                    userService.clearCurrentUser();
+                    _this.currentUser = null;
                 });
         }
 
@@ -34,7 +24,7 @@
             return $http
                 .get('api/session')
                 .success(function (user) {
-                    userService.setCurrentUser(user);
+                    _this.currentUser = user;
                 });
         }
 

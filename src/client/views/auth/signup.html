@@ -23,12 +23,12 @@
             <label for="genderRadioOptions" class="col-xs-4 control-label">Gender</label>
             <div class="col-xs-8">
                 <label class="radio-inline">
-                    <input type="radio" name="genderRadioOptions" id="maleRadio" 
-                           value="0" checked /> Male
+                    <input type="radio" name="genderRadioOptions"
+                           value="0" ng-model="request.gender" checked /> Male
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="genderRadioOptions" id="femaleRadio" 
-                           value="1" /> Female
+                    <input type="radio" name="genderRadioOptions"
+                           value="1" ng-model="request.gender" /> Female
                 </label>
             </div>
         </div>
@@ -42,17 +42,10 @@
         <div class="form-group">
             <label for="titleSelect" class="col-xs-4 control-label">Title</label>
             <div class="col-xs-8">
-                <select id="titleSelect" class="form-control">
-                    <option>NM</option>
-                    <option>CM</option>
-                    <option>FM</option>
-                    <option>IM</option>
-                    <option>GM</option>
-                    <option>WNM</option>
-                    <option>WCM</option>
-                    <option>WFM</option>
-                    <option>WIM</option>
-                    <option>WGM</option>
+                <select id="titleSelect" class="form-control"
+                        ng-model="request.title"
+                        ng-options="item for item in titles">
+                    <option value="">-- Select title --</option>
                 </select>
             </div>
         </div>
@@ -64,15 +57,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="federationSelect" class="col-xs-4 control-label">Federation</label>
+            <label for="federationInput" class="col-xs-4 control-label">Federation</label>
             <div class="col-xs-8">
-                <select id="federationSelect" class="form-control">
-                    <option>RUS</option>
-                    <option>GER</option>
-                    <option>FRA</option>
-                    <option>ITA</option>
-                    <option>ZAR</option>
-                </select>
+                <input id="federationInput" type="text" class="form-control"
+                       ng-model="request.federation" placeholder="e.g. Russia"
+                       typeahead="fed as fed.name for fed in findFederation($viewValue)"
+                       typeahead-wait-ms="500" typeahead-min-length="3"
+                       typeahead-editable="false" />
             </div>
         </div>
         <div class="form-group">
