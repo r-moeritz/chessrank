@@ -16,14 +16,3 @@
 .form-group .k-textbox {
     width: 100%;
 }
-
-.valdr-message {
-    display: none;
-}
-.has-error.dirty-blurred .valdr-message {
-    display: inline;
-    color: firebrick;
-}
-.has-error.dirty-blurred input {
-    background-color: pink;
-}
