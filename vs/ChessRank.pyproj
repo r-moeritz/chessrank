@@ -26,6 +26,15 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="server\engines\pairing\dutch.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\engines\pairing\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\engines\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="server\main.py" />
     <Compile Include="server\requesthandlers\api\lookups.py">
       <SubType>Code</SubType>
@@ -63,9 +72,10 @@
     <Folder Include="client\views\" />
     <Folder Include="client\views\auth\" />
     <Folder Include="client\views\tournament\" />
-    <Folder Include="data\" />
     <Folder Include="client\" />
     <Folder Include="server\" />
+    <Folder Include="server\engines\" />
+    <Folder Include="server\engines\pairing\" />
     <Folder Include="server\util\" />
     <Folder Include="server\requesthandlers\" />
     <Folder Include="server\requesthandlers\api\" />
@@ -96,11 +106,8 @@
     <Content Include="client\views\tournament\details.html" />
     <Content Include="client\views\tournament\list.html" />
     <Content Include="client\util\constants.js" />
-    <Content Include="data\constants.js" />
-    <Content Include="data\generateSampleData.js" />
     <Content Include="client\app.js" />
     <Content Include="client\bower.json" />
-    <Content Include="data\util.js" />
     <Content Include="server\templates\index.html" />
   </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />

@@ -7,9 +7,9 @@
       submit-error="loginFailed(error)" novalidate>
     <div class="modal-body">
         <text-field label="Email" attribute="email" placeholder="johnsmith@example.com"
-                    focus="clearErrors()" autofocus></text-field>
+                    focused="clearErrors()" autofocus></text-field>
         <text-field label="Password" attribute="password" type="password" 
-                    placeholder="Your password" focus="clearErrors()"></text-field>
+                    placeholder="Your password" focused="clearErrors()"></text-field>
         <checkbox-field label="Remember me" attribute="persistentCookie"></checkbox-field>
 
         <div class="alert alert-danger" ng-show="loginError">
