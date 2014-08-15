@@ -4,7 +4,6 @@ var Constants = require('./Constants.js');
 var Util = require('./Util.js');
 var Mongo = require('mongodb');
 var Q = require('q');
-var Fn = require('fn.js');
 
 function getTitle(rating, gender) {
     var stdTitles = ['WCM', 'WFM', 'WIM', 'WGM', 'CM', 'FM', 'IM', 'GM'];
