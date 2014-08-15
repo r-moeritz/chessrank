@@ -23,10 +23,6 @@
             });
         }
 
-        $scope.submit = function (request) {
-            // TODO
-        }
-
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         }

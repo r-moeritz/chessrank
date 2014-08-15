@@ -2,23 +2,16 @@
     <h3 class="modal-title">Login</h3>
 </div>
 
-<div class="modal-body">
-    <form name="loginForm" novalidate>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" class="form-control"
-                   ng-model="request.email" placeholder="johnsmith@example.com" />
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" class="form-control"
-                   ng-model="request.password" placeholder="Your password" />
-        </div>
-        <div class="checkbox">
-            <label>
-                <input name="rememberMe" type="checkbox" ng-model="request.persistentCookie" /> Remember me <small>(for 7 days)</small>
-            </label>
-        </div>
+<form form-for="request" service="loginService"
+      submit-complete="loginComplete()"
+      submit-error="loginFailed(error)" novalidate>
+    <div class="modal-body">
+        <text-field label="Email" attribute="email" placeholder="johnsmith@example.com"
+                    focus="clearErrors()" autofocus></text-field>
+        <text-field label="Password" attribute="password" type="password" 
+                    placeholder="Your password" focus="clearErrors()"></text-field>
+        <checkbox-field label="Remember me" attribute="persistentCookie"></checkbox-field>
+
         <div class="alert alert-danger" ng-show="loginError">
             Login failed ({{ loginError }}). Please try again.
         </div>
@@ -27,14 +20,12 @@
             or browser session. By clicking OK you will be overwriting your
             existing session. <small>(For security reasons you can only have one active session)</small>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary"
-            ng-click="submit(request)"
-            ng-disabled="loginForm.$invalid">
-        OK
-    </button>
-    <button class="btn btn-primary"
-            ng-click="cancel()">Cancel</button>
-</div>
+    </div>
+    <div class="modal-footer">
+        <submit-button label="Login"></submit-button>
+        <button class="btn btn-primary"
+                ng-click="cancel()">
+            Cancel
+        </button>
+    </div>
+</form>

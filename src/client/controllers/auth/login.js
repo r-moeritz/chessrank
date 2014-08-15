@@ -1,18 +1,23 @@
 ﻿angular.module('chessRank')
     .controller('loginCtrl', function ($scope, $rootScope, $modalInstance, authEvent, authService) {
-        $scope.submit = function (request) {
-            authService.login(request)
-                .then(function () {
-                    $modalInstance.close();
-                    $rootScope.$broadcast(authEvent.loginSuccess);
-                }, function (response) {
-                    if (response.status === 300) {
-                        request.overwriteExisting = true;
-                    } else {
-                        $scope.loginError = response.status;
-                        $rootScope.$broadcast(authEvent.loginFailed);
-                    }
-                });
+        $scope.request = {};
+
+        $scope.loginComplete = function () {
+            $modalInstance.close();
+            $rootScope.$broadcast(authEvent.loginSuccess);
+        }
+
+        $scope.loginFailed = function (error) {
+            if (error.status === 300) {
+                $scope.request.overwriteExisting = true;
+            } else {
+                $scope.loginError = error.status;
+                $rootScope.$broadcast(authEvent.loginFailed);
+            }
+        }
+
+        $scope.clearErrors = function () {
+            $scope.loginError = null
         }
 
         $scope.cancel = function () {
