@@ -1,9 +1,13 @@
 ﻿'use strict'
 
 var Const = require('./constants.js');
+var Util = require('./util.js');
 var Gen = require('./generate.js');
 var Mongo = require('mongodb');
 var Q = require('q');
+var sprintf = require('sprintfjs');
+
+Q.longStackSupport = true;
 
 function populatePlayers(db, count) {   
     var col = db.collection('players');
@@ -77,10 +81,35 @@ function disconnect(db) {
     return Q.ninvoke(db, 'close');
 }
 
+function populatePlayerRegistrations(db) {
+    var colTournaments = db.collection('tournaments');
+    var curAllTournaments = colTournaments.find();
+    var curAllPlayers = db.collection('players').find();
+
+    var promises = [Q.ninvoke(curAllTournaments, 'toArray'),
+                    Q.ninvoke(curAllPlayers, 'toArray')];
+
+    return Q.spread(promises, function (tournaments, players) {
+        var result = Gen.registerPlayers(tournaments, players);
+        if (result) {
+            console.log(sprintf('%d players registered in the %s of the %s (id: %s)',
+                result.section.registeredPlayerIds.length,
+                result.section.name,
+                result.tournament.name,
+                result.tournament._id.toString()));
+            return Q.ninvoke(colTournaments, 'save', result.tournament);
+        } else {
+            console.warn('No players registered!');
+        }
+    })
+    .then(function () { return db; });
+}
+
 function populateCollections(db) {
     return Q.all([populateSettings(db), populateLookups(db), populateUsers(db),
             populatePlayers(db, 50), populateTournaments(db, 10)])
-        .then(function () { return db; });
+        .then(function () { return db; })
+        .then(populatePlayerRegistrations);
 }
 
 function main() {
@@ -88,7 +117,7 @@ function main() {
         .then(dropDatabase)
         .then(populateCollections)
         .then(disconnect)
-        .done();
+        .done(Util.promptToExit);
 }
 
 main();

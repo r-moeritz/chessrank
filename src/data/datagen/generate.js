@@ -1,14 +1,14 @@
-﻿var Constants = require('./constants.js');
+﻿var Const = require('./constants.js');
 var Util = require('./util.js');
 
 function getTitle(rating, gender) {
     var stdTitles = ['WCM', 'WFM', 'WIM', 'WGM', 'CM', 'FM', 'IM', 'GM'];
-    if (rating < 2000 || gender === Constants.gender.male && rating < 2200) return null;
-    if (rating < 2100 && gender === Constants.gender.female) return 'WCM';
-    if (rating < 2200 && gender === Constants.gender.female) return 'WFM';
-    if (rating < 2300 && gender === Constants.gender.female) return 'WIM';
+    if (rating < 2000 || gender === Const.gender.male && rating < 2200) return null;
+    if (rating < 2100 && gender === Const.gender.female) return 'WCM';
+    if (rating < 2200 && gender === Const.gender.female) return 'WFM';
+    if (rating < 2300 && gender === Const.gender.female) return 'WIM';
     if (rating < 2300) return 'CM';
-    if (rating < 2400 && gender === Constants.gender.female) return 'WGM';
+    if (rating < 2400 && gender === Const.gender.female) return 'WGM';
     if (rating < 2400) return 'FM';
     if (rating < 2500) return 'IM';
     return 'GM';
@@ -26,13 +26,13 @@ function generateSections(count, tournamentStartDate, tournamentEndDate) {
         var playSystem = Util.randomInt(0, 2);
         var maxRounds = (playSystem + 1) * (maxPlayers - 1);
         if (maxRounds > 10) {
-            playSystem = Constants.playSystem.swiss;
+            playSystem = Const.playSystem.swiss;
         }
         
-        var tieBreaks = (playSystem === Constants.playSystem.swiss)
+        var tieBreaks = (playSystem === Const.playSystem.swiss)
             ? [Util.randomInt(1, 4)]
-            : [Constants.tieBreak.neustadl];
-        var rounds = (playSystem === Constants.playSystem.swiss)
+            : [Const.tieBreak.neustadl];
+        var rounds = (playSystem === Const.playSystem.swiss)
             ? Util.swissRounds(maxPlayers)
             : 0;
         
@@ -69,7 +69,7 @@ function generateFullName(gender) {
     var surnames = ['Gleghorn', 'Bishopp', 'Mariacher', 'Fike', 'Popper', 'Schoenbeck', 'Palone', 'Beliard', 'Kinabrew', 'Bohan',
                     'Fedoriw', 'Pannhoff', 'Schaff', 'Seidler', 'Garing', 'Christesen', 'Schooler', 'Hershey', 'Stewardson', 'Roller',
                     'Mirelez', 'Zavadoski', 'Heywood', 'Wyse', 'Condello', 'Brensnan', 'Sippel', 'Dinsmoor', 'Yenglin', 'Trampe'];
-    var name = (gender === Constants.gender.female)
+    var name = (gender === Const.gender.female)
         ? femaleNames[Util.randomInt(0, femaleNames.length)]
         : maleNames[Util.randomInt(0, maleNames.length)];
     var surname = surnames[Util.randomInt(0, surnames.length)];
@@ -98,7 +98,7 @@ module.exports = {
             federationRating: fedRating,
             federationTitle: null,
             dateOfBirth: Util.randomDate(new Date(1950, 0, 1), new Date(2000, 0, 1)),
-            federation: Constants.fideFederations[Util.randomInt(0, Constants.fideFederations.length)].value,
+            federation: Const.fideFederations[Util.randomInt(0, Const.fideFederations.length)].value,
             union: null,
             contactNumber: null,
             emailAddress: null
@@ -117,8 +117,7 @@ module.exports = {
         var endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + durations[Util.randomInt(0, durations.length)]);
         
-        var sectionCount = Util.randomInt(1, 4);
-        var sections = generateSections(sectionCount, startDate, endDate);
+        var sections = generateSections(Util.randomInt(1, 4), startDate, endDate);
         
         return {
             name: city + ' ' + types[Util.randomInt(0, types.length)],
@@ -126,6 +125,39 @@ module.exports = {
             startDate: startDate,
             endDate: endDate,
             sections: sections
+        };
+    },
+    
+    registerPlayers: function (tournaments, players) {
+        var tourney;
+        var section;
+        var gotSwiss = false;
+
+        for (var i = 0; i != tournaments.length; ++i) {
+            tourney = tournaments[i];
+            for (var k = 0; k != tourney.sections.length; ++k) {
+                section = tourney.sections[k];
+                if (section.playSystem == Const.playSystem.swiss) {
+                    gotSwiss = true;
+                    break;
+                }
+            }
+            if (gotSwiss) {
+                break;
+            }
+        }
+        
+        if (!gotSwiss) {
+            return null;
+        }
+        
+        section.registeredPlayerIds = players.map(function (p) {
+            return p._id;
+        });
+
+        return {
+            tournament: tourney,
+            section: section
         };
     }
 };

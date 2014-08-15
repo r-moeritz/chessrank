@@ -11,6 +11,6 @@
   "dependencies": {
       "mongodb":  "~1.4.8",
       "q":  "~1.0.1",
-      "fn.js":  "~0.8.1"
+      "sprintfjs":  "~1.1.4"
   }
 }
