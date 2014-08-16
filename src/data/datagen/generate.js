@@ -1,17 +1,17 @@
 ﻿var Const = require('./constants.js');
 var Util = require('./util.js');
+var Data = require('./data.js');
 
 function getTitle(rating, gender) {
-    var stdTitles = ['WCM', 'WFM', 'WIM', 'WGM', 'CM', 'FM', 'IM', 'GM'];
     if (rating < 2000 || gender === Const.gender.male && rating < 2200) return null;
-    if (rating < 2100 && gender === Const.gender.female) return 'WCM';
-    if (rating < 2200 && gender === Const.gender.female) return 'WFM';
-    if (rating < 2300 && gender === Const.gender.female) return 'WIM';
-    if (rating < 2300) return 'CM';
-    if (rating < 2400 && gender === Const.gender.female) return 'WGM';
-    if (rating < 2400) return 'FM';
-    if (rating < 2500) return 'IM';
-    return 'GM';
+    if (rating < 2100 && gender === Const.gender.female) return Const.fideTitle.WCM;
+    if (rating < 2200 && gender === Const.gender.female) return Const.fideTitle.WFM;
+    if (rating < 2300 && gender === Const.gender.female) return Const.fideTitle.WIM;
+    if (rating < 2300) return Const.fideTitle.CM;
+    if (rating < 2400 && gender === Const.gender.female) return Const.fideTitle.WGM;
+    if (rating < 2400) return Const.fideTitle.FM;
+    if (rating < 2500) return Const.fideTitle.IM;
+    return Const.fideTitle.GM;
 }
 
 function generateSections(count, tournamentStartDate, tournamentEndDate) {
@@ -52,7 +52,9 @@ function generateSections(count, tournamentStartDate, tournamentEndDate) {
             chiefArbiter: generateFullName(Util.randomInt(0, 2)).join(' '),
             timeControls: Util.stdTimeControls[Util.randomInt(0, Util.stdTimeControls.length)],
             entryFee: fees[Util.randomInt(0, fees.length)],
-            invitationOnly: Util.randomBool()
+            invitationOnly: Util.randomBool(),
+            provisionalRating: 1000
+            // TODO: Tournament Director (organizer)
         });
     }
     
@@ -98,7 +100,7 @@ module.exports = {
             federationRating: fedRating,
             federationTitle: null,
             dateOfBirth: Util.randomDate(new Date(1950, 0, 1), new Date(2000, 0, 1)),
-            federation: Const.fideFederations[Util.randomInt(0, Const.fideFederations.length)].value,
+            federation: Data.fideFederations[Util.randomInt(0, Data.fideFederations.length)].value,
             union: null,
             contactNumber: null,
             emailAddress: null

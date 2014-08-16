@@ -54,6 +54,9 @@
     <Compile Include="server\requesthandlers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="server\util\enums.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="server\util\__init__.py">
       <SubType>Code</SubType>
     </Compile>

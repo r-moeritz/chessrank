@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ChessRank", "ChessRank.pyproj", "{AF233115-C371-495A-90FC-0897F6530A37}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "UnitTests", "UnitTests.pyproj", "{43C61F27-39E4-45D9-9E8E-33255BBE214E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AF233115-C371-495A-90FC-0897F6530A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF233115-C371-495A-90FC-0897F6530A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43C61F27-39E4-45D9-9E8E-33255BBE214E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43C61F27-39E4-45D9-9E8E-33255BBE214E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

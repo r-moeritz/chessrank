@@ -28,4 +28,14 @@
         logoutSuccess: 2,
         sessionTimeout: 3,
         notAuthenticated: 4,
+    })
+    .constant('fideTitle', {
+        WCM: 0,
+        WFM: 1,
+        CM: 2,
+        WIM: 3,
+        FM: 4,
+        WGM: 5,
+        IM: 6,
+        GM: 7
     });

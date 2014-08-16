@@ -18,6 +18,7 @@
   <ItemGroup>
     <Content Include="package.json" />
     <Compile Include="constants.js" />
+    <Compile Include="data.js" />
     <Compile Include="generate.js" />
     <Compile Include="index.js" />
     <Compile Include="util.js" />
