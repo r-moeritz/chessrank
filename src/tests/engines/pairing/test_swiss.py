@@ -66,13 +66,13 @@ class Test_SwissPairingEngine(unittest.TestCase):
                 'fideRating': 2200,
                 'fideTitle': FideTitle.CM
             },
-            {
-                'surname': 'Bernstein',
+            { 
+                'surname': 'Adams',
                 'fideRating': 1200,
                 'fideTitle': None 
             },
-            { 
-                'surname': 'Adams',
+            {
+                'surname': 'Bernstein',
                 'fideRating': 1200,
                 'fideTitle': None 
             }
