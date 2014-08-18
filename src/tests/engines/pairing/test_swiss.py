@@ -98,8 +98,8 @@ class Test_SwissPairingEngine(unittest.TestCase):
                 'pairingNum': 7 
             }
         expected_len_pairs = 3
-        expected_pairs = [
-            [
+        expected_pairs_odd_is_white = [
+            (
                 {
                     'surname': 'Carlsen',
                     'fideRating': 2900,
@@ -112,22 +112,22 @@ class Test_SwissPairingEngine(unittest.TestCase):
                     'fideTitle': FideTitle.WIM,
                     'pairingNum': 4 
                 }
-            ],
-            [
-                {
-                    'surname': 'Aronian',
-                    'fideRating': 2800,
-                    'fideTitle': FideTitle.GM,
-                    'pairingNum': 2 
-                },
+            ),
+            (
                 {
                     'surname': 'Smith',
                     'fideRating': 2200,
                     'fideTitle': FideTitle.CM,
                     'pairingNum': 5
+                },
+                {
+                    'surname': 'Aronian',
+                    'fideRating': 2800,
+                    'fideTitle': FideTitle.GM,
+                    'pairingNum': 2 
                 }
-            ],
-            [
+            ),
+            (
                 {
                     'surname': 'Silman',
                     'fideRating': 2400,
@@ -140,10 +140,58 @@ class Test_SwissPairingEngine(unittest.TestCase):
                     'fideTitle': None,
                     'pairingNum': 6
                 }
-            ]
+            )
         ]
+        expected_pairs_even_is_white = [
+            (
+                {
+                    'surname': 'Jones',
+                    'fideRating': 2200,
+                    'fideTitle': FideTitle.WIM,
+                    'pairingNum': 4 
+                },
+                {
+                    'surname': 'Carlsen',
+                    'fideRating': 2900,
+                    'fideTitle': FideTitle.GM,
+                    'pairingNum': 1 
+                }
+            ),
+            (
+                {
+                    'surname': 'Aronian',
+                    'fideRating': 2800,
+                    'fideTitle': FideTitle.GM,
+                    'pairingNum': 2 
+                },
+                {
+                    'surname': 'Smith',
+                    'fideRating': 2200,
+                    'fideTitle': FideTitle.CM,
+                    'pairingNum': 5
+                }
+            ),
+            (
+                { 
+                    'surname': 'Adams',
+                    'fideRating': 1200,
+                    'fideTitle': None,
+                    'pairingNum': 6
+                },
+                {
+                    'surname': 'Silman',
+                    'fideRating': 2400,
+                    'fideTitle': FideTitle.IM,
+                    'pairingNum': 3
+                }
+            )
+        ]
+
         pinfo = self.engine.pair_first_round()
         self.assertEqual(pinfo['bye'], expected_bye)
         self.assertEqual(len(pinfo['pairs']), expected_len_pairs)
+        expected_pairs = expected_pairs_even_is_white \
+            if self.engine.even_is_white else expected_pairs_odd_is_white
+
         for i in range(expected_len_pairs):
-            self.assertCountEqual(pinfo['pairs'][i], expected_pairs[i])
+            self.assertEqual(pinfo['pairs'][i], expected_pairs[i])
