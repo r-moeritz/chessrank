@@ -26,20 +26,14 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="server\engines\pairing\dutch.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="server\engines\pairing\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="server\engines\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="server\main.py" />
     <Compile Include="server\requesthandlers\api\lookups.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\requesthandlers\api\session.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\user.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\requesthandlers\api\__init__.py">
@@ -77,8 +71,6 @@
     <Folder Include="client\views\tournament\" />
     <Folder Include="client\" />
     <Folder Include="server\" />
-    <Folder Include="server\engines\" />
-    <Folder Include="server\engines\pairing\" />
     <Folder Include="server\util\" />
     <Folder Include="server\requesthandlers\" />
     <Folder Include="server\requesthandlers\api\" />

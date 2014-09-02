@@ -15,9 +15,9 @@ class SessionHandler(ApiHandler):
         user = yield db.users.find_one({ '_id': self.current_user })
         if user is None:
             raise tornado.web.HTTPError(403)
-        self.write({   'email': user['email'],
-                        'name': user['name'],
-                     'surname': user['surname'] })
+        self.write({ 'email': user['email'],
+                      'name': user['name'],
+                   'surname': user['surname'] })
         self.finish()     
 
     @gen.coroutine
@@ -72,9 +72,9 @@ class SessionHandler(ApiHandler):
                                httponly     = True) # TODO: secure=True
 
         # 8. Return details of logged in user
-        self.write({   'email': user['email'],
-                        'name': user['name'],
-                     'surname': user['surname'] })
+        self.write({ 'email': user['email'],
+                      'name': user['name'],
+                   'surname': user['surname'] })
 
     @util.authenticated_async
     @gen.coroutine

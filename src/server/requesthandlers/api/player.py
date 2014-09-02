@@ -29,11 +29,10 @@ class PlayerHandler(ApiHandler):
 
         # Execute query
         db    = self.settings['db']
-        todos = yield (db.players.find_one(spec) 
-                       if uid 
-                       else db.players.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
+        players = yield (db.players.find_one(spec)
+                         if uid 
+                         else db.players.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
         
         # Write response
-        self.write(bson.json_util.dumps(todos))
+        self.write(bson.json_util.dumps(players))
         self.set_header('Content-Type', 'application/json')
-        self.finish()

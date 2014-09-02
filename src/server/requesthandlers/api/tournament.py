@@ -29,10 +29,10 @@ class TournamentHandler(ApiHandler):
 
         # Execute query
         db    = self.settings['db']
-        todos = yield (db.tournaments.find_one(spec) 
+        tournaments = yield (db.tournaments.find_one(spec) 
                        if uid 
                        else db.tournaments.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
         
         # Write response
-        self.write(bson.json_util.dumps(todos))
+        self.write(bson.json_util.dumps(tournaments))
         self.set_header('Content-Type', 'application/json')

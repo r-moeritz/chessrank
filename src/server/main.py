@@ -7,6 +7,7 @@ from os import path
 from requesthandlers import IndexHandler
 from requesthandlers.api import ApiHandler
 from requesthandlers.api.player import PlayerHandler
+from requesthandlers.api.user import UserHandler
 from requesthandlers.api.tournament import TournamentHandler
 from requesthandlers.api.session import SessionHandler
 from requesthandlers.api.lookups import LookupsHandler
@@ -29,6 +30,7 @@ def main():
     handlers = [
                 (r'/api/tournaments(?:/([0-9a-fA-F]{24}))?.*', TournamentHandler),
                 (r'/api/players(?:/([0-9a-fA-F]{24}))?.*', PlayerHandler),
+                (r'/api/users(?:/([0-9a-fA-F]{24}))?.*', UserHandler),
                 (r'/api/session', SessionHandler),
                 (r'/api/lookups', LookupsHandler),
                 (r'/api.*', ApiHandler),

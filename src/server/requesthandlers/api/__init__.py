@@ -14,7 +14,7 @@ class ApiHandler(tornado.web.RequestHandler):
         self.clear()
         self.set_status(status_code)
         self.finish({ 'status_code': status_code, 
-                      'message':     http.client.responses[status_code] })
+                          'message': http.client.responses[status_code] })
 
     @gen.coroutine
     def get_current_user_async(self):
@@ -24,7 +24,7 @@ class ApiHandler(tornado.web.RequestHandler):
 
         sessionId = ObjectId(sessionIdBytes.decode('utf-8'))
         db = self.settings['db']
-        session = yield db.sessions.find_one({     '_id': sessionId,
-                                               'expires': { '$gt': datetime.utcnow() } })
+        session = yield db.sessions.find_one({ '_id': sessionId,
+                                           'expires': { '$gt': datetime.utcnow() } })
 
         return session['userId'] if session else None
