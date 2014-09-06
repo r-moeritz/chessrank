@@ -2,114 +2,45 @@
     <h3 class="modal-title">Sign up</h3>
 </div>
 
-<div class="modal-body">
-    <form name="signupForm" class="form-horizontal" novalidate>
-        <div class="form-group">
-            <label for="name" class="col-xs-4 control-label">Name</label>
-            <div class="col-xs-8">
-                <input id="name" name="name" type="text" class="form-control"
-                       ng-model="request.name" placeholder="John" />
-            </div>
+<form form-for="request" service="signupService"
+      submit-complete="signupComplete()"
+      submit-error="signupFailed(error)" novalidate>
+    <div class="modal-body">
+        <text-field label="Name" attribute="name" placeholder="John"
+                    focused="clearError()" autofocus></text-field>
+        <text-field label="Surname" attribute="surname" placeholder="Smith"
+                    focused="clearError()"></text-field>
+        <radio-field label="Male" attribute="gender" value="0"></radio-field>
+        <radio-field label="Female" attribute="gender" value="1"></radio-field>
+        <datepicker-field label="Date of Birth" attribute="dateOfBirth"
+                          options="datePickerOptions"></datepicker-field>
+        <text-field label="Email" attribute="email" placeholder="johnsmith@example.com"
+                    type="email" focused="clearError()"></text-field>
+        <text-field label="Contact Number" attribute="contactNumber"
+                    placeholder="+27726164485" type="tel" focused="clearError()"></text-field>
+        <type-ahead-field label="Federation" attribute="federation"
+                          options="fideFederations" filter="filterFederations"
+                          placeholder="South Africa" label-attribute="name"></type-ahead-field>
+        <text-field label="Union" attribute="union" placeholder="Gauteng Chess Union"
+                    focused="clearError()"></text-field>
+        <text-field label="FIDE Rating" attribute="fideRating" type="number"
+                    placeholder="1800" focused="clearError()"></text-field>
+        <select-field label="FIDE Title" attribute="fideTitle" options="titles"
+                      placeholder="Select title" allow-blank></select-field>
+        <text-field label="Federation Rating" attribute="fedRating" type="number"
+                    placeholder="2000" focused="clearError()"></text-field>
+        <text-field label="Federation Title" attribute="fedTitle"
+                    placeholder="Provincial Master" focused="clearError()"></text-field>
+
+        <div class="alert alert-danger" ng-show="signupError">
+            Sign up failed ({{ signupError }}). Please try again.
         </div>
-        <div class="form-group">
-            <label for="surname" class="col-xs-4 control-label">Surname</label>
-            <div class="col-xs-8">
-                <input id="surname" name="surname" type="text" class="form-control"
-                       ng-model="request.surname" placeholder="Smith" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-4 control-label">Gender</label>
-            <div class="col-xs-8">
-                <label class="radio-inline">
-                    <input id="male" name="male" type="radio" value="0" 
-                           ng-model="request.gender" ng-checked="true" /> Male
-                </label>
-                <label class="radio-inline">
-                    <input id="female" name="female" type="radio" value="1" 
-                           ng-model="request.gender" /> Female
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="dateOfBirth" class="col-xs-4 control-label">Date of Birth</label>
-            <div class="col-xs-8">
-                <input kendo-date-picker id="dateOfBirth" name="dateOfBirth" 
-                       k-ng-model="request.dateOfBirth" k-options="datePickerOptions" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="email" class="col-xs-4 control-label">Email</label>
-            <div class="col-xs-8">
-                <input id="email" name="email" type="email" class="form-control"
-                       ng-model="request.email" placeholder="johnsmith@example.com" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="contactNumber" class="col-xs-4 control-label">Contact Number</label>
-            <div class="col-xs-8">
-                <input id="contactNumber" name="contactNumber" type="tel" class="form-control"
-                       ng-model="request.contactNumber" placeholder="+27726164485" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="federation" class="col-xs-4 control-label">Federation</label>
-            <div class="col-xs-8">
-                <input id="federation" name="federation" type="text" class="form-control"
-                       ng-model="request.federation" placeholder="South Africa"
-                       typeahead="fed as fed.name for fed in findFederation($viewValue)"
-                       typeahead-wait-ms="500" typeahead-min-length="3"
-                       typeahead-editable="false" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="union" class="col-xs-4 control-label">Union</label>
-            <div class="col-xs-8">
-                <input id="union" name="union" type="text" class="form-control"
-                       ng-model="request.union" placeholder="Gauteng Chess Union" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="fideRating" class="col-xs-4 control-label">FIDE Rating</label>
-            <div class="col-xs-8">
-                <input id="fideRating" name="fideRating" type="number" class="form-control"
-                       ng-model="request.fideRating" placeholder="1800" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="fideTitle" class="col-xs-4 control-label">FIDE Title</label>
-            <div class="col-xs-8">
-                <select id="fideTitle" name="fideTitle" class="form-control"
-                        ng-model="request.fideTitle"
-                        ng-options="item for item in titles">
-                    <option value="">-- Select title --</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="fedRating" class="col-xs-4 control-label">Fed. Rating</label>
-            <div class="col-xs-8">
-                <input id="fedRating" name="fedRating" type="number" class="form-control"
-                       ng-model="request.federationRating" placeholder="2000" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="fedTitle" class="col-xs-4 control-label">Fed. Title</label>
-            <div class="col-xs-8">
-                <input id="fedTitle" name="fedTitle" type="text" class="form-control"
-                       ng-model="request.fedTitle" placeholder="Provincial Master" />
-            </div>
-        </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary"
-            ng-click="submit(request)"
-            ng-disabled="signupForm.$invalid">
-        Create Account
-    </button>
-    <button class="btn btn-primary"
-            ng-click="cancel()">
-        Cancel
-    </button>
-</div>
+    </div>
+    <div class="modal-footer">
+        <submit-button label="Create Account"></submit-button>
+        <button class="btn btn-primary"
+                ng-click="cancel()">
+            Cancel
+        </button>
+    </div>
+</form>

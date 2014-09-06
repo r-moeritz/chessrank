@@ -1,0 +1,15 @@
+﻿<div class="form-group field"
+     ng-class="{disabled: disable || model.disabled, 'has-error': model.error}">
+    <field-label ng-if="label"
+                 label="{{ label }}"
+                 help="{{ help }}"
+                 required="{{ model.required }}">
+    </field-label>
+
+    <field-error error="model.error"></field-error>
+
+    <input kendo-date-picker
+           k-ng-model="model.bindable"
+           k-options="options"
+           ng-disabled="disable || model.disabled" />
+</div>

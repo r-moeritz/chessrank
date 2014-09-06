@@ -8,4 +8,9 @@
         return $resource('api/players/:playerId',
             { tournamentId: '@id' },
             { update: { method: 'PUT' } });
+    })
+    .factory('userService', function ($resource) {
+        return $resource('api/users/:userId',
+            { userId: '@id' },
+            { update: { method: 'PUT' } });
     });

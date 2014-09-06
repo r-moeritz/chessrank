@@ -68,7 +68,7 @@ class UserHandler(ApiHandler):
                 continue
             p = next((p for p in players if p['_id'] == u['playerId']), {})
             results.append({ '_id': u['_id'],
-                           'email': u['email'],
+                          'gender': u['gender'],
                             'name': p['name'],
                          'surname': p['surname'] })
 
@@ -80,3 +80,13 @@ class UserHandler(ApiHandler):
             self.write(bson.json_util.dumps(results))
 
         self.set_header('Content-Type', 'application/json')
+
+    @gen.coroutine
+    def post(self, _):
+        # TODO:
+        # 1. Verify signup details
+        # 2. Generate email link
+        # 3. Store signup details (async)
+        # 4. Send confirmation email (async)
+        # 5. Write response
+        pass

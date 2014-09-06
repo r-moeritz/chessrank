@@ -1,10 +1,11 @@
 ﻿'use strict'
 
-var Const = require('./constants.js');
-var Util = require('./util.js');
-var Gen = require('./generate.js');
-var Mongo = require('mongodb');
-var Q = require('q');
+var Const   = require('./constants.js');
+var Util    = require('./util.js');
+var Data    = require('./data.js');
+var Gen     = require('./generate.js');
+var Mongo   = require('mongodb');
+var Q       = require('q');
 var sprintf = require('sprintfjs');
 
 Q.longStackSupport = true;
@@ -60,7 +61,7 @@ function populateSettings(db) {
 
 function populateLookups(db) {
     var lookups = {
-        fideFederations: Const.fideFederations
+        fideFederations: Data.fideFederations
     };
     var col = db.collection('lookups');
     return Q.ninvoke(col, 'insert', lookups)
