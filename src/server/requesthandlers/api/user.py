@@ -1,3 +1,4 @@
+import json
 from tornado import gen
 import pymongo
 import bson.json_util
@@ -83,6 +84,7 @@ class UserHandler(ApiHandler):
 
     @gen.coroutine
     def post(self, _):
+        request = json.loads(self.request.body.decode('utf-8'))
         # TODO:
         # 1. Verify signup details
         # 2. Generate email link

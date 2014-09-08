@@ -48,20 +48,4 @@
         }
 
         return this;
-    })
-    .service('signupService', function (userService) {
-        this.validationRules = {
-            email: {
-                required: true,
-                type: 'email'
-            }
-            // TODO: Validate remaining fields
-        };
-
-        this.submit = function (request) {
-            userService.request = request;
-            return userService.$save();
-        }
-
-        return this;
     });

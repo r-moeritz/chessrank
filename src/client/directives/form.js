@@ -1,5 +1,6 @@
-﻿angular.module('chessRank').directive('datepickerField',
-    function () {
+﻿angular.module('chessRank')
+    .directive('datepickerField',
+    function (FieldHelper) {
         return {
             require: '^formFor',
             restrict: 'E',
@@ -8,19 +9,16 @@
                 attribute: '@',
                 disable: '=',
                 help: '@?',
-                options: '=',
-                label: '@'
+                options: '='
             },
-            link: function ($scope, $element, $attributes, formForController, FieldHelper) {
+            link: function ($scope, $element, $attributes, formForController) {
                 if (!$scope.attribute) {
                     $log.error('Missing required field "attribute"');
                     return;
                 }
 
-                //$scope.label = FieldHelper.getLabel($attributes, $scope.attribute);
-                //FieldHelper.manageFieldRegistration($scope, formForController);
-
-                $scope.model = formForController.registerFormField($scope, $scope.attribute);
+                $scope.label = FieldHelper.getLabel($attributes, $scope.attribute);
+                FieldHelper.manageFieldRegistration($scope, formForController);
             }
         }
     });

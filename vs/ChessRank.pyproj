@@ -92,8 +92,10 @@
     <Content Include="client\filters\tournament.js" />
     <Content Include="client\services\auth.js" />
     <Content Include="client\services\lookups.js" />
+    <Content Include="client\services\tournament.js" />
+    <Content Include="client\services\user.js" />
     <Content Include="client\style\custom.css" />
-    <Content Include="client\services\resource.js" />
+    <Content Include="client\services\player.js" />
     <Content Include="client\style\kendo-bootstrap.css" />
     <Content Include="client\views\auth\navbar.html" />
     <Content Include="client\views\auth\signup.html" />
