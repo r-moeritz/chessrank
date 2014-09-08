@@ -1,6 +1,6 @@
 ﻿angular.module('chessRank')
     .controller('signupCtrl', function ($scope, $modalInstance, lookupsService) {
-        $scope.request = {};
+        $scope.request = { gender: '0' };
 
         $scope.titles = [
             { label: 'WCM', value: 0 },

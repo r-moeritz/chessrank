@@ -21,12 +21,12 @@
                 type: 'email'
             },
             contactNumber: {
-                required: true,
-                pattern: /\+\d{11}/
+                pattern: /^\+\d{11}$/
             }
         };
 
         this.submit = function (request) {
+            // TODO: Ensure promise with correct signature is returned
             return userService.save(request);
         }
 
