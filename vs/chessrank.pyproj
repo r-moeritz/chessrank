@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>af233115-c371-495a-90fc-0897f6530a37</ProjectGuid>
+    <ProjectHome>..\chessrank\</ProjectHome>
+    <StartupFile>server\main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>chessrank</Name>
+    <RootNamespace>ChessRank</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="server\main.py" />
+    <Compile Include="server\requesthandlers\api\lookups.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\session.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\user.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\player.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\tournament.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\util\enums.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\util\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="client\controllers\" />
+    <Folder Include="client\controllers\auth\" />
+    <Folder Include="client\controllers\tournament\" />
+    <Folder Include="client\images\" />
+    <Folder Include="client\filters\" />
+    <Folder Include="client\directives\" />
+    <Folder Include="client\services\" />
+    <Folder Include="client\rmUtils\" />
+    <Folder Include="client\util\" />
+    <Folder Include="client\style\" />
+    <Folder Include="client\views\" />
+    <Folder Include="client\views\auth\" />
+    <Folder Include="client\views\form\" />
+    <Folder Include="client\views\tournament\" />
+    <Folder Include="client\" />
+    <Folder Include="server\" />
+    <Folder Include="server\util\" />
+    <Folder Include="server\requesthandlers\" />
+    <Folder Include="server\requesthandlers\api\" />
+    <Folder Include="server\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="client\controllers\auth\navbar.js" />
+    <Content Include="client\controllers\auth\signup.js" />
+    <Content Include="client\controllers\home.js" />
+    <Content Include="client\controllers\auth\login.js" />
+    <Content Include="client\controllers\tournament\details.js" />
+    <Content Include="client\controllers\tournament\list.js" />
+    <Content Include="client\directives\auth.js" />
+    <Content Include="client\directives\form.js" />
+    <Content Include="client\directives\tournament.js" />
+    <Content Include="client\rmUtils\filters.js" />
+    <Content Include="client\filters\section.js" />
+    <Content Include="client\filters\tournament.js" />
+    <Content Include="client\services\auth.js" />
+    <Content Include="client\services\lookups.js" />
+    <Content Include="client\services\tournament.js" />
+    <Content Include="client\services\user.js" />
+    <Content Include="client\style\custom.css" />
+    <Content Include="client\services\player.js" />
+    <Content Include="client\style\kendo-bootstrap.css" />
+    <Content Include="client\views\auth\navbar.html" />
+    <Content Include="client\views\auth\signup.html" />
+    <Content Include="client\views\breadcrumb.html" />
+    <Content Include="client\views\form\datepicker.html" />
+    <Content Include="client\views\home.html" />
+    <Content Include="client\views\auth\login.html" />
+    <Content Include="client\views\tournament\details.html" />
+    <Content Include="client\views\tournament\list.html" />
+    <Content Include="client\util\constants.js" />
+    <Content Include="client\app.js" />
+    <Content Include="client\bower.json" />
+    <Content Include="server\templates\index.html" />
+  </ItemGroup>
+  <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
+  <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "chessrank", "chessrank.pyproj", "{AF233115-C371-495A-90FC-0897F6530A37}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "setup", "setup.pyproj", "{572BE985-398F-4FA6-B0BD-E9DD1FD0DE38}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF233115-C371-495A-90FC-0897F6530A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF233115-C371-495A-90FC-0897F6530A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{572BE985-398F-4FA6-B0BD-E9DD1FD0DE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572BE985-398F-4FA6-B0BD-E9DD1FD0DE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
