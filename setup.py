@@ -18,6 +18,13 @@ setup(
     license          = 'MIT',
     keywords         = ['swiss', 'pairing', 'dutch', 'chess', 'tournament', 'organizer'],
     packages         = ['chessrank'],
+    install_requires = [
+        'tornado == 4.0',
+        'motor == 0.3.2',
+        'py-bcrypt == 0.4',
+        'elo == 0.1',
+        'python-dateutil == 2.2'
+    ],
     classifiers      = [
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
