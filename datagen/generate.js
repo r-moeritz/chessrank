@@ -115,7 +115,7 @@ module.exports = {
         var durations = [1, 2, 3, 5, 7];
         
         var city = cities[Util.randomInt(0, cities.length)];
-        var startDate = Util.randomDate(new Date(2013, 0, 1), new Date(2015, 0, 1));
+        var startDate = Util.randomDate(new Date(2014, 0, 1), new Date(2015, 0, 1));
         var endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + durations[Util.randomInt(0, durations.length)]);
         

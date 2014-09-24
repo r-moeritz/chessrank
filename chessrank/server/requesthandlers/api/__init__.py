@@ -1,6 +1,7 @@
 import http.client
-from datetime import datetime
 import tornado.web
+
+from datetime import datetime
 from tornado import gen
 from bson.objectid import ObjectId
 
@@ -28,3 +29,7 @@ class ApiHandler(tornado.web.RequestHandler):
                                            'expires': { '$gt': datetime.utcnow() } })
 
         return session['userId'] if session else None
+
+    @property
+    def mail_connection(self):
+        return self.application.mail_connection

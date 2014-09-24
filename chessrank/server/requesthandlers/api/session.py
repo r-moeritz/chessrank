@@ -1,12 +1,14 @@
 import tornado.web
-from tornado import gen
 import json
 import bcrypt
-from datetime import datetime, timedelta
-from requesthandlers.api import ApiHandler
+import requesthandlers.api
 import util
 
-class SessionHandler(ApiHandler):
+from tornado import gen
+from datetime import datetime, timedelta
+from util.enums import UserStatus
+
+class SessionHandler(requesthandlers.api.ApiHandler):
     @util.authenticated_async
     @gen.coroutine
     def get(self):
@@ -15,9 +17,11 @@ class SessionHandler(ApiHandler):
         user = yield db.users.find_one({ '_id': self.current_user })
         if user is None:
             raise tornado.web.HTTPError(403)
+
+        player = yield db.players.find_one({ '_id': user['playerId'] })
         self.write({ 'email': user['email'],
-                      'name': user['name'],
-                   'surname': user['surname'] })
+                      'name': player['name'],
+                   'surname': player['surname'] })
         self.finish()     
 
     @gen.coroutine
@@ -35,7 +39,7 @@ class SessionHandler(ApiHandler):
             raise tornado.web.HTTPError(400)
 
         # 2. Authenticate user
-        user = yield db.users.find_one({ 'email': email })
+        user = yield db.users.find_one({ 'email': email, 'status': UserStatus.active })
         if user is None:
             raise tornado.web.HTTPError(401)
 
@@ -56,8 +60,7 @@ class SessionHandler(ApiHandler):
                 raise tornado.web.HTTPError(403)
 
         # 5. Determine lifespan of new session
-        settings = yield db.settings.find_one()
-        lifespan = settings['sessionLifeSpanInDays']
+        lifespan = self.settings['session_lifespan']
 
         # 6. Insert new session
         now = datetime.utcnow()
@@ -72,9 +75,11 @@ class SessionHandler(ApiHandler):
                                httponly     = True) # TODO: secure=True
 
         # 8. Return details of logged in user
+        player = yield db.players.find_one({ '_id': user['playerId'] })
+
         self.write({ 'email': user['email'],
-                      'name': user['name'],
-                   'surname': user['surname'] })
+                      'name': player['name'],
+                   'surname': player['surname'] })
 
     @util.authenticated_async
     @gen.coroutine

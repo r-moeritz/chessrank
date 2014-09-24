@@ -1,8 +1,8 @@
-from tornado import gen
 import bson.json_util
-from requesthandlers.api import ApiHandler
+import requesthandlers.api
+from tornado import gen
 
-class LookupsHandler(ApiHandler):
+class LookupsHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
     def get(self):
         db = self.settings['db']

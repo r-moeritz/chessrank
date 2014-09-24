@@ -1,6 +1,7 @@
 import functools
-from urllib.parse import urlencode
 import tornado.web
+
+from urllib.parse import urlencode
 from tornado import gen
 
 def authenticated_async(func):

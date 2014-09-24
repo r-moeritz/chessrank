@@ -38,4 +38,9 @@
         WGM: 5,
         IM: 6,
         GM: 7
+    })
+    .constant('userStatus', {
+        unconfirmed: 0,
+        active: 1,
+        disabled: 2
     });

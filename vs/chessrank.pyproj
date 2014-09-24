@@ -26,6 +26,9 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="server\app.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="server\main.py" />
     <Compile Include="server\requesthandlers\api\lookups.py">
       <SubType>Code</SubType>
@@ -34,6 +37,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\requesthandlers\api\user.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\requesthandlers\api\verify.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\requesthandlers\api\__init__.py">
@@ -105,6 +111,7 @@
     <Content Include="client\services\player.js" />
     <Content Include="client\style\kendo-bootstrap.css" />
     <Content Include="client\views\auth\navbar.html" />
+    <Content Include="client\views\auth\signup-confirm.html" />
     <Content Include="client\views\auth\signup.html" />
     <Content Include="client\views\breadcrumb.html" />
     <Content Include="client\views\form\datepicker.html" />
@@ -115,6 +122,7 @@
     <Content Include="client\util\constants.js" />
     <Content Include="client\app.js" />
     <Content Include="client\bower.json" />
+    <Content Include="server\templates\verify.html" />
     <Content Include="server\templates\index.html" />
   </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />

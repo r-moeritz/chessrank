@@ -40,5 +40,14 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
                 data: {
                     ncyBreadcrumbLabel: '{{ tournament.name }}'
                 }
+            })
+            .state('signup', {
+                url: '/signup',
+                templateUrl: 'static/views/auth/signup.html',
+                controller: 'signupCtrl',
+                data: {
+                    ncyBreadcrumbLabel: 'Sign up',
+                    ncyBreadcrumbParent: 'home',
+                }
             });
     });

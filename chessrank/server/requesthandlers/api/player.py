@@ -2,9 +2,9 @@ from tornado import gen
 import pymongo
 import bson.json_util
 from bson.objectid import ObjectId
-from requesthandlers.api import ApiHandler
+import requesthandlers.api
 
-class PlayerHandler(ApiHandler):
+class PlayerHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
     def get(self, uid):
         # Get optional query args

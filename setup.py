@@ -19,11 +19,14 @@ setup(
     keywords         = ['swiss', 'pairing', 'dutch', 'chess', 'tournament', 'organizer'],
     packages         = ['chessrank'],
     install_requires = [
-        'tornado == 4.0',
+        'tornado == 4.0.2',
         'motor == 0.3.2',
         'py-bcrypt == 0.4',
         'elo == 0.1',
-        'python-dateutil == 2.2'
+        'python-dateutil == 2.2',
+        'itsdangerous == 0.24',
+        'swissdutch == 0.1.0',
+        'tornado-smtp == 0.1.0'
     ],
     classifiers      = [
         'Development Status :: 3 - Alpha',

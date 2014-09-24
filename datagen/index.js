@@ -41,7 +41,8 @@ function populateUsers(db) {
             var u1 = {
                 email:        'johnsmith@gmail.com',
                 passwordHash: '$2a$12$645qA8AOc2N4ac7XIhwOlunepzSa.4kKzZjTYm8VJL2hSdyUDhto6', // password1234$
-                playerId:     players[0]._id
+                playerId:     players[0]._id,
+                status:       Const.userStatus.active
             };
         
             var colUsers = db.collection('users');
@@ -52,7 +53,14 @@ function populateUsers(db) {
 
 function populateSettings(db) {
     var settings = {
-        sessionLifeSpanInDays: 7
+        session_lifespan: 7, // in days
+        cookie_secret: '2Sht+AfTRESND20cSXB4XxXdBsYkOkxUoWCWnoXzVok=',
+        smtp_config: {
+            host: 'smtp-mail.outlook.com', 
+            user: 'chessrank@outlook.com', 
+            password: '3Dcff$25631%4dA6',
+            from: 'chessrank@outlook.com'
+        }
     };
     var col = db.collection('settings');
     return Q.ninvoke(col, 'insert', settings)

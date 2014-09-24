@@ -25,11 +25,16 @@
     fideTitle: {
         WCM: 0,
         WFM: 1,
-        CM:  2,
+        CM: 2,
         WIM: 3,
-        FM:  4,
+        FM: 4,
         WGM: 5,
-        IM:  6,
-        GM:  7
+        IM: 6,
+        GM: 7
+    },
+    userStatus: {
+        unconfirmed: 0,
+        active: 1,
+        disabled: 2
     }
 };

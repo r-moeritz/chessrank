@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('signupCtrl', function ($scope, $modalInstance, lookupsService) {
+    .controller('signupCtrl', function ($scope, $modal, lookupsService, signupService) {
         $scope.request = { gender: '0' };
 
         $scope.titles = [
@@ -16,8 +16,8 @@
         $scope.datePickerOptions = {
             start: 'year',
             format: 'dd MMM yyyy',
-            min: moment().subtract(120, 'years').toDate(),
-            max: moment().subtract(4, 'years').toDate()
+            min: moment().utc().subtract(120, 'years').toDate(),
+            max: moment().utc().subtract(4, 'years').toDate()
         };
 
         $scope.$watch('filterFederations', function (filterText) {
@@ -35,7 +35,12 @@
         });
 
         $scope.signupComplete = function () {
-            $modalInstance.close();
+            signupService.confirmationEmail = $scope.request.email;
+
+            $modal.open({
+                templateUrl: 'static/views/auth/signup-confirm.html',
+                controller: 'signupConfirmCtrl'
+            });
         }
 
         $scope.signupFailed = function (error) {
@@ -45,8 +50,12 @@
         $scope.clearErrors = function () {
             $scope.signupError = null
         }
+    })
+    .controller('signupConfirmCtrl', function ($scope, $modalInstance, $location, signupService) {
+        $scope.email = signupService.confirmationEmail;
 
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+        $scope.ok = function() {
+            $modalInstance.close();
+            $location.path('#/')
         }
     });

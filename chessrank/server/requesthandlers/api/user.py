@@ -1,13 +1,20 @@
 import json
-from tornado import gen
 import tornado.web
+import tornado.template
 import pymongo
 import bson.json_util
-from bson.objectid import ObjectId
-from requesthandlers.api import ApiHandler
-from validation.signup import SignupValidator
+import itsdangerous
+import bcrypt
+import requesthandlers.api
 
-class UserHandler(ApiHandler):
+from tornado import gen
+from email.message import EmailMessage
+from bson.objectid import ObjectId
+from urllib.parse import urlunsplit
+from validation.signup import SignupValidator
+from util.enums import UserStatus
+
+class UserHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
     def get(self, uid):
         # Get optional query args
@@ -85,17 +92,88 @@ class UserHandler(ApiHandler):
 
     @gen.coroutine
     def post(self, _):
-        request = json.loads(self.request.body.decode('utf-8'))
+        details = json.loads(self.request.body.decode('utf-8'))
         
-        # 1. Verify signup details
-        validator = SignupValidator(request)
+        # 1. Validate signup details
+        validator = SignupValidator(details)
         result    = validator.validate()
         if not result[0]:
             raise tornado.web.HTTPError(400, result[1])
 
-        # TODO
-        # 2. Generate email link
-        # 3. Store signup details (async)
-        # 4. Send confirmation email (async)
-        # 5. Write response
-        pass
+        # 2. Ensure user with same email does not already exist
+        db = self.settings['db']
+        exists = yield db.users.find({ 'email': details.get('email') }).count()
+        if exists:
+            raise tornado.web.HTTPError(409)
+
+        # 3. Create user account
+        uid = yield self._create_user(details)
+
+        # 4. Generate verification URL
+        payload = self._serialize_for_url(str(uid))
+        url     = urlunsplit((self.request.protocol,
+                             self.request.host,
+                             'api/verify/{0}'.format(payload), '', ''))
+
+        # 5. Send confirmation email
+        smtp = yield self.application.get_smtp_client()
+        msg  = self._create_confirmation_message(details, url)
+        smtp.send_message(msg)
+
+        # 6. TODO: Write response
+
+    @gen.coroutine
+    def _create_user(self, details):
+        db  = self.settings['db']
+        
+        # Insert player
+        player = {
+            # Mandatory details
+            'name': details['name'],
+            'surname': details['surname'],
+            'gender': details['gender'],
+            'emailAddress': ['email'],
+
+            # Optional details
+            'fideRating': details.get('fideRating'),
+            'fideTitle': details.get('fideTitle'),
+            'federationRating': details.get('fedRating'),
+            'federationTitle': details.get('fedTitle'),
+            'dateOfBirth': details.get('dateOfBirth'),
+            'federation': details.get('federation'),
+            'union': details.get('union'),
+            'contactNumber': details.get('contactNumber')
+        }
+
+        pid          = yield db.players.insert(player)
+        password     = details['password']
+        passwordHash = bcrypt.hashpw(password, bcrypt.gensalt())
+
+        user = {
+            'email': details['email'],
+            'playerId': pid,
+            'passwordHash': passwordHash,
+            'status': UserStatus.unconfirmed
+        }
+
+        uid = yield db.users.insert(user)
+        return uid
+
+    def _serialize_for_url(self, value):
+        key = self.settings['cookie_secret']
+        s = itsdangerous.URLSafeSerializer(key)
+        return s.dumps(value)
+
+    def _create_confirmation_message(self, details, url):
+        config = self.settings['smtp_config']
+        
+        msg            = EmailMessage()
+        msg['Subject'] = 'ChessRank: Please confirm your email address'
+        msg['To']      = details['email']
+        msg['From']    = config['from']
+
+        loader = tornado.template.Loader(self.settings['template_path'])
+        body   = loader.load('verify.html').generate(name=details['name'], url=url).decode('utf-8')
+        msg.set_content(body, subtype='html')
+
+        return msg

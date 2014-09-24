@@ -1,11 +1,13 @@
 import re
+import validation
 import dateutil.parser
-from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
-from validation import Validator
+from dateutil.tz import tzutc
+from datetime import datetime
 from util.enums import FideTitle
 
-class SignupValidator(Validator):
+class SignupValidator(validation.Validator):
     def __init__(self, data):
         super().__init__(data)
 
@@ -13,7 +15,8 @@ class SignupValidator(Validator):
             'name': self._verify_name, 
          'surname': self._verify_name, 
           'gender': self._verify_gender, 
-           'email': self._verify_email 
+           'email': self._verify_email,
+        'password': self._verify_password
         }
         self._optional = {
             'dateOfBirth': self._verify_date_of_birth, 
@@ -56,6 +59,47 @@ class SignupValidator(Validator):
         return (True, None)
 
     @staticmethod
+    def _verify_password(field, value):
+        minDigits  = 1
+        minUpper   = 1
+        minLower   = 1
+        minSymbols = 1
+
+        digits  = 0
+        upper   = 0
+        lower   = 0
+        symbols = 0
+
+        for c in value:
+            if c.isdigit():
+                digits += 1
+            elif c.isupper():
+                upper += 1
+            elif c.islower():
+                lower += 1
+            else:
+                if re.fullmatch(r'[~`\!@#\$%\^&*\(\)_\-\+=<,>\.\?\/\:;"\'\|\\\{\[\}\]]', c):
+                    symbols += 1
+
+        def pluralize(word, qty):
+            return word + s if qty > 1 else word
+
+        if digits < minDigits:
+            return (False, "Field '{0}' must contain at least {1} {2}"
+                    .format(field, minDigits, pluralize('digit')))
+        elif upper < minUpper:
+            return (False, "Field '{0}' must contain at least {1} uppercase {2}"
+                    .format(field, minUpper, pluralize('letter')))
+        elif lower < minLower:
+            return (False, "Field '{0}' must contain at least {1} lowercase {2}"
+                    .format(field, minLower, pluralize('letter')))
+        elif symbols < minSymbols:
+            return (False, "Field '{0}' must contain at least {1} {2}"
+                    .format(field, minSymbols, pluralize('symbol')))
+
+        return (True, None)
+
+    @staticmethod
     def _verify_name(field, value):
         return ((True, None) if type(value) == str
                 and len(value) > 1 and len(value) < 51
@@ -81,7 +125,7 @@ class SignupValidator(Validator):
     @staticmethod
     def _verify_date_of_birth(field, value):
         dob = dateutil.parser.parse(value)
-        now = datetime.now()
+        now = datetime.now(tzutc())
         min = now - relativedelta(years=120)
         max = now - relativedelta(years=4)
         return ((True, None) if dob > min and dob < max
