@@ -29,6 +29,12 @@
     <Compile Include="server\app.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="server\engines\verify.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\engines\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="server\main.py" />
     <Compile Include="server\requesthandlers\api\lookups.py">
       <SubType>Code</SubType>
@@ -84,6 +90,7 @@
     <Folder Include="client\views\tournament\" />
     <Folder Include="client\" />
     <Folder Include="server\" />
+    <Folder Include="server\engines\" />
     <Folder Include="server\validation\" />
     <Folder Include="server\util\" />
     <Folder Include="server\requesthandlers\" />

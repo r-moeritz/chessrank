@@ -6,7 +6,6 @@ import motor
 from os import path
 from tornado.ioloop import IOLoop
 from tornado.options import options
-from requesthandlers import IndexHandler
 from requesthandlers.api import ApiHandler
 from requesthandlers.api.player import PlayerHandler
 from requesthandlers.api.user import UserHandler
@@ -14,6 +13,7 @@ from requesthandlers.api.tournament import TournamentHandler
 from requesthandlers.api.session import SessionHandler
 from requesthandlers.api.lookups import LookupsHandler
 from requesthandlers.api.verify import VerifyHandler
+from requesthandlers import IndexPageHandler, VerifyPageHandler
 from app import CustomApp
 
 options.define('port', default=8888, help='run on the given port', type=int)
@@ -46,7 +46,8 @@ def main():
                 (r'/api/session', SessionHandler),
                 (r'/api/lookups', LookupsHandler),
                 (r'/api.*', ApiHandler),
-                (r'/', IndexHandler)
+                (r'/verify/(.+)', VerifyPageHandler),
+                (r'/', IndexPageHandler)
                 ]
 
     options.parse_command_line()

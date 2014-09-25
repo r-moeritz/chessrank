@@ -1,31 +1,24 @@
-import tornado.web
 import requesthandlers.api
 
 from tornado import gen
-from itsdangerous import URLSafeSerializer, BadSignature
-from bson.objectid import ObjectId
-from util.enums import UserStatus
+from engines.verify import EmailVerificationEngine
 
 class VerifyHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
     def get(self, payload):
-        key = self.settings['cookie_secret']
-        s   = URLSafeSerializer(key)
-        uid = None
+        # 1. Activate user account and create new session (login)
+        engine = EmailVerificationEngine(self.settings)
+        result = yield engine.verify(payload)
 
-        try:
-            uid = ObjectId(s.loads(payload))
-        except BadSignature:
-            raise tornado.web.HTTPError(400)
+        # 2. Store session details in cookie
+        self.set_secure_cookie('sessionId', str(result.sessionId), 
+                               expires_days = result.lifespan,
+                               httponly     = True) # TODO: secure=True
 
-        db = self.settings['db']
+        # 2. Return details of logged in user
+        db     = self.settings['db']
+        player = yield db.players.find_one({ '_id': result.user['playerId'] })
 
-        # 1. Determine if user exists and is in unconfirmed state
-        user = yield db.users.find_one({ '_id': uid, 'status': UserStatus.unconfirmed })
-        if not user:
-            raise tornado.web.HTTPError(410)
-
-        # 2. Set user status to active
-        yield db.users.update({ '_id': uid}, { '$set': { 'status': UserStatus.active } })
-
-        # 3. TODO: Write response
+        self.write({ 'email': result.user['email'],
+                      'name': player['name'],
+                   'surname': player['surname'] })

@@ -113,7 +113,7 @@ class UserHandler(requesthandlers.api.ApiHandler):
         payload = self._serialize_for_url(str(uid))
         url     = urlunsplit((self.request.protocol,
                              self.request.host,
-                             'api/verify/{0}'.format(payload), '', ''))
+                             'verify/{0}'.format(payload), '', ''))
 
         # 5. Send confirmation email
         smtp = yield self.application.get_smtp_client()

@@ -24,12 +24,8 @@ class ApiHandler(tornado.web.RequestHandler):
             return None
 
         sessionId = ObjectId(sessionIdBytes.decode('utf-8'))
-        db = self.settings['db']
-        session = yield db.sessions.find_one({ '_id': sessionId,
-                                           'expires': { '$gt': datetime.utcnow() } })
+        db        = self.settings['db']
+        session   = yield db.sessions.find_one({ '_id': sessionId,
+                                                 'expires': { '$gt': datetime.utcnow() } })
 
         return session['userId'] if session else None
-
-    @property
-    def mail_connection(self):
-        return self.application.mail_connection
