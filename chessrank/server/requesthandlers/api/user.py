@@ -16,11 +16,10 @@ from util.enums import UserStatus
 
 class UserHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
-    def get(self, uid):
+    def get(self, id):
         # Get optional query args
-        id     = self.get_argument('id',     uid)
-        q      = self.get_argument('q',      None)
-        sort   = self.get_argument('sort',   'priority')
+        query  = self.get_argument('query',  None)
+        sort   = self.get_argument('sort',   'email')
         desc   = self.get_argument('desc',   False)
         offset = self.get_argument('offset', 0)
         limit  = self.get_argument('limit',  None)
@@ -39,24 +38,23 @@ class UserHandler(requesthandlers.api.ApiHandler):
         spec = {}
         if id:
             spec = { '_id': { '$in': [ObjectId(id)] } }
-        elif q:
-            spec = { 'email': { '$regex': q, '$options': 'i' } }
+        elif query:
+            spec = { 'email': { '$regex': query, '$options': 'i' } }
 
-        db    = self.settings['db']
-        if spec:
-            users = yield db.users.find(spec).sort(sort, sortdir).to_list(None)
+        db = self.settings['db']
+        users = yield db.users.find(spec).sort(sort, sortdir).to_list(None)
 
         # Query players by user id
         if users:
             extra_players = yield (db.players.find({ '_id': { '$in': [u['playerId'] for u in users] } })
                                    .sort(sort, sortdir).to_list(None))
 
-        if not uid:
+        if not id:
             # Query players by name and surname
             spec = {}
-            if q:
-                spec = { '$or': [{ 'name': { '$regex': q, '$options': 'i' } },
-                                 { 'surname': { '$regex': q, '$options': 'i' } }] }
+            if query:
+                spec = { '$or': [{ 'name': { '$regex': query, '$options': 'i' } },
+                                 { 'surname': { '$regex': query, '$options': 'i' } }] }
 
             if spec:
                 players = yield db.players.find(spec).sort(sort, sortdir).to_list(None)
@@ -76,13 +74,14 @@ class UserHandler(requesthandlers.api.ApiHandler):
             if any(r['_id'] == u['_id'] for r in results):
                 continue
             p = next((p for p in players if p['_id'] == u['playerId']), {})
-            results.append({ '_id': u['_id'],
-                          'gender': u['gender'],
-                            'name': p['name'],
-                         'surname': p['surname'] })
+            results.append({ '_id':      u['_id'],
+                             'gender':   p['gender'],
+                             'name':     p['name'],
+                             'surname':  p['surname'],
+                             'playerId': p['_id'] })
 
         # Write response
-        if uid and results:
+        if id and results:
             self.write(bson.json_util.dumps(results[0]))
         else:
             # TODO: Restrict results by offset and limit
@@ -104,7 +103,8 @@ class UserHandler(requesthandlers.api.ApiHandler):
         db = self.settings['db']
         exists = yield db.users.find({ 'email': details.get('email') }).count()
         if exists:
-            raise tornado.web.HTTPError(409)
+            raise tornado.web.HTTPError(409, "A user with email address '{0}' already exists"
+                                        .format(details.get('email')))
 
         # 3. Create user account
         uid = yield self._create_user(details)
@@ -119,8 +119,6 @@ class UserHandler(requesthandlers.api.ApiHandler):
         smtp = yield self.application.get_smtp_client()
         msg  = self._create_confirmation_message(details, url)
         smtp.send_message(msg)
-
-        # 6. TODO: Write response
 
     @gen.coroutine
     def _create_user(self, details):

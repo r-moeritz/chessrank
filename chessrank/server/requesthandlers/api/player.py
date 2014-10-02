@@ -1,16 +1,17 @@
-from tornado import gen
 import pymongo
 import bson.json_util
-from bson.objectid import ObjectId
 import requesthandlers.api
+import tornado.web
+
+from bson.objectid import ObjectId
+from tornado import gen
 
 class PlayerHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
-    def get(self, uid):
+    def get(self, id):
         # Get optional query args
-        id     = self.get_argument('id',     uid)
-        q      = self.get_argument('q',      None)
-        sort   = self.get_argument('sort',   'priority')
+        query  = self.get_argument('query',  None)
+        sort   = self.get_argument('sort',   'surname')
         desc   = self.get_argument('desc',   False)
         offset = self.get_argument('offset', 0)
         limit  = self.get_argument('limit',  None)
@@ -23,16 +24,16 @@ class PlayerHandler(requesthandlers.api.ApiHandler):
         # Build query spec
         spec = {}
         if id:
-            spec = {'_id': ObjectId(id)}
-        elif q:
-            spec = {'name' : { '$regex': q, '$options': 'i' }}
+            spec = { '_id': { '$in': [ObjectId(id)] } }
+        elif query:
+            spec = {'name' : { '$regex': query, '$options': 'i' }}
 
         # Execute query
-        db    = self.settings['db']
-        players = yield (db.players.find_one(spec)
-                         if uid 
-                         else db.players.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
+        db      = self.settings['db']
+        players = yield db.players.find(spec).sort(sort, sortdir).skip(offset).to_list(limit)
+        if not players:
+            raise  tornado.web.HTTPError(404)
         
         # Write response
-        self.write(bson.json_util.dumps(players))
+        self.write(bson.json_util.dumps(players[0] if id else players))
         self.set_header('Content-Type', 'application/json')

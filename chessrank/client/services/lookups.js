@@ -3,16 +3,15 @@
         var _this = this;
 
         this.getLookups = function () {
-            if (_this.lookups) {
-                return $q.when(_this.lookups);
+            if (!_this.promise) {
+                _this.promise = $http
+                    .get('api/lookups')
+                    .then(function (response) {
+                        return response.data;
+                    });
             }
 
-            return $http
-                .get('api/lookups')
-                .then(function (response) {
-                    _this.lookups = response.data;
-                    return _this.lookups;
-                });
+            return _this.promise;
         }
 
         return this;

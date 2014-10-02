@@ -22,7 +22,7 @@
 
         $scope.$watch('filterFederations', function (filterText) {
             return lookupsService.getLookups().then(function (lookups) {
-                var federations = lookups['fideFederations'];
+                var federations = lookups.fideFederations;
                 var results = [];
                 var regex = new RegExp(filterText, 'i');
                 angular.forEach(federations, function (item) {

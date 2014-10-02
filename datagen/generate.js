@@ -14,53 +14,6 @@ function getTitle(rating, gender) {
     return Const.fideTitle.GM;
 }
 
-function generateSections(count, tournamentStartDate, tournamentEndDate) {
-    var sections = [];
-    
-    for (var i = 0; i != count; ++i) {
-        var sectionNames = ['A', 'B', 'C', 'D', 'Open', 'Closed', 'Youth', 'Novice', 'Expert'];
-        var fees = [0, 50, 100, 150, 200, 250];
-        
-        // Determine play system based on no. of participants.
-        var maxPlayers = Util.randomInt(6, 201);
-        var playSystem = Util.randomInt(0, 2);
-        var maxRounds = (playSystem + 1) * (maxPlayers - 1);
-        if (maxRounds > 10) {
-            playSystem = Const.playSystem.swiss;
-        }
-        
-        var tieBreaks = (playSystem === Const.playSystem.swiss)
-            ? [Util.randomInt(1, 4)]
-            : [Const.tieBreak.neustadl];
-        var rounds = (playSystem === Const.playSystem.swiss)
-            ? Util.swissRounds(maxPlayers)
-            : 0;
-        
-        var registrationStartDate = new Date(tournamentStartDate);
-        registrationStartDate.setDate(tournamentStartDate.getDate() - 60);
-        
-        sections.push({
-            name: sectionNames[Util.randomInt(0, sectionNames.length)] + ' Section',
-            playSystem: playSystem,
-            tieBreaks: tieBreaks,
-            rounds: rounds,
-            maxPlayers: maxPlayers,
-            startDate: tournamentStartDate,
-            endDate: tournamentEndDate,
-            registrationStartDate: registrationStartDate,
-            registrationEndDate: tournamentStartDate,
-            chiefArbiter: generateFullName(Util.randomInt(0, 2)).join(' '),
-            timeControls: Util.stdTimeControls[Util.randomInt(0, Util.stdTimeControls.length)],
-            entryFee: fees[Util.randomInt(0, fees.length)],
-            invitationOnly: Util.randomBool(),
-            provisionalRating: 1000
-            // TODO: Tournament Director (organizer)
-        });
-    }
-    
-    return sections;
-}
-
 function generateFullName(gender) {
     var maleNames = ['Roosevelt', 'Antone', 'Pasquale', 'Tomas', 'Clifford',
                       'Rocco', 'Thao', 'Saul', 'Brice', 'Pete', 'Osvaldo',
@@ -99,7 +52,7 @@ module.exports = {
             fideTitle: fideTitle,
             federationRating: fedRating,
             federationTitle: null,
-            dateOfBirth: Util.randomDate(new Date(1950, 0, 1), new Date(2000, 0, 1)),
+            dateOfBirth: Util.randomDate(new Date(Date.UTC(1950, 0, 1)), new Date(Date.UTC(2000, 0, 1))),
             federation: Data.fideFederations[Util.randomInt(0, Data.fideFederations.length)].value,
             union: null,
             contactNumber: null,
@@ -107,7 +60,7 @@ module.exports = {
         };
     },
     
-    generateTournament: function () {
+    generateTournament: function (ownerUserId) {
         var cities = ['Durban', 'Johannesburg', 'Cape Town', 'Pretoria', 'Bloemfontein', 'Port Elizabeth', 'Germiston', 'Newcastle',
                   'Klerksdorp', 'Kimberley', 'Secunda', 'Vereeniging', 'Dundee', 'Kuruman', 'Pietermaritzburg', 'Randfontein',
                   'Welkom', 'Pholokwane', 'Wartburg', 'Port Shepstone', 'Richards Bay'];
@@ -115,36 +68,70 @@ module.exports = {
         var durations = [1, 2, 3, 5, 7];
         
         var city = cities[Util.randomInt(0, cities.length)];
-        var startDate = Util.randomDate(new Date(2014, 0, 1), new Date(2015, 0, 1));
+        var startDate = Util.randomDate(new Date(Date.UTC(2014, 0, 1)), new Date(Date.UTC(2015, 0, 1)));
         var endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + durations[Util.randomInt(0, durations.length)]);
-        
-        var sections = generateSections(Util.randomInt(1, 4), startDate, endDate);
         
         return {
             name: city + ' ' + types[Util.randomInt(0, types.length)],
             location: city,
             startDate: startDate,
             endDate: endDate,
-            sections: sections
+            registrationFeeCurrencyId: 154,
+            ownerUserId: ownerUserId
         };
     },
     
-    registerPlayers: function (tournaments, players) {
-        var tourney;
-        var section;
+    generateSection: function(tournament) {
+        var sectionNames = ['A', 'B', 'C', 'D', 'Open', 'Closed', 'Youth', 'Novice', 'Expert'];
+        var fees = [0, 50, 100, 150, 200, 250];
+    
+        // Determine play system based on no. of participants.
+        var maxPlayers = Util.randomInt(6, 201);
+        var playSystem = Util.randomInt(0, 2);
+        var maxRounds = (playSystem + 1) * (maxPlayers - 1);
+        if (maxRounds > 10) {
+            playSystem = Const.playSystem.swiss;
+        }
+    
+        var tieBreaks = (playSystem === Const.playSystem.swiss)
+                ? [Util.randomInt(1, 4)]
+                : [Const.tieBreak.neustadl];
+        var rounds = (playSystem === Const.playSystem.swiss)
+                ? Util.swissRounds(maxPlayers)
+                : 0;
+    
+        var registrationStartDate = new Date(tournament.startDate);
+        registrationStartDate.setDate(tournament.startDate.getDate() - 60);
+    
+        return {
+            tournamentId: tournament._id,
+            name: sectionNames[Util.randomInt(0, sectionNames.length)] + ' Section',
+            playSystem: playSystem,
+            tieBreaks: tieBreaks,
+            rounds: rounds,
+            maxPlayers: maxPlayers,
+            startDate: tournament.startDate,
+            endDate: tournament.endDate,
+            registrationStartDate: registrationStartDate,
+            registrationEndDate: tournament.startDate,
+            chiefArbiter: generateFullName(Util.randomInt(0, 2)).join(' '),
+            timeControls: Util.stdTimeControls[Util.randomInt(0, Util.stdTimeControls.length)],
+            registrationFee: fees[Util.randomInt(0, fees.length)],
+            invitationOnly: Util.randomBool(),
+            provisionalRating: 1000,
+            registeredPlayerIds: []
+        };
+    },
+    
+    registerPlayers: function (sections, players) {
+        var sect;
         var gotSwiss = false;
 
-        for (var i = 0; i != tournaments.length; ++i) {
-            tourney = tournaments[i];
-            for (var k = 0; k != tourney.sections.length; ++k) {
-                section = tourney.sections[k];
-                if (section.playSystem == Const.playSystem.swiss) {
-                    gotSwiss = true;
-                    break;
-                }
-            }
-            if (gotSwiss) {
+        for (var i = 0; i != sections.length; ++i) {
+            sect = sections[i];
+            if (sect.playSystem === Const.playSystem.swiss) {
+                gotSwiss = true;
                 break;
             }
         }
@@ -153,13 +140,10 @@ module.exports = {
             return null;
         }
         
-        section.registeredPlayerIds = players.map(function (p) {
-            return p._id;
+        sect.registeredPlayerIds = players.map(function (p) {
+            return p._id.$oid;
         });
 
-        return {
-            tournament: tourney,
-            section: section
-        };
+        return sect;
     }
 };

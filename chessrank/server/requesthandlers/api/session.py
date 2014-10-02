@@ -15,14 +15,19 @@ class SessionHandler(requesthandlers.api.ApiHandler):
         """Return details of user associated with active session (logged in user)"""
         db   = self.settings['db']
         user = yield db.users.find_one({ '_id': self.current_user })
-        if user is None:
-            raise tornado.web.HTTPError(403)
+        if not user:
+            # TODO: Log error
+            raise tornado.web.HTTPError(500)
 
         player = yield db.players.find_one({ '_id': user['playerId'] })
+        if not player:
+            # TODO: Log error
+            raise tornado.web.HTTPError(500)
+
         self.write({ 'email': user['email'],
                       'name': player['name'],
-                   'surname': player['surname'] })
-        self.finish()     
+                   'surname': player['surname'],
+                  'playerId': str(player['_id']) })
 
     @gen.coroutine
     def post(self):
@@ -36,11 +41,11 @@ class SessionHandler(requesthandlers.api.ApiHandler):
 
         # 1. Verify parameters
         if not email or not password:
-            raise tornado.web.HTTPError(400)
+            raise tornado.web.HTTPError(400, "Fields 'email' and 'password' are required")
 
         # 2. Authenticate user
         user = yield db.users.find_one({ 'email': email, 'status': UserStatus.active })
-        if user is None:
+        if not user:
             raise tornado.web.HTTPError(401)
 
         if not bcrypt.checkpw(request['password'], user['passwordHash']):
@@ -50,14 +55,14 @@ class SessionHandler(requesthandlers.api.ApiHandler):
         session = yield db.sessions.find_one({ 'userId': user['_id'] })
 
         # 4. Delete existing session
-        if session is not None:
+        if session:
             if overwriteExisting or session['expires'] < datetime.utcnow() or not session['persistentCookie']:
-                yield db.sessions.remove(session)
+                db.sessions.remove(session)
             elif overwriteExisting is None:
                 # Let the user decide whether to overwrite the existing session
                 raise tornado.web.HTTPError(300)
             else:
-                raise tornado.web.HTTPError(403)
+                raise tornado.web.HTTPError(403, 'Existing session')
 
         # 5. Determine lifespan of new session
         lifespan = self.settings['session_lifespan']
@@ -68,6 +73,9 @@ class SessionHandler(requesthandlers.api.ApiHandler):
                                               'created': now,
                                      'persistentCookie': persistentCookie,
                                               'expires': now + timedelta(days=lifespan) })
+        if not sessionId:
+            # TODO: Log error
+            raise tornado.web.HTTPError(500)
 
         # 7. Store session id in cookie
         self.set_secure_cookie('sessionId', str(sessionId), 
@@ -76,16 +84,20 @@ class SessionHandler(requesthandlers.api.ApiHandler):
 
         # 8. Return details of logged in user
         player = yield db.players.find_one({ '_id': user['playerId'] })
+        if not player:
+            # TODO: Log error
+            raise tornado.web.HTTPError(500)
 
         self.write({ 'email': user['email'],
                       'name': player['name'],
-                   'surname': player['surname'] })
+                   'surname': player['surname'],
+                  'playerId': str(player['_id']) })
 
     @util.authenticated_async
     @gen.coroutine
     def delete(self):
         """Destroy active user session (logout)"""
         db = self.settings['db']
-        yield db.sessions.remove({ 'userId': self.current_user })
+        db.sessions.remove({ 'userId': self.current_user })
         self.clear_cookie('sessionId')
         self.finish()

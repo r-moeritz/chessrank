@@ -42,10 +42,10 @@
     <Compile Include="server\requesthandlers\api\session.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="server\requesthandlers\api\user.py">
+    <Compile Include="server\requesthandlers\api\section.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="server\requesthandlers\api\verify.py">
+    <Compile Include="server\requesthandlers\api\user.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\requesthandlers\api\__init__.py">
@@ -64,6 +64,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\util\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="server\validation\section.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\validation\signup.py">
@@ -107,11 +110,12 @@
     <Content Include="client\directives\auth.js" />
     <Content Include="client\directives\form.js" />
     <Content Include="client\directives\tournament.js" />
+    <Content Include="client\directives\user.js" />
     <Content Include="client\rmUtils\filters.js" />
     <Content Include="client\filters\section.js" />
-    <Content Include="client\filters\tournament.js" />
     <Content Include="client\services\auth.js" />
     <Content Include="client\services\lookups.js" />
+    <Content Include="client\services\section.js" />
     <Content Include="client\services\tournament.js" />
     <Content Include="client\services\user.js" />
     <Content Include="client\style\custom.css" />

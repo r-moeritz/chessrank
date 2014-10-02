@@ -1,5 +1,6 @@
 import pymongo
 import bson.json_util
+import tornado.web
 import requesthandlers.api
 
 from tornado import gen
@@ -7,11 +8,10 @@ from bson.objectid import ObjectId
 
 class TournamentHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
-    def get(self, uid):
+    def get(self, id):
         # Get optional query args
-        id     = self.get_argument('id',     uid)
-        q      = self.get_argument('q',      None)
-        sort   = self.get_argument('sort',   'priority')
+        query  = self.get_argument('query',  None)
+        sort   = self.get_argument('sort',   'name')
         desc   = self.get_argument('desc',   False)
         offset = self.get_argument('offset', 0)
         limit  = self.get_argument('limit',  None)
@@ -24,16 +24,16 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
         # Build query spec
         spec = {}
         if id:
-            spec = {'_id': ObjectId(id)}
-        elif q:
-            spec = {'name' : { '$regex': q, '$options': 'i' }}
+            spec = { '_id': { '$in': [ObjectId(id)] } }
+        elif query:
+            spec = {'name' : { '$regex': query, '$options': 'i' }}
 
         # Execute query
-        db    = self.settings['db']
-        tournaments = yield (db.tournaments.find_one(spec) 
-                       if uid 
-                       else db.tournaments.find(spec).sort(sort, sortdir).skip(offset).to_list(limit))
-        
+        db          = self.settings['db']
+        tournaments = yield db.tournaments.find(spec).sort(sort, sortdir).skip(offset).to_list(limit)
+        if not tournaments:
+            raise tornado.web.HTTPError(404)
+
         # Write response
-        self.write(bson.json_util.dumps(tournaments))
+        self.write(bson.json_util.dumps(tournaments[0] if id else tournaments))
         self.set_header('Content-Type', 'application/json')

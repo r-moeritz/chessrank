@@ -1,31 +1,23 @@
-﻿<div ng-controller="tournamentListCtrl"
+﻿<div 
      class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>System</th>
-                <th>Rounds</th>
+                <th>Location</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th></th>
+                <th>Tournament Director</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="item in tournaments">
                 <td>{{ item.name }}</td>
-                <td>{{ item | tournamentSystem }}</td>
-                <td>{{ item | tournamentRounds }}</td>
+                <td>{{ item.location }}</td>
                 <td>{{ item.startDate.$date | date }}</td>
                 <td>{{ item.endDate.$date | date }}</td>
-                <td>
-                    <button class="btn btn-xs btn-primary"
-                            ng-hide="tournamentFinished(item)"
-                            ng-disabled="registrationClosed(item)">
-                        Register
-                    </button>
-                </td>
+                <td><user-link user-id="item.ownerUserId" /></td>
                 <td>
                     <a ui-sref="tournaments.details({ tournamentId: item._id.$oid })"
                        class="btn btn-xs btn-primary">Details</a>

@@ -43,4 +43,8 @@
         unconfirmed: 0,
         active: 1,
         disabled: 2
+    })
+    .constant('sectionRegistrationAction', {
+        register: 0,
+        unregister: 1
     });

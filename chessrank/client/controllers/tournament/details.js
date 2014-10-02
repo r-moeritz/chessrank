@@ -1,6 +1,72 @@
 ﻿angular.module('chessRank')
-    .controller('tournamentDetailsCtrl', function ($scope, $state, $stateParams, tournamentService) {
-        if ($stateParams.tournamentId) {
-            $scope.tournament = tournamentService.get({ tournamentId: $stateParams.tournamentId });
+    .controller('tournamentDetailsCtrl', function ($scope, $stateParams, tournament, authService, authEvent,
+                                                   sectionService, sectionRegistrationAction) {
+        $scope.currentUser = authService.currentUser;
+        $scope.tournament = tournament;
+
+        $scope.registerPopover = $scope.currentUser
+            ? null
+            : 'You need to login or sign up before you can register for tournaments';
+
+        $scope.$on(authEvent.loginSuccess, function () {
+            $scope.currentUser = authService.currentUser;
+            $scope.registerPopover = null;
+        });
+        $scope.$on(authEvent.logoutSuccess, function () {
+            $scope.currentUser = null;
+            $scope.registerPopover = 'You need to login or sign up before you can register for tournaments';
+        });
+
+        $scope.sections = sectionService.query({ tournamentId: $stateParams.tournamentId });
+
+        $scope.registered = function (section) {
+            if (!$scope.currentUser) {
+                return false;
+            }
+
+            return section.registeredPlayerIds.indexOf($scope.currentUser.playerId) >= 0;
+        }
+
+        $scope.registrationClosed = function (section) {
+            if (section.invitationOnly) {
+                return true;
+            }
+
+            var now = moment.utc();
+            var regStart = moment.utc(section.registrationStartDate.$date)
+            var regEnd = moment.utc(section.registrationEndDate.$date)
+
+            return regStart.isAfter(now) || regEnd.isBefore(now);
+        }
+
+        $scope.register = function (section) {
+            if (!$scope.currentUser) {
+                return;
+            }
+
+            var request = {
+                action: sectionRegistrationAction.register
+            };
+            sectionService.update({ sectionId: section._id.$oid }, request,
+                function () {
+                    section.registeredPlayerIds.push($scope.currentUser.playerId);
+                });
+        }
+
+        $scope.unregister = function (section) {
+            if (!$scope.currentUser) {
+                return;
+            }
+
+            var request = {
+                action: sectionRegistrationAction.unregister
+            };
+            sectionService.update({ sectionId: section._id.$oid }, request,
+                function () {
+                    var index = section.registeredPlayerIds.indexOf($scope.currentUser.playerId);
+                    if (index >= 0) {
+                        section.registeredPlayerIds.splice(index, 1);
+                    }
+                });
         }
     });

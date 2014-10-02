@@ -1,5 +1,7 @@
 ﻿angular.module('chessRank')
     .service('authService', function ($http) {
+        this.currentUser = null;
+
         var _this = this;
 
         this.login = function (request) {

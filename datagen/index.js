@@ -21,18 +21,37 @@ function populatePlayers(db, count) {
         .then(function () { return db; });
 }
 
-function populateTournaments(db, count) {
-    var col = db.collection('tournaments');
-    var batch = col.initializeUnorderedBulkOp();
-    for (var i = 0; i != count; ++i) {
-        var tournament = Gen.generateTournament();
-        batch.insert(tournament);
+function populateSections(db, tournaments) {
+    var batch = db.collection('sections').initializeUnorderedBulkOp();
+    
+    for (var i = 0; i != tournaments.length; ++i) {
+        var tm = tournaments[i];
+        var numSections = Util.randomInt(1, 4);
+        
+        for (var k = 0; k != numSections; ++k) {
+            var section = Gen.generateSection(tm);
+            batch.insert(section);
+        }
     }
+    
     return Q.ninvoke(batch, 'execute')
-        .then(function () { return db; });
+    .then(function () { return db; });
 }
 
-function populateUsers(db) {
+function populateTournaments(db, count, ownerUserId) {
+    var col = db.collection('tournaments');
+    var batch = col.initializeUnorderedBulkOp();
+
+    for (var i = 0; i != count; ++i) {
+        var tournament = Gen.generateTournament(ownerUserId);
+        batch.insert(tournament);
+    }
+    
+    return Q.ninvoke(batch, 'execute')
+    .then(function () { return Q.ninvoke(col.find(), 'toArray'); });
+}
+
+function populateAdminUser(db) {
     var p1 = Gen.generatePlayer(Const.gender.male, ['John', 'Smith']);
 
     var colPlayers = db.collection('players');
@@ -48,7 +67,7 @@ function populateUsers(db) {
             var colUsers = db.collection('users');
             return Q.ninvoke(colUsers, 'insert', u1);
         })
-        .then(function () { return db; });
+        .then(function (users) { return users[0]._id; });
 }
 
 function populateSettings(db) {
@@ -69,7 +88,8 @@ function populateSettings(db) {
 
 function populateLookups(db) {
     var lookups = {
-        fideFederations: Data.fideFederations
+        fideFederations: Data.fideFederations,
+        currencies: Data.currencies
     };
     var col = db.collection('lookups');
     return Q.ninvoke(col, 'insert', lookups)
@@ -91,22 +111,23 @@ function disconnect(db) {
 }
 
 function populatePlayerRegistrations(db) {
-    var colTournaments = db.collection('tournaments');
-    var curAllTournaments = colTournaments.find();
-    var curAllPlayers = db.collection('players').find();
+    var promises = [Q.ninvoke(db.collection('sections').find(), 'toArray'),
+                    Q.ninvoke(db.collection('players').find(), 'toArray')];
 
-    var promises = [Q.ninvoke(curAllTournaments, 'toArray'),
-                    Q.ninvoke(curAllPlayers, 'toArray')];
-
-    return Q.spread(promises, function (tournaments, players) {
-        var result = Gen.registerPlayers(tournaments, players);
-        if (result) {
-            console.log(sprintf('%d players registered in the %s of the %s (id: %s)',
-                result.section.registeredPlayerIds.length,
-                result.section.name,
-                result.tournament.name,
-                result.tournament._id.toString()));
-            return Q.ninvoke(colTournaments, 'save', result.tournament);
+    return Q.spread(promises, function (sections, players) {
+        var section = Gen.registerPlayers(sections, players);
+        if (section) {
+            return Q.ninvoke(db.collection('tournaments').find({ _id: section.tournamentId }), 'toArray')
+            .then(function (tournaments) {
+                return Q.ninvoke(db.collection('sections'), 'save', section)
+                .then(function () {
+                    console.log(sprintf('%d players registered in the %s of the %s (section id: %s)',
+                        section.registeredPlayerIds.length,
+                        section.name,
+                        tournaments[0].name,
+                        section._id.toString()));
+                })
+            });
         } else {
             console.warn('No players registered!');
         }
@@ -115,9 +136,10 @@ function populatePlayerRegistrations(db) {
 }
 
 function populateCollections(db) {
-    return Q.all([populateSettings(db), populateLookups(db), populateUsers(db),
-            populatePlayers(db, 50), populateTournaments(db, 10)])
-        .then(function () { return db; })
+    return Q.all([populateSettings(db), populateLookups(db), populatePlayers(db, 50)])
+        .then(function () { return populateAdminUser(db); })
+        .then(function (userId) { return populateTournaments(db, 10, userId); })
+        .then(function (tournaments) { return populateSections(db, tournaments); })
         .then(populatePlayerRegistrations);
 }
 

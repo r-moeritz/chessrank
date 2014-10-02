@@ -21,13 +21,21 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
             .state('tournaments', {
                 url: '/tournaments',
                 views: {
-                    '@': { templateUrl: 'static/views/tournament/list.html' }
+                    '@': {
+                        templateUrl: 'static/views/tournament/list.html',
+                        controller: 'tournamentListCtrl'
+                    }
                 },
                 data: {
                     ncyBreadcrumbLabel: 'Tournaments',
                     ncyBreadcrumbParent: 'home',
-                    queryTournaments: true
-                }
+                },
+                resolve: {
+                    tournamentService: 'tournamentService',
+                    tournaments: function (tournamentService) {
+                        return tournamentService.query().$promise;
+                    }
+                },
             })
             .state('tournaments.details', {
                 url: '/:tournamentId',
@@ -39,6 +47,18 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ncy-angular-breadcrumb'
                 },
                 data: {
                     ncyBreadcrumbLabel: '{{ tournament.name }}'
+                },
+                resolve: {
+                    tournament: function ($stateParams, $q, tournamentService, tournaments) {
+                        var tournamentId = $stateParams.tournamentId;
+                        for (var i = 0; i != tournaments.length; ++i) {
+                            var tm = tournaments[i];
+                            if (tm._id.$oid === tournamentId) {
+                                return $q.when(tm);
+                            }
+                        }
+                        return $q.when(null);
+                    }
                 }
             })
             .state('signup', {

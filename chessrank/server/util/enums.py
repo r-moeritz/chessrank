@@ -25,3 +25,7 @@ class UserStatus(enum.IntEnum):
     unconfirmed = 0,
     active = 1,
     disabled = 2
+
+class SectionRegistrationAction(enum.IntEnum):
+    register = 0,
+    unregister = 1
