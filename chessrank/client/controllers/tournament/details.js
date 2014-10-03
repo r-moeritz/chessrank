@@ -1,6 +1,6 @@
 ﻿angular.module('chessRank')
-    .controller('tournamentDetailsCtrl', function ($scope, $stateParams, tournament, authService, authEvent,
-                                                   sectionService, sectionRegistrationAction) {
+    .controller('tournamentDetailsCtrl', function ($scope, $stateParams, toaster, tournament, authService,
+                                                   authEvent, sectionService, sectionRegistrationAction) {
         $scope.currentUser = authService.currentUser;
         $scope.tournament = tournament;
 
@@ -66,6 +66,7 @@
             sectionService.update({ sectionId: section._id.$oid }, request,
                 function () {
                     section.registeredPlayerIds.push($scope.currentUser.playerId);
+                    toaster.pop('success', 'Success', 'You have been provisionally registered');
                 });
         }
 
@@ -83,6 +84,7 @@
                     if (index >= 0) {
                         section.registeredPlayerIds.splice(index, 1);
                     }
+                    toaster.pop('success', 'Success', 'You have been unregistered')
                 });
         }
     });

@@ -17,16 +17,17 @@
     "tests"
   ],
   "dependencies": {
-    "angular-resource": "~1.2.23",
+    "angular-resource": "~1.2.26",
     "angular-breadcrumb": "~0.2.3",
-    "angular-bootstrap": "~0.11.0",
+    "angular-bootstrap": "~0.11.2",
     "moment": "~2.8.3",
     "bootstrap": "~3.2.0",
     "sprintfjs": "~1.1.4",
     "kendo-ui-core": "~2014.2.903",
-    "angular-form-for": "~1.2.16"
+    "angular-form-for": "~1.5.1",
+    "angularjs-toaster": "~0.4.8"
   },
   "resolutions": {
-    "angular": "1.2.23"
+    "angular": "1.2.26"
   }
 }
