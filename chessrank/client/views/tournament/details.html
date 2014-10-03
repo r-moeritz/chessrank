@@ -65,7 +65,7 @@
                             popover="{{ registerPopover }}"
                             popover-trigger="focus"
                             ng-if="!registered(item)"
-                            ng-disabled="registrationClosed(item)"
+                            ng-disabled="registrationClosed(item, sections)"
                             ng-click="register(item)">
                         Register
                     </button>

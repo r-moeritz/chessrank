@@ -27,7 +27,7 @@
             return section.registeredPlayerIds.indexOf($scope.currentUser.playerId) >= 0;
         }
 
-        $scope.registrationClosed = function (section) {
+        $scope.registrationClosed = function (section, allSections) {
             if (section.invitationOnly) {
                 return true;
             }
@@ -36,7 +36,23 @@
             var regStart = moment.utc(section.registrationStartDate.$date)
             var regEnd = moment.utc(section.registrationEndDate.$date)
 
-            return regStart.isAfter(now) || regEnd.isBefore(now);
+            if (regStart.isAfter(now) || regEnd.isBefore(now)) {
+                return true;
+            }
+
+            var alreadyRegistered = false;
+
+            if (allSections) {
+                for (var i = 0; i != allSections.length; ++i) {
+                    var sec = allSections[i];
+                    if (sec.registeredPlayerIds.indexOf($scope.currentUser.playerId) >= 0) {
+                        alreadyRegistered = true;
+                        break;
+                    }
+                }
+            }
+
+            return alreadyRegistered;
         }
 
         $scope.register = function (section) {
