@@ -5,27 +5,18 @@
     <div class="row padded-row">
         <div class="col-xs-6 col-md-4">Location</div>
         <div class="col-xs-6 col-md-4">{{ tournament.location }}</div>
-        <div class="col-xs-6 col-md-4">
-            <button class="btn btn-xs btn-primary">Instructions</button>
-        </div>
     </div>
     <div class="row padded-row">
         <div class="col-xs-6 col-md-4">Date</div>
         <div class="col-xs-6 col-md-4">{{ tournament.startDate.$date | date }} - {{ tournament.endDate.$date | date }}</div>
-        <div class="col-xs-6 col-md-4">
-            <button class="btn btn-xs btn-primary">Players</button>
-        </div>
     </div>
     <div class="row padded-row">
         <div class="col-xs-6 col-md-4">Tournament Director</div>
         <div class="col-xs-6 col-md-4"><user-link user-id="tournament.ownerUserId" /></div>
-        <div class="col-xs-6 col-md-4">
-        </div>
     </div>
     <div class="row padded-row">
         <div class="col-xs-6 col-md-4">Status</div>
         <div class="col-xs-6 col-md-4"><b>TODO</b></div>
-        <div class="col-xs-6 col-md-4"></div>
     </div>
 </div>
 
@@ -43,7 +34,6 @@
                 <th>Rounds</th>
                 <th>Time Controls</th>
                 <th>Tie Breaks</th>
-                <th>Chief Arbiter</th>
                 <th>Fee</th>
                 <th></th>
             </tr>
@@ -57,13 +47,12 @@
                 <td>{{ item.rounds }}</td>
                 <td>{{ item.timeControls | rmTransform:'timeControl' | rmJoin:' ' }}</td>
                 <td>{{ item.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</td>
-                <td>{{ item.chiefArbiter }}</td>
                 <td>
                     <tournament-currency tournament="tournament"
                                          amount="item.registrationFee" />
                 </td>
                 <td>
-                    <button class="btn btn-xs btn-primary"
+                    <button class="btn btn-primary btn-xs"
                             popover="{{ registerPopover }}"
                             popover-trigger="focus"
                             ng-if="!registered(item)"
@@ -71,7 +60,7 @@
                             ng-click="register(item)">
                         Register
                     </button>
-                    <button class="btn btn-xs btn-primary"
+                    <button class="btn btn-xs btn-warning"
                             ng-if="registered(item)"
                             ng-disabled="registrationClosed(item)"
                             ng-click="unregister(item)">

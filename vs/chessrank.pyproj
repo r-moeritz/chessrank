@@ -111,6 +111,7 @@
     <Content Include="client\directives\form.js" />
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\directives\user.js" />
+    <Content Include="client\images\logo.png" />
     <Content Include="client\rmUtils\filters.js" />
     <Content Include="client\filters\section.js" />
     <Content Include="client\services\auth.js" />

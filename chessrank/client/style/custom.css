@@ -1,4 +1,15 @@
-﻿.nav, .pagination, .carousel, .panel-title a { 
+﻿body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar-logo {
+    height: 100%;
+    margin-right: 5px;
+    margin-top: -5px;
+}
+
+.nav, .pagination, .carousel, .panel-title a { 
     cursor: pointer;
 }
 
@@ -15,4 +26,8 @@
 .form-group .k-widget,
 .form-group .k-textbox {
     width: 100%;
+}
+
+.nav>li>button {
+    margin-left: 5px;
 }

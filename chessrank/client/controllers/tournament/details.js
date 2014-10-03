@@ -42,7 +42,7 @@
 
             var alreadyRegistered = false;
 
-            if (allSections) {
+            if (allSections && $scope.currentUser) {
                 for (var i = 0; i != allSections.length; ++i) {
                     var sec = allSections[i];
                     if (sec.registeredPlayerIds.indexOf($scope.currentUser.playerId) >= 0) {
@@ -66,7 +66,8 @@
             sectionService.update({ sectionId: section._id.$oid }, request,
                 function () {
                     section.registeredPlayerIds.push($scope.currentUser.playerId);
-                    toaster.pop('success', 'Success', 'You have been provisionally registered');
+                    toaster.pop('success', 'Success', sprintf('You have been provisionally registered in the %s',
+                        section.name));
                 });
         }
 
@@ -84,7 +85,8 @@
                     if (index >= 0) {
                         section.registeredPlayerIds.splice(index, 1);
                     }
-                    toaster.pop('success', 'Success', 'You have been unregistered')
+                    toaster.pop('success', 'Success', sprintf('You have been unregistered from the %s',
+                        section.name));
                 });
         }
     });
