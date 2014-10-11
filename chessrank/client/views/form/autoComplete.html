@@ -3,13 +3,15 @@
     <field-label ng-if="label"
                  label="{{ label }}"
                  help="{{ help }}"
-                 required="{{ model.required }}">
-    </field-label>
+                 required="{{ model.required }}"></field-label>
 
     <field-error error="model.error"></field-error>
 
-    <input kendo-date-picker
-           k-ng-model="model.bindable"
-           k-options="options"
+    <input type="text"
+           class="form-control"
+           placeholder="{{ placeholder }}"
+           ng-model="model.bindable"
+           typeahead="opt as opt.name for opt in options | filter:{name:$viewValue}"
+           typeahead-editable="editable"
            ng-disabled="disable || model.disabled" />
 </div>

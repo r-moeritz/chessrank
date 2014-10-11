@@ -1,4 +1,15 @@
-﻿module.exports = {
+﻿var Const = require('./constants.js');
+
+function tc(moves, period, bonus, bonusType) {
+    return {
+        moves: moves,
+        period: period,
+        bonus: bonus,
+        bonusType: bonusType
+    };
+}
+
+module.exports = {
     fideFederations: [
       { value: 1, region: 'Africa', name: 'Algeria' },
       { value: 2, region: 'Africa', name: 'Angola' },
@@ -838,5 +849,27 @@
   { value: 153, code: 'YER', symbol: 'YER', name: 'Yemeni rial' },
   { value: 154, code: 'ZAR', symbol: 'R', name: 'South African rand' },
   { value: 155, code: 'ZMK', symbol: 'ZK', name: 'Zambian kwacha' },
-  { value: 156, code: 'ZWR', symbol: 'Z$', name: 'Zimbabwean dollar' }]
+  { value: 156, code: 'ZWR', symbol: 'Z$', name: 'Zimbabwean dollar' }],
+
+  stdTimeControls: [
+    [tc(40, 90), tc(Const.tcMoves.suddenDeath, 30, 30, Const.tcBonus.increment)],
+    [tc(40, 120), tc(Const.tcMoves.suddenDeath, 60, 5, Const.tcBonus.delay)],
+    [tc(40, 115), tc(Const.tcMoves.suddenDeath, 60, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 120, 30, Const.tcBonus.increment)],
+    [tc(Const.tcMoves.game, 120, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 115, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 90, 30, Const.tcBonus.increment)],
+    [tc(Const.tcMoves.game, 90, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 60, 30, Const.tcBonus.increment)],
+    [tc(Const.tcMoves.game, 60, 5, Const.tcBonus.delay)],
+    [tc(30, 30), tc(Const.tcMoves.suddenDeath, 30, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 30, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 25, 5, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 25, 3, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 15, 3, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 10, 3, Const.tcBonus.delay)],
+    [tc(Const.tcMoves.game, 10)],
+    [tc(Const.tcMoves.game, 5)],
+    [tc(Const.tcMoves.game, 3, 2, Const.tcBonus.increment)]
+  ]
 };

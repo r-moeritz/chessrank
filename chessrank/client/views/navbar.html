@@ -1,0 +1,52 @@
+﻿<div class="navbar navbar-default" role="navigation"
+     ng-init="checkLoginStatus()">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" title="Your chess tournament organizer">
+                <img class="navbar-logo" src="static/images/logo.png" /> ChessRank
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ncy-breadcrumb></ncy-breadcrumb>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-if="currentUser">
+                    <p class="navbar-text">Hi {{ currentUser.name }}</p>
+                </li>
+                <li ng-if="currentUser">
+                    <button class="btn btn-default navbar-btn"
+                            ng-click="logout()">
+                        <span class="glyphicon glyphicon-log-out"></span> Logout
+                    </button>
+                </li>
+                <li ng-if="!currentUser">
+                    <button class="btn btn-default navbar-btn"
+                            ng-click="showLoginDialog()">
+                        <span class="glyphicon glyphicon-log-in"></span> Login
+                    </button>
+                </li>
+                <li ng-if="!currentUser">
+                    <button class="btn btn-default navbar-btn"
+                            ui-sref="a.signup">
+                        <span class="glyphicon glyphicon-pencil"></span> Sign up
+                    </button>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+

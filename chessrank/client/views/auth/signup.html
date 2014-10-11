@@ -9,25 +9,24 @@
                 focused="clearError()"></text-field>
     <radio-field label="Male" attribute="gender" value="0"></radio-field>
     <radio-field label="Female" attribute="gender" value="1"></radio-field>
-    <datepicker-field label="Date of Birth" attribute="dateOfBirth"
-                        options="datePickerOptions"></datepicker-field>
+    <date-picker-field label="Date of Birth" attribute="dateOfBirth"
+                      options="datePickerOptions"></date-picker-field>
     <text-field label="Email" attribute="email" placeholder="johnsmith@example.com"
                 type="email" focused="clearError()"></text-field>
     <text-field label="Contact Number" attribute="contactNumber"
-                placeholder="+27726164485" type="tel" focused="clearError()"></text-field>
+                placeholder="+27353401427" type="tel" focused="clearError()"></text-field>
     <text-field label="Password" attribute="password"
                 placeholder="T0p $3cret!" type="password" focused="clearError()"></text-field>
     <text-field label="Confirm password" attribute="password2"
                 placeholder="Re-type your password" type="password" focused="clearError()"></text-field>
-    <type-ahead-field label="Federation" attribute="federation"
-                        options="fideFederations" filter="filterFederations"
-                        placeholder="South Africa" label-attribute="name"></type-ahead-field>
+    <auto-complete-field label="Federation" attribute="federation" options="fideFederationList"
+                         placeholder="South Africa" editable="false"></auto-complete-field>
     <text-field label="Union" attribute="union" placeholder="Gauteng Chess Union"
                 focused="clearError()"></text-field>
     <text-field label="FIDE Rating" attribute="fideRating" type="number"
                 placeholder="1800" focused="clearError()"></text-field>
-    <select-field label="FIDE Title" attribute="fideTitle" options="titles"
-                    placeholder="Select title" allow-blank></select-field>
+    <select-field label="FIDE Title" attribute="fideTitle" options="fideTitleList"
+                  placeholder="Select title" allow-blank></select-field>
     <text-field label="Federation Rating" attribute="fedRating" type="number"
                 placeholder="2000" focused="clearError()"></text-field>
     <text-field label="Federation Title" attribute="fedTitle"

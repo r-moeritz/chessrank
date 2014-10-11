@@ -36,7 +36,7 @@
             }
         }
     })
-    .filter('timeControl', function (tcMoves, tcBonus) {
+    .filter('timeControl', function (tcMoves, tcBonus, sprintf) {
         return function (tc) {
             return (tc.moves > 0)
                 ? sprintf('%d/%d', tc.moves, tc.period)
@@ -44,6 +44,6 @@
                     (tc.moves === tcMoves.game) ? 'G' : 'SD',
                     tc.period,
                     (tc.bonusType === tcBonus.increment) ? 'inc' : 'd',
-                    (tc.bonus === null) ? 0 : tc.bonus);
+                    tc.bonus || 0);
         }
     });

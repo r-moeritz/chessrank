@@ -3,13 +3,12 @@
     <field-label ng-if="label"
                  label="{{ label }}"
                  help="{{ help }}"
-                 required="{{ model.required }}">
-    </field-label>
+                 required="{{ model.required }}"></field-label>
 
     <field-error error="model.error"></field-error>
 
-    <input kendo-date-picker
-           k-ng-model="model.bindable"
-           k-options="options"
-           ng-disabled="disable || model.disabled" />
+    <select kendo-multi-select
+            k-ng-model="model.bindable"
+            k-options="options"
+            ng-disabled="disable || model.disabled"></select>
 </div>

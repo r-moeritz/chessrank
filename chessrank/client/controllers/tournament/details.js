@@ -1,8 +1,9 @@
 ﻿angular.module('chessRank')
-    .controller('tournamentDetailsCtrl', function ($scope, $stateParams, toaster, tournament, authService,
-                                                   authEvent, sectionService, sectionRegistrationAction) {
+    .controller('tournamentDetailsCtrl', function ($scope, $stateParams, sprintf, _, toaster, tournament, sections,
+                                                   authService, authEvent, sectionService, sectionRegistrationAction) {
         $scope.currentUser = authService.currentUser;
         $scope.tournament = tournament;
+        $scope.sections = sections;
 
         $scope.registerPopover = $scope.currentUser
             ? null
@@ -17,14 +18,14 @@
             $scope.registerPopover = 'You need to login or sign up before you can register for tournaments';
         });
 
-        $scope.sections = sectionService.query({ tournamentId: $stateParams.tournamentId });
-
         $scope.registered = function (section) {
             if (!$scope.currentUser) {
                 return false;
             }
 
-            return section.registeredPlayerIds.indexOf($scope.currentUser.playerId) >= 0;
+            return _.find(section.registeredPlayerIds, function (playerId) {
+                return playerId.$oid === $scope.currentUser.playerId.$oid;
+            });
         }
 
         $scope.registrationClosed = function (section, allSections) {
@@ -40,19 +41,16 @@
                 return true;
             }
 
-            var alreadyRegistered = false;
-
             if (allSections && $scope.currentUser) {
                 for (var i = 0; i != allSections.length; ++i) {
                     var sec = allSections[i];
-                    if (sec.registeredPlayerIds.indexOf($scope.currentUser.playerId) >= 0) {
-                        alreadyRegistered = true;
-                        break;
+                    if ($scope.registered(sec)) {
+                        return true;
                     }
                 }
             }
 
-            return alreadyRegistered;
+            return false;
         }
 
         $scope.register = function (section) {
@@ -81,10 +79,10 @@
             };
             sectionService.update({ sectionId: section._id.$oid }, request,
                 function () {
-                    var index = section.registeredPlayerIds.indexOf($scope.currentUser.playerId);
-                    if (index >= 0) {
-                        section.registeredPlayerIds.splice(index, 1);
-                    }
+                    section.registeredPlayerIds = _.reject(section.registeredPlayerIds,
+                        function (playerId) {
+                            return playerId.$oid === $scope.currentUser.playerId.$oid;
+                        });
                     toaster.pop('success', 'Success', sprintf('You have been unregistered from the %s',
                         section.name));
                 });

@@ -1,4 +1,12 @@
-﻿<accordion close-others="false">
+﻿<div style="margin-bottom: 20px;">
+    <button ng-if="currentUser"
+            class="btn btn-default"
+            ui-sref="a.tournaments.create">
+        <span class="glyphicon glyphicon-file"></span> Create Tournament
+    </button>
+</div>
+
+<accordion close-others="false">
     <accordion-group heading="Current Tournaments" is-open="tournamentOptions.showCurrent">
         <p ng-hide="currentTournaments.length">There are no tournaments in progress.</p>
         <tournament-list ng-show="currentTournaments.length" items="currentTournaments" />

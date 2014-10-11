@@ -4,7 +4,7 @@
             { userId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .service('signupService', function (userService, $q) {
+    .service('signupService', function (userService, $q, sprintf) {
         this.validationRules = {
             name: {
                 required: true,
@@ -99,7 +99,7 @@
             request = angular.copy(model);
             delete request.password2;
 
-            return userService.save(request).$promise
+            return userService.save(request).$promise;
         }
 
         return this;

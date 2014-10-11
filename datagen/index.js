@@ -89,7 +89,8 @@ function populateSettings(db) {
 function populateLookups(db) {
     var lookups = {
         fideFederations: Data.fideFederations,
-        currencies: Data.currencies
+        currencies: Data.currencies,
+        stdTimeControls: Data.stdTimeControls,
     };
     var col = db.collection('lookups');
     return Q.ninvoke(col, 'insert', lookups)

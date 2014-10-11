@@ -1,11 +1,21 @@
 ﻿angular.module('chessRank')
-    .directive('tournamentList', function () {
+    .directive('tournamentList', function (authService, authEvent) {
         return {
             restrict: 'E',
             scope: {
                 tournaments: '=items'
             },
-            templateUrl: 'static/views/tournament/list.html'
+            templateUrl: 'static/views/tournament/list.html',
+            link: function (scope) {
+                scope.currentUser = authService.currentUser;
+
+                scope.$on(authEvent.loginSuccess, function () {
+                    scope.currentUser = authService.currentUser;
+                });
+                scope.$on(authEvent.logoutSuccess, function () {
+                    scope.currentUser = null;
+                });
+            }
         }
     })
     .directive('tournamentCurrency', function (lookupsService, currencyFilter) {

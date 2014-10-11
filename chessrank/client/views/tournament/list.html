@@ -1,5 +1,4 @@
-﻿<div 
-     class="table-responsive">
+﻿<div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -19,8 +18,11 @@
                 <td>{{ item.endDate.$date | date }}</td>
                 <td><user-link user-id="item.ownerUserId" /></td>
                 <td>
-                    <a ui-sref="tournaments.details({ tournamentId: item._id.$oid })"
+                    <a ui-sref="a.tournaments.details({ tournamentId: item._id.$oid })"
                        class="btn btn-xs btn-primary">Details</a>
+                    <a ng-if="currentUser && currentUser.userId.$oid == item.ownerUserId.$oid"
+                       ui-sref="a.tournaments.details.edit({ tournamentId: item._id.$oid })"
+                       class="btn btn-xs btn-warning">Edit</a>
                 </td>
             </tr>
         </tbody>

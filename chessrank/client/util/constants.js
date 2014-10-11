@@ -1,4 +1,13 @@
-﻿angular.module('chessRank')
+﻿function tc(moves, period, bonus, bonusType) {
+    return {
+        moves: moves,
+        period: period,
+        bonus: bonus,
+        bonusType: bonusType
+    };
+}
+
+angular.module('chessRank')
     .constant('gender', {
         male: 0,
         female: 1

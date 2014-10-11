@@ -12,34 +12,7 @@
     </head>
     <body>
         <div class="container">
-            <div class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                data-target=".navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#" title="Your chess tournament organizer">
-                            <img class="navbar-logo" src="{{ static_url('images/logo.png') }}" /> ChessRank
-                        </a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ncy-breadcrumb></ncy-breadcrumb>
-                        <navbar-auth-links></navbar-auth-links>
-                        <form class="navbar-form navbar-right" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                            <button type="submit" class="btn btn-default">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <navbar></navbar>
             <div ui-view></div>
         </div>
         
@@ -50,19 +23,24 @@
         <script src="{{ static_url('bower_components/angular-breadcrumb/release/angular-breadcrumb.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-form-for/dist/form-for.min.js') }}"></script>
+        <script src="{{ static_url('bower_components/angular-form-for/dist/form-for.bootstrap-templates.js') }}"></script>
         <script src="{{ static_url('bower_components/kendo-ui-core/js/kendo.ui.core.min.js') }}"></script>
         <script src="{{ static_url('bower_components/moment/min/moment.min.js') }}"></script>
         <script src="{{ static_url('bower_components/sprintfjs/sprintf.js') }}"></script>
         <script src="{{ static_url('bower_components/angular-animate/angular-animate.min.js') }}"></script>
         <script src="{{ static_url('bower_components/angularjs-toaster/toaster.js') }}"></script>
+        <script src="{{ static_url('bower_components/underscore/underscore-min.js') }}"></script>
 
+        <script src="{{ static_url('util/globals.js') }}"></script>
         <script src="{{ static_url('app.js') }}"></script>
         <script src="{{ static_url('controllers/home.js') }}"></script>
-        <script src="{{ static_url('controllers/auth/navbar.js') }}"></script>
+        <script src="{{ static_url('controllers/navbar.js') }}"></script>
         <script src="{{ static_url('controllers/auth/login.js') }}"></script>
         <script src="{{ static_url('controllers/auth/signup.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/list.js') }}"></script>
         <script src="{{ static_url('controllers/tournament/details.js') }}"></script>
+        <script src="{{ static_url('controllers/tournament/edit.js') }}"></script>
+        <script src="{{ static_url('controllers/tournament/section/edit.js') }}"></script>
         <script src="{{ static_url('services/auth.js') }}"></script>
         <script src="{{ static_url('services/lookups.js') }}"></script>
         <script src="{{ static_url('services/player.js') }}"></script>
@@ -71,7 +49,7 @@
         <script src="{{ static_url('services/section.js') }}"></script>
         <script src="{{ static_url('filters/section.js') }}"></script>
         <script src="{{ static_url('directives/tournament.js') }}"></script>
-        <script src="{{ static_url('directives/auth.js') }}"></script>
+        <script src="{{ static_url('directives/navbar.js') }}"></script>
         <script src="{{ static_url('directives/form.js') }}"></script>
         <script src="{{ static_url('directives/user.js') }}"></script>
         <script src="{{ static_url('util/constants.js') }}"></script>

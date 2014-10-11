@@ -12,10 +12,16 @@ class ApiHandler(tornado.web.RequestHandler):
         raise tornado.web.HTTPError(404)
 
     def write_error(self, status_code, **kwargs):
+        msg = self._reason
+        inf = kwargs.get('exc_info', None)
+        if inf:
+            exc = inf[1]
+            msg = exc.log_message
+
         self.clear()
         self.set_status(status_code)
         self.finish({ 'status_code': status_code, 
-                          'message': http.client.responses[status_code] })
+                          'message': msg })
 
     @gen.coroutine
     def get_current_user_async(self):

@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('navbarAuthCtrl', function ($scope, $rootScope, $modal, authEvent, authService) {
+    .controller('navbarCtrl', function ($scope, $rootScope, $modal, authEvent, authService) {
         $scope.showLoginDialog = function () {
             $modal.open({
                 templateUrl: 'static/views/auth/login.html',

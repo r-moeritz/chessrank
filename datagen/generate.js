@@ -116,7 +116,7 @@ module.exports = {
             registrationStartDate: registrationStartDate,
             registrationEndDate: tournament.startDate,
             chiefArbiter: generateFullName(Util.randomInt(0, 2)).join(' '),
-            timeControls: Util.stdTimeControls[Util.randomInt(0, Util.stdTimeControls.length)],
+            timeControls: Data.stdTimeControls[Util.randomInt(0, Data.stdTimeControls.length)],
             registrationFee: fees[Util.randomInt(0, fees.length)],
             invitationOnly: Util.randomBool(),
             provisionalRating: 1000,
@@ -141,7 +141,7 @@ module.exports = {
         }
         
         sect.registeredPlayerIds = players.map(function (p) {
-            return p._id.$oid;
+            return p._id;
         });
 
         return sect;

@@ -80,6 +80,7 @@
     <Folder Include="client\controllers\" />
     <Folder Include="client\controllers\auth\" />
     <Folder Include="client\controllers\tournament\" />
+    <Folder Include="client\controllers\tournament\section\" />
     <Folder Include="client\images\" />
     <Folder Include="client\filters\" />
     <Folder Include="client\directives\" />
@@ -92,6 +93,7 @@
     <Folder Include="client\views\form\" />
     <Folder Include="client\views\tournament\" />
     <Folder Include="client\" />
+    <Folder Include="client\views\tournament\section\" />
     <Folder Include="server\" />
     <Folder Include="server\engines\" />
     <Folder Include="server\validation\" />
@@ -101,13 +103,15 @@
     <Folder Include="server\templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="client\controllers\auth\navbar.js" />
+    <Content Include="client\controllers\navbar.js" />
     <Content Include="client\controllers\auth\signup.js" />
     <Content Include="client\controllers\home.js" />
     <Content Include="client\controllers\auth\login.js" />
     <Content Include="client\controllers\tournament\details.js" />
+    <Content Include="client\controllers\tournament\edit.js" />
     <Content Include="client\controllers\tournament\list.js" />
-    <Content Include="client\directives\auth.js" />
+    <Content Include="client\controllers\tournament\section\edit.js" />
+    <Content Include="client\directives\navbar.js" />
     <Content Include="client\directives\form.js" />
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\directives\user.js" />
@@ -122,18 +126,23 @@
     <Content Include="client\style\custom.css" />
     <Content Include="client\services\player.js" />
     <Content Include="client\style\kendo-bootstrap.css" />
-    <Content Include="client\views\auth\navbar.html" />
+    <Content Include="client\util\globals.js" />
+    <Content Include="client\views\form\autoComplete.html" />
+    <Content Include="client\views\form\multiSelect.html" />
+    <Content Include="client\views\navbar.html" />
     <Content Include="client\views\auth\signup-confirm.html" />
     <Content Include="client\views\auth\signup.html" />
     <Content Include="client\views\breadcrumb.html" />
-    <Content Include="client\views\form\datepicker.html" />
+    <Content Include="client\views\form\datePicker.html" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\auth\login.html" />
     <Content Include="client\views\tournament\details.html" />
+    <Content Include="client\views\tournament\edit.html" />
     <Content Include="client\views\tournament\list.html" />
     <Content Include="client\util\constants.js" />
     <Content Include="client\app.js" />
     <Content Include="client\bower.json" />
+    <Content Include="client\views\tournament\section\edit.html" />
     <Content Include="server\templates\verify.html" />
     <Content Include="server\templates\index.html" />
   </ItemGroup>

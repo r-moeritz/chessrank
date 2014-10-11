@@ -24,8 +24,9 @@
     "bootstrap": "~3.2.0",
     "sprintfjs": "~1.1.4",
     "kendo-ui-core": "~2014.2.903",
-    "angular-form-for": "~1.2.16",
-    "angularjs-toaster": "~0.4.8"
+    "angular-form-for": "~1.5.2",
+    "angularjs-toaster": "~0.4.8",
+    "underscore": "~1.7.0"
   },
   "resolutions": {
     "angular": "1.2.26"

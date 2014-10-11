@@ -1,8 +1,9 @@
 ﻿angular.module('chessRank')
-    .controller('signupCtrl', function ($scope, $modal, lookupsService, signupService) {
+    .controller('signupCtrl', function ($scope, $modal, moment, signupService, lookups) {
         $scope.request = { gender: '0' };
 
-        $scope.titles = [
+        $scope.fideFederationList = lookups.fideFederations;
+        $scope.fideTitleList = [
             { label: 'WCM', value: 0 },
             { label: 'WFM', value: 1 },
             { label: 'CM',  value: 2 },
@@ -20,20 +21,6 @@
             max: moment().utc().subtract(4, 'years').toDate()
         };
 
-        $scope.$watch('filterFederations', function (filterText) {
-            return lookupsService.getLookups().then(function (lookups) {
-                var federations = lookups.fideFederations;
-                var results = [];
-                var regex = new RegExp(filterText, 'i');
-                angular.forEach(federations, function (item) {
-                    if (regex.test(item.name)) {
-                        results.push(item);
-                    }
-                });
-                $scope.fideFederations = results;
-            });
-        });
-
         $scope.signupComplete = function () {
             signupService.confirmationEmail = $scope.request.email;
 
@@ -44,18 +31,18 @@
         }
 
         $scope.signupFailed = function (error) {
-            $scope.signupError = error.status;
+            $scope.signupError = error.data.message;
         }
 
-        $scope.clearErrors = function () {
+        $scope.clearError = function () {
             $scope.signupError = null
         }
     })
-    .controller('signupConfirmCtrl', function ($scope, $modalInstance, $location, signupService) {
+    .controller('signupConfirmCtrl', function ($scope, $modalInstance, $state, signupService) {
         $scope.email = signupService.confirmationEmail;
 
         $scope.ok = function() {
             $modalInstance.close();
-            $location.path('#/')
+            $state.go('home');
         }
     });

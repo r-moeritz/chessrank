@@ -1,10 +1,9 @@
 ﻿angular.module('chessRank')
-    .directive('datepickerField',
-    function (FieldHelper) {
+    .directive('datePickerField', function (FieldHelper) {
         return {
             require: '^formFor',
             restrict: 'E',
-            templateUrl: 'static/views/form/datepicker.html',
+            templateUrl: 'static/views/form/datePicker.html',
             scope: {
                 attribute: '@',
                 disable: '=',
@@ -17,8 +16,64 @@
                     return;
                 }
 
-                $scope.label = FieldHelper.getLabel($attributes, $scope.attribute);
-                FieldHelper.manageFieldRegistration($scope, formForController);
+                FieldHelper.manageLabel($scope, $attributes);
+                FieldHelper.manageFieldRegistration($scope, $attributes, formForController);
+            }
+        }
+    })
+    .directive('multiSelectField', function (FieldHelper) {
+        return {
+            require: '^formFor',
+            restrict: 'E',
+            templateUrl: 'static/views/form/multiSelect.html',
+            scope: {
+                attribute: '@',
+                disable: '=',
+                help: '@?',
+                options: '='
+            },
+            link: function ($scope, $element, $attributes, formForController) {
+                if (!$scope.attribute) {
+                    $log.error('Missing required field "attribute"');
+                    return;
+                }
+
+                if (!$scope.options) {
+                    $log.error('Missing required field "options"');
+                    return;
+                }
+
+                FieldHelper.manageLabel($scope, $attributes);
+                FieldHelper.manageFieldRegistration($scope, $attributes, formForController);
+            }
+        }
+    })
+    .directive('autoCompleteField', function (FieldHelper) {
+        return {
+            require: '^formFor',
+            restrict: 'E',
+            templateUrl: 'static/views/form/autoComplete.html',
+            scope: {
+                attribute: '@',
+                disable: '=',
+                help: '@?',
+                options: '=',
+                editable: '=',
+                placeholder: '@?'
+            },
+            link: function ($scope, $element, $attributes, formForController) {
+                if (!$scope.attribute) {
+                    $log.error('Missing required field "attribute"');
+                    return;
+                }
+
+                if (!$scope.options) {
+                    $log.error('Missing required field "dataSource"');
+                    return;
+                }
+
+                FieldHelper.manageLabel($scope, $attributes);
+                FieldHelper.manageFieldRegistration($scope, $attributes, formForController);
             }
         }
     });

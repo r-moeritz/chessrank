@@ -81,7 +81,7 @@ class SectionHandler(requesthandlers.api.ApiHandler):
             if not user:
                 # TODO: Log error
                 raise tornado.web.HTTPError(500)
-            playerId = str(user['playerId'])
+            playerId = user['playerId']
             
             if action == SectionRegistrationAction.register:
                 if playerId in registeredPlayerIds:

@@ -1,6 +1,7 @@
 import tornado.web
 import json
 import bcrypt
+import bson.json_util
 import requesthandlers.api
 import util
 
@@ -24,10 +25,13 @@ class SessionHandler(requesthandlers.api.ApiHandler):
             # TODO: Log error
             raise tornado.web.HTTPError(500)
 
-        self.write({ 'email': user['email'],
-                      'name': player['name'],
-                   'surname': player['surname'],
-                  'playerId': str(player['_id']) })
+        result = { 'userId':   user['_id'],
+                   'email':    user['email'],
+                   'playerId': user['playerId'],
+                   'name':     player['name'],
+                   'surname':  player['surname'] }
+        self.write(bson.json_util.dumps(result))
+        self.set_header('Content-Type', 'application/json')
 
     @gen.coroutine
     def post(self):
@@ -88,10 +92,13 @@ class SessionHandler(requesthandlers.api.ApiHandler):
             # TODO: Log error
             raise tornado.web.HTTPError(500)
 
-        self.write({ 'email': user['email'],
-                      'name': player['name'],
-                   'surname': player['surname'],
-                  'playerId': str(player['_id']) })
+        result = { 'userId':   user['_id'],
+                   'email':    user['email'],
+                   'playerId': user['playerId'],
+                   'name':     player['name'],
+                   'surname':  player['surname'] }
+        self.write(bson.json_util.dumps(result))
+        self.set_header('Content-Type', 'application/json')
 
     @util.authenticated_async
     @gen.coroutine

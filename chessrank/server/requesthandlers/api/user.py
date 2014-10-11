@@ -71,14 +71,14 @@ class UserHandler(requesthandlers.api.ApiHandler):
         # Join players and users, taking care to avoid duplicates
         results = []
         for u in users:
-            if any(r['_id'] == u['_id'] for r in results):
+            if any(r['userId'] == u['_id'] for r in results):
                 continue
             p = next((p for p in players if p['_id'] == u['playerId']), {})
-            results.append({ '_id':      u['_id'],
+            results.append({ 'userId':   u['_id'],
+                             'playerId': u['playerId'],
                              'gender':   p['gender'],
                              'name':     p['name'],
-                             'surname':  p['surname'],
-                             'playerId': p['_id'] })
+                             'surname':  p['surname'] })
 
         # Write response
         if id and results:
