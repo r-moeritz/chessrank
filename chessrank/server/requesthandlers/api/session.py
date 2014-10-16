@@ -50,10 +50,10 @@ class SessionHandler(requesthandlers.api.ApiHandler):
         # 2. Authenticate user
         user = yield db.users.find_one({ 'email': email, 'status': UserStatus.active })
         if not user:
-            raise tornado.web.HTTPError(401)
+            raise tornado.web.HTTPError(401, 'Invalid email address or password')
 
         if not bcrypt.checkpw(request['password'], user['passwordHash']):
-            raise tornado.web.HTTPError(401)
+            raise tornado.web.HTTPError(401, 'Invalid email address or password')
         
         # 3. Check for existing session
         session = yield db.sessions.find_one({ 'userId': user['_id'] })
