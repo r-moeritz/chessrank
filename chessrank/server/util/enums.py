@@ -29,3 +29,7 @@ class UserStatus(enum.IntEnum):
 class SectionRegistrationAction(enum.IntEnum):
     register = 0,
     unregister = 1
+
+class TimeControlBonus(enum.IntEnum):
+    increment = 0,
+    delay = 1

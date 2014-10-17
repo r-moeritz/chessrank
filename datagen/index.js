@@ -52,14 +52,14 @@ function populateTournaments(db, count, ownerUserId) {
 }
 
 function populateAdminUser(db) {
-    var p1 = Gen.generatePlayer(Const.gender.male, ['John', 'Smith']);
+    var p1 = Gen.generatePlayer(Const.gender.male, ['Admin', 'User']);
 
     var colPlayers = db.collection('players');
     return Q.ninvoke(colPlayers, 'insert', p1)
         .then(function (players) {
             var u1 = {
-                email:        'johnsmith@gmail.com',
-                passwordHash: '$2a$12$645qA8AOc2N4ac7XIhwOlunepzSa.4kKzZjTYm8VJL2hSdyUDhto6', // password1234$
+                email:        'chessrank@outlook.com',
+                passwordHash: '$2a$12$r2J9LpUc0XEwzLu1CCzL7ONNYKlz4orj4P3JB99muNyNbZEE1oYX.', // Password1234$
                 playerId:     players[0]._id,
                 status:       Const.userStatus.active
             };

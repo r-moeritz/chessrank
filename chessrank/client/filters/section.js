@@ -38,12 +38,15 @@
     })
     .filter('timeControl', function (tcMoves, tcBonus, sprintf) {
         return function (tc) {
-            return (tc.moves > 0)
-                ? sprintf('%d/%d', tc.moves, tc.period)
-                : sprintf('%s/%d %s/%d',
-                    (tc.moves === tcMoves.game) ? 'G' : 'SD',
-                    tc.period,
-                    (tc.bonusType === tcBonus.increment) ? 'inc' : 'd',
-                    tc.bonus || 0);
+            var bonusType = (tc.bonusType === tcBonus.increment) ? 'inc' : 'd';
+
+            var moves;
+            if (tc.moves < 1) {
+                moves = (tc.moves === tcMoves.game) ? 'G' : 'SD';
+            } else {
+                moves = tc.moves.toString();
+            }
+
+            return sprintf('%s/%d %s/%d', moves, tc.period, bonusType, tc.bonus);
         }
     });

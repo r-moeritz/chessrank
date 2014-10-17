@@ -4,7 +4,7 @@
             { tournamentId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .service('sectionEditService', function (sectionService) {
+    .service('sectionEditService', function (_, sectionService) {
         this.validationRules = {
             name: {
                 required: true,
@@ -40,14 +40,25 @@
             };
         }
 
-        this.submit = function (model) {
-            model.timeControls = angular.fromJson(model.timeControls);
+        function createRequest(section) {
+            request = angular.copy(section);
 
-            if (model._id) {
-                return sectionService.update({ sectionId: model._id.$oid }, model).$promise;
+            delete request._id;
+            request.timeControls = angular.fromJson(section.timeControls);
+            request.tournamentId = section._id.$oid;
+            request.registeredPlayerIds = _.map(section.registeredPlayerIds,
+                function (playerId) { return playerId.$oid });
+
+            return request;
+        }
+
+        this.submit = function (section) {
+            var request = createRequest(section);
+            if (section._id) {
+                return sectionService.update({ sectionId: section._id.$oid }, request).$promise;
             }
 
-            return sectionService.save(model).$promise;
+            return sectionService.save(request).$promise;
         }
 
         return this;

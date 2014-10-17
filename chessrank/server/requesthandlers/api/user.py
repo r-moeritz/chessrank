@@ -17,6 +17,7 @@ from util.enums import UserStatus
 class UserHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
     def get(self, id):
+        """Get user details"""
         # Get optional query args
         query  = self.get_argument('query',  None)
         sort   = self.get_argument('sort',   'email')
@@ -91,6 +92,7 @@ class UserHandler(requesthandlers.api.ApiHandler):
 
     @gen.coroutine
     def post(self, _):
+        """Create unconfirmed user account (sign-up)"""
         details = json.loads(self.request.body.decode('utf-8'))
         
         # 1. Validate signup details

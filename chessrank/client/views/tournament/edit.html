@@ -53,7 +53,7 @@
                     <td>{{ item.endDate.$date | date }}</td>
                     <td>{{ item.playSystem | playSystem }}</td>
                     <td>{{ item.rounds }}</td>
-                    <td>{{ item.timeControls | rmTransform:'timeControl' | rmJoin:' ' }}</td>
+                    <td>{{ item.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</td>
                     <td>{{ item.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</td>
                     <td>
                         <tournament-currency tournament="tournament"

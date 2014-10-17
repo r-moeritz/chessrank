@@ -27,6 +27,11 @@ class SignupValidator(validation.Validator):
         }
 
     def validate(self):
+        spurious = set(self._data.keys()) - set(list(self._required.keys()) + list(self._optional.keys()))
+        if spurious:
+            return (False, "Spurious fields included in request: {0}"
+                    .format(', '.join(spurious)))
+
         result = self._verify_required_fields()
         if not result[0]:
             return result

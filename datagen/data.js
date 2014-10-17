@@ -4,8 +4,8 @@ function tc(moves, period, bonus, bonusType) {
     return {
         moves: moves,
         period: period,
-        bonus: bonus,
-        bonusType: bonusType
+        bonus: bonus || 0,
+        bonusType: bonusType || Const.tcBonus.delay
     };
 }
 

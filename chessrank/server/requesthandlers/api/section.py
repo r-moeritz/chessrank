@@ -67,6 +67,11 @@ class SectionHandler(requesthandlers.api.ApiHandler):
             result = validator.validate()
             if not result[0]:
                 raise tornado.web.HTTPError(400, result[1])
+
+            request['tournamentId'] = ObjectId(request['tournamentId'])
+            request['registeredPlayerIds'] = [ObjectId(id) for id in request['registeredPlayerIds']]
+            
+            db.sections.update(spec, request)
         else:
             # Update requested by other user: only allow registration
             validator = SectionRegistrationValidator(request)
@@ -97,4 +102,5 @@ class SectionHandler(requesthandlers.api.ApiHandler):
 
                 registeredPlayerIds.remove(playerId)
 
-        db.sections.update(spec, section)
+            db.sections.update(spec, section)
+

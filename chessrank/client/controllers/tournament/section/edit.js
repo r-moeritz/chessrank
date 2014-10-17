@@ -44,7 +44,7 @@
                     value: angular.toJson(tc),
                     label: _.map(tc, function (ctrl) {
                         return timeControlFilter(ctrl);
-                    }).join(' ')
+                    }).join(', ')
                 }
             });
 
