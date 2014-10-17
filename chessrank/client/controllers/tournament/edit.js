@@ -20,7 +20,7 @@
         }
 
         $scope.editFailed = function (error) {
-            $scope.editError = error.data.message;
+            $scope.editError = error.data.message || 'Unknown error';
         }
 
         $scope.clearError = function () {

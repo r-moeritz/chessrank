@@ -1,9 +1,9 @@
 import enum
 
 class PlaySystem(enum.IntEnum):
-    round_robin = 0
-    double_round_robin = 1
-    swiss = 2
+    round_robin = 1
+    double_round_robin = 2
+    swiss = 3
 
 class TieBreak(enum.IntEnum):
     neustadl = 0
@@ -31,5 +31,5 @@ class SectionRegistrationAction(enum.IntEnum):
     unregister = 1
 
 class TimeControlBonus(enum.IntEnum):
-    increment = 0,
-    delay = 1
+    increment = 1,
+    delay = 2

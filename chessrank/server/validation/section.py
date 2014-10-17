@@ -95,7 +95,7 @@ class SectionUpdateValidator(validation.Validator):
 
     def _verify_play_system(self, field, value):
         return ((True, None) if value in list(PlaySystem)
-                else (False, "Field '{0}' must be an integer between 0 and 2".format(field)))
+                else (False, "Field '{0}' must be an integer between 1 and 3".format(field)))
 
     def _verify_time_controls(self, field, value):
         if type(value) != list:
@@ -128,7 +128,7 @@ class SectionUpdateValidator(validation.Validator):
                         .format(i+1, field))
 
             if bonusType not in list(TimeControlBonus):
-                return (False, "Property 'bonus' of item {0} of field '{0}' must be either 0 or 1"
+                return (False, "Property 'bonusType' of item {0} of field '{0}' must be either 1 or 2"
                         .format(i+1, field))
 
         return (True, None)

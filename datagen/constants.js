@@ -4,9 +4,9 @@
         female: 1
     },
     playSystem: {
-        roundRobin: 0,
-        doubleRoundRobin: 1,
-        swiss: 2
+        roundRobin: 1,
+        doubleRoundRobin: 2,
+        swiss: 3
     },
     tieBreak: {
         neustadl: 0,
@@ -19,8 +19,8 @@
         suddenDeath: -1
     },
     tcBonus: {
-        increment: 0,
-        delay: 1
+        increment: 1,
+        delay: 2
     },
     fideTitle: {
         WCM: 0,

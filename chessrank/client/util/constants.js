@@ -13,9 +13,9 @@ angular.module('chessRank')
         female: 1
     })
     .constant('playSystem', {
-        roundRobin: 0,
-        doubleRoundRobin: 1,
-        swiss: 2
+        roundRobin: 1,
+        doubleRoundRobin: 2,
+        swiss: 3
     })
     .constant('tieBreak', {
         neustadl: 0,
@@ -28,8 +28,8 @@ angular.module('chessRank')
         suddenDeath: -1
     })
     .constant('tcBonus', {
-        increment: 0,
-        delay: 1
+        increment: 1,
+        delay: 2
     })
     .constant('authEvent', {
         loginSuccess: 0,

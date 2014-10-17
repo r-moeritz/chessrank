@@ -40,7 +40,7 @@
                     <th>Tie Breaks</th>
                     <th>Fee</th>
                     <th>
-                        <a href="#">
+                        <a ui-sref="a.tournaments.details.edit.add_section">
                             <i class="glyphicon glyphicon-plus"></i>
                         </a>
                     </th>
@@ -60,7 +60,7 @@
                                              amount="item.registrationFee" />
                     </td>
                     <td>
-                        <a ui-sref="a.tournaments.details.edit.section({ sectionId: item._id.$oid })">
+                        <a ui-sref="a.tournaments.details.edit.edit_section({ sectionId: item._id.$oid })">
                             <i class="glyphicon glyphicon-edit" />
                         </a>
                         <a ng-click="deleteSection(item)"><i class="glyphicon glyphicon-remove" /></a>

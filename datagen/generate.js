@@ -88,7 +88,7 @@ module.exports = {
     
         // Determine play system based on no. of participants.
         var maxPlayers = Util.randomInt(6, 201);
-        var playSystem = Util.randomInt(0, 2);
+        var playSystem = Util.randomInt(1, 3);
         var maxRounds = (playSystem + 1) * (maxPlayers - 1);
         if (maxRounds > 10) {
             playSystem = Const.playSystem.swiss;

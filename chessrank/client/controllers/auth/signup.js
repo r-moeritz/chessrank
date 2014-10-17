@@ -31,7 +31,7 @@
         }
 
         $scope.signupFailed = function (error) {
-            $scope.signupError = error.data.message;
+            $scope.signupError = error.data.message || 'Unknown error';
         }
 
         $scope.clearError = function () {

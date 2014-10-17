@@ -45,7 +45,7 @@
 
             delete request._id;
             request.timeControls = angular.fromJson(section.timeControls);
-            request.tournamentId = section._id.$oid;
+            request.tournamentId = section.tournamentId.$oid;
             request.registeredPlayerIds = _.map(section.registeredPlayerIds,
                 function (playerId) { return playerId.$oid });
 

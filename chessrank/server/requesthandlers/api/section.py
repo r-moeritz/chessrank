@@ -5,6 +5,7 @@ import bson.json_util
 import requesthandlers.api
 import util
 
+from urllib.parse import urlunsplit
 from tornado import gen
 from bson.objectid import ObjectId
 from util.enums import SectionRegistrationAction
@@ -104,3 +105,39 @@ class SectionHandler(requesthandlers.api.ApiHandler):
 
             db.sections.update(spec, section)
 
+    @util.authenticated_async
+    @gen.coroutine
+    def post(self, _):
+        request = json.loads(self.request.body.decode('utf-8'))
+
+        validator = SectionUpdateValidator(request)
+        result = validator.validate()
+        if not result[0]:
+            raise tornado.web.HTTPError(400, result[1])
+
+        request['tournamentId'] = ObjectId(request['tournamentId'])
+        request['registeredPlayerIds'] = [ObjectId(id) for id in request['registeredPlayerIds']]
+
+        db = self.settings['db']
+        tournament = yield db.tournaments.find_one({ '_id': request['tournamentId'] })
+        if not tournament:
+            # TODO: Log error
+            raise tornado.web.HTTPError(500)
+
+        if tournament['ownerUserId'] != self.current_user:
+            raise tornado.web.HTTPError(403, 'Cannot add a section to tournament {0} as you are not the owner.'
+                                        .format(tournament['_id']))
+        
+        sectionId = yield db.sections.insert(request)
+        if not sectionId:
+            # TODO: Log error
+            raise tornado.web.HTTPError(500)
+
+        request['_id'] = sectionId
+        url = urlunsplit((self.request.protocol,
+                          self.request.host,
+                          'api/sections/{0}'.format(sectionId), '', ''))
+        
+        self.write(bson.json_util.dumps(request))
+        self.set_header('Content-Type', 'application/json')
+        self.set_header('Location', url)

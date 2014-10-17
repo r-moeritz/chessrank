@@ -89,7 +89,25 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 }
             })
-            .state('a.tournaments.details.edit.section', {
+            .state('a.tournaments.details.edit.add_section', {
+                url: '/add_section',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/edit.html',
+                        controller: 'sectionAddCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Add Section',
+                    action: 'Add'
+                },
+                resolve: {
+                    tournament: function ($q, tournament, lookups) {
+                        return $q.when(tournament);
+                    }
+                }
+            })
+            .state('a.tournaments.details.edit.edit_section', {
                 url: '/{sectionId:[0-9a-fA-F]{24}}',
                 views: {
                     '@': {

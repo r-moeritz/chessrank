@@ -11,7 +11,7 @@
             if (error.status === 300) {
                 $scope.request.overwriteExisting = true;
             } else {
-                $scope.loginError = error.data.message;
+                $scope.loginError = error.data.message || 'Unknown error';
                 $rootScope.$broadcast(authEvent.loginFailed);
             }
         }

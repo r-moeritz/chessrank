@@ -110,6 +110,7 @@
     <Content Include="client\controllers\tournament\details.js" />
     <Content Include="client\controllers\tournament\edit.js" />
     <Content Include="client\controllers\tournament\list.js" />
+    <Content Include="client\controllers\tournament\section\add.js" />
     <Content Include="client\controllers\tournament\section\edit.js" />
     <Content Include="client\directives\navbar.js" />
     <Content Include="client\directives\form.js" />
