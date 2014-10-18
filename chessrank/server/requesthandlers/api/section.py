@@ -156,6 +156,12 @@ class SectionHandler(requesthandlers.api.ApiHandler):
         self.set_header('Content-Type', 'application/json')
         self.set_header('Location', url)
 
+    @util.authenticated_async
+    @gen.coroutine
+    def delete(self, id):
+        db = self.settings['db']
+        db.sections.remove({ '_id': ObjectId(id) })    
+
     @staticmethod
     def _format_owner_request(request):
         dateFields = ('startDate', 'endDate', 'registrationStartDate', 'registrationEndDate')

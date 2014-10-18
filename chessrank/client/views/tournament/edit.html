@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in sections">
+                <tr ng-repeat="item in sections" id="section_{{ item._id.$oid }}">
                     <td>{{ item.name }}</td>
                     <td>{{ item.startDate.$date | date }}</td>
                     <td>{{ item.endDate.$date | date }}</td>
@@ -63,7 +63,7 @@
                         <a ui-sref="a.tournaments.details.edit.edit_section({ sectionId: item._id.$oid })">
                             <i class="glyphicon glyphicon-edit" />
                         </a>
-                        <a ng-click="deleteSection(item)"><i class="glyphicon glyphicon-remove" /></a>
+                        <a href="" ng-click="confirmDeleteSection()"><i class="glyphicon glyphicon-remove" /></a>
                     </td>
                 </tr>
             </tbody>

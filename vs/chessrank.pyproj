@@ -145,6 +145,7 @@
     <Content Include="client\app.js" />
     <Content Include="client\bower.json" />
     <Content Include="client\views\tournament\section\edit.html" />
+    <Content Include="client\views\yesno.html" />
     <Content Include="server\templates\verify.html" />
     <Content Include="server\templates\index.html" />
   </ItemGroup>

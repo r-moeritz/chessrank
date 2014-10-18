@@ -107,4 +107,3 @@ class SessionHandler(requesthandlers.api.ApiHandler):
         db = self.settings['db']
         db.sessions.remove({ 'userId': self.current_user })
         self.clear_cookie('sessionId')
-        self.finish()
