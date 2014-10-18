@@ -17,8 +17,8 @@
         $scope.datePickerOptions = {
             start: 'year',
             format: 'dd MMM yyyy',
-            min: moment().utc().subtract(6, 'months').toDate(),
-            max: moment().utc().add(6, 'months').toDate()
+            min: moment().subtract(6, 'months').toDate(),
+            max: moment().add(6, 'months').toDate()
         };
 
         $scope.playSystemOptions = [

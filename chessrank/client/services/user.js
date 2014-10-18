@@ -4,7 +4,7 @@
             { userId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .service('signupService', function (userService, $q, sprintf) {
+    .service('signupService', function (userService, $q, sprintf, dateUtil) {
         this.validationRules = {
             name: {
                 required: true,
@@ -95,10 +95,17 @@
             }
         };
 
-        this.submit = function (model) {
-            request = angular.copy(model);
+        function createRequest(model) {
+            var request = angular.copy(model);
+
+            request.dateOfBirth = dateUtil.localDateToUtc(model.dateOfBirth);
             delete request.password2;
 
+            return request;
+        }
+
+        this.submit = function (model) {
+            var request = createRequest(model);
             return userService.save(request).$promise;
         }
 

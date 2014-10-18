@@ -1,6 +1,8 @@
 ﻿angular.module('chessRank')
     .controller('signupCtrl', function ($scope, $modal, moment, signupService, lookups) {
-        $scope.request = { gender: '0' };
+        $scope.request = { 
+            gender: '0'
+        };
 
         $scope.fideFederationList = lookups.fideFederations;
         $scope.fideTitleList = [
@@ -17,8 +19,8 @@
         $scope.datePickerOptions = {
             start: 'year',
             format: 'dd MMM yyyy',
-            min: moment().utc().subtract(120, 'years').toDate(),
-            max: moment().utc().subtract(4, 'years').toDate()
+            min: moment().subtract(120, 'years').toDate(),
+            max: moment().subtract(4, 'years').toDate()
         };
 
         $scope.signupComplete = function () {
@@ -43,6 +45,6 @@
 
         $scope.ok = function() {
             $modalInstance.close();
-            $state.go('home');
+            $state.go('a.home');
         }
     });

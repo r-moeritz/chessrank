@@ -6,6 +6,7 @@ import bson.json_util
 import itsdangerous
 import bcrypt
 import requesthandlers.api
+import dateutil.parser
 
 from tornado import gen
 from email.message import EmailMessage
@@ -92,7 +93,7 @@ class UserHandler(requesthandlers.api.ApiHandler):
 
     @gen.coroutine
     def post(self, _):
-        """Create unconfirmed user account (sign-up)"""
+        """Create unconfirmed user account and send confirmation email (sign-up)"""
         details = json.loads(self.request.body.decode('utf-8'))
         
         # 1. Validate signup details
@@ -101,23 +102,26 @@ class UserHandler(requesthandlers.api.ApiHandler):
         if not result[0]:
             raise tornado.web.HTTPError(400, result[1])
 
-        # 2. Ensure user with same email does not already exist
+        # 2. Massage input fields where necessary
+        details['dateOfBirth'] = dateutil.parser.parse(details['dateOfBirth'])
+
+        # 3. Ensure user with same email does not already exist
         db = self.settings['db']
         exists = yield db.users.find({ 'email': details.get('email') }).count()
         if exists:
             raise tornado.web.HTTPError(409, "A user with email address '{0}' already exists"
                                         .format(details.get('email')))
 
-        # 3. Create user account
+        # 4. Create user account
         uid = yield self._create_user(details)
 
-        # 4. Generate verification URL
+        # 5. Generate verification URL
         payload = self._serialize_for_url(str(uid))
         url     = urlunsplit((self.request.protocol,
                              self.request.host,
                              'verify/{0}'.format(payload), '', ''))
 
-        # 5. Send confirmation email
+        # 6. Send confirmation email
         smtp = yield self.application.get_smtp_client()
         msg  = self._create_confirmation_message(details, url)
         smtp.send_message(msg)

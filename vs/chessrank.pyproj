@@ -127,6 +127,7 @@
     <Content Include="client\style\custom.css" />
     <Content Include="client\services\player.js" />
     <Content Include="client\style\kendo-bootstrap.css" />
+    <Content Include="client\util\date.js" />
     <Content Include="client\util\globals.js" />
     <Content Include="client\views\form\autoComplete.html" />
     <Content Include="client\views\form\multiSelect.html" />

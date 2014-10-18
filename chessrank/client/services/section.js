@@ -4,7 +4,7 @@
             { tournamentId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .service('sectionEditService', function (_, sectionService) {
+    .service('sectionEditService', function (_, sectionService, dateUtil) {
         this.validationRules = {
             name: {
                 required: true,
@@ -48,6 +48,10 @@
             request.tournamentId = section.tournamentId.$oid;
             request.registeredPlayerIds = _.map(section.registeredPlayerIds,
                 function (playerId) { return playerId.$oid });
+            request.startDate = dateUtil.localDateToUtc(section.startDate);
+            request.endDate = dateUtil.localDateToUtc(section.endDate);
+            request.registrationStartDate = dateUtil.localDateToUtc(section.registrationStartDate);
+            request.registrationEndDate = dateUtil.localDateToUtc(section.registrationEndDate);
 
             return request;
         }

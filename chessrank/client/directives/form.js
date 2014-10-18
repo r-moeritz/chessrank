@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .directive('datePickerField', function (FieldHelper) {
+    .directive('datePickerField', function ($log, FieldHelper) {
         return {
             require: '^formFor',
             restrict: 'E',
@@ -21,7 +21,7 @@
             }
         }
     })
-    .directive('multiSelectField', function (FieldHelper) {
+    .directive('multiSelectField', function ($log, FieldHelper) {
         return {
             require: '^formFor',
             restrict: 'E',
@@ -48,7 +48,7 @@
             }
         }
     })
-    .directive('autoCompleteField', function (FieldHelper) {
+    .directive('autoCompleteField', function ($log, FieldHelper) {
         return {
             require: '^formFor',
             restrict: 'E',
