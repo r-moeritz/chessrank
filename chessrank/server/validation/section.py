@@ -13,7 +13,7 @@ class SectionRegistrationValidator(validation.Validator):
         super().__init__(data)
 
     def validate(self):
-        spurious = set(self._data.keys()) - set('action')
+        spurious = set(self._data.keys()) - {'action'}
         if spurious:
             return (False, "Spurious fields included in request: {0}"
                     .format(', '.join(spurious)))

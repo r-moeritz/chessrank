@@ -66,7 +66,10 @@
                     section.registeredPlayerIds.push($scope.currentUser.playerId);
                     toaster.pop('success', 'Success', sprintf('You have been provisionally registered in the %s',
                         section.name));
-                });
+                },
+                function (error) {
+                    toaster.pop('error', 'Error', error.data.message || 'Unknown error');
+                });;
         }
 
         $scope.unregister = function (section) {
@@ -85,6 +88,8 @@
                         });
                     toaster.pop('success', 'Success', sprintf('You have been unregistered from the %s',
                         section.name));
+                }, function (error) {
+                    toaster.pop('error', 'Error', error.data.message || 'Unknown error');
                 });
         }
     });

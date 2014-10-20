@@ -1,6 +1,6 @@
 ﻿angular.module('chessRank')
     .controller('tournamentEditCtrl', function ($scope, $state, $modal, moment, tournament, sections,
-                                                lookups, sprintf, sectionService) {
+                                                lookups, sprintf, toaster, sectionService) {
         $scope.action = $state.current.data.action;
         $scope.tournament = angular.copy(tournament);
         $scope.tournament.startDate = new Date($scope.tournament.startDate.$date);
@@ -49,7 +49,7 @@
                         $('#section_' + id).fadeOut();
                     },
                     function (error) {
-                        // TODO: Display toast with error info
+                        toaster.pop('error', 'Error', error.data.message || 'Unknown error');
                     });
             });
         }
