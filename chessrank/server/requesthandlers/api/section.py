@@ -59,31 +59,25 @@ class SectionHandler(requesthandlers.api.ApiHandler):
         if not section:
             raise tornado.web.HTTPError(404, 'Section does not exist: {0}'.format(id))
 
-        # 2. Retrieve parent tournament data
-        tournament = yield db.tournaments.find_one({ '_id': section['tournamentId'] })
-        if not tournament:
-            # TODO: Log error
-            raise tornado.web.HTTPError(500)
-
-        # 3. Check whether user is tournament owner
-        if tournament['ownerUserId'] == self.current_user:
+        # 2. Check whether user is tournament owner
+        if section['ownerUserId'] == self.current_user:
             # Tournament owner can perform arbitrary update
 
-            # 4a. Validate update request
+            # 3a. Validate update request
             validator = SectionUpdateValidator(request)
             result = validator.validate()
             if not result[0]:
                 raise tornado.web.HTTPError(400, result[1])
 
-            # 5a. Massage request data
+            # 4a. Massage request data
             self._format_owner_request(request)
             
-            # 6a. Perform update
+            # 5a. Perform update
             db.sections.update(spec, request)
         else:
             # Update requested by other user: only allow registration
 
-            # 4b. Validate registration request
+            # 3b. Validate registration request
             validator = SectionRegistrationValidator(request)
             result = validator.validate()
             if not result[0]:
@@ -159,14 +153,25 @@ class SectionHandler(requesthandlers.api.ApiHandler):
     @util.authenticated_async
     @gen.coroutine
     def delete(self, id):
+        spec = { '_id': ObjectId(id) }
         db = self.settings['db']
-        db.sections.remove({ '_id': ObjectId(id) })    
 
-    @staticmethod
-    def _format_owner_request(request):
+        # 1. Retrieve section data
+        section = yield db.sections.find_one(spec)
+        if not section:
+            raise tornado.web.HTTPError(404, "Section with id '{0}' does not exist".format(id))
+
+        # 2. Check whether user is tournament owner
+        if section['ownerUserId'] != self.current_user:
+            raise tornado.web.HTTPError(403, 'Only tournament owner may delete sections')
+        
+        db.sections.remove(spec)    
+
+    def _format_owner_request(self, request):
         dateFields = ('startDate', 'endDate', 'registrationStartDate', 'registrationEndDate')
         for field in dateFields:
             request[field] = dateutil.parser.parse(request[field])
 
         request['tournamentId'] = ObjectId(request['tournamentId'])
         request['registeredPlayerIds'] = [ObjectId(id) for id in request['registeredPlayerIds']]
+        request['ownerUserId'] = self.current_user

@@ -18,12 +18,26 @@
             }
         };
 
-        this.submit = function (model) {
-            if (model._id) {
-                return tournamentService.update({ tournamentId: model._id.$oid }, model).$promise;
+        function createRequest(tournament) {
+            var request = angular.copy(tournament);
+
+            delete request._id;
+            delete request.ownerUserId;
+
+            request.startDate = dateUtil.localDateToUtc(tournament.startDate);
+            request.endDate = dateUtil.localDateToUtc(tournament.endDate);
+
+            return request;
+        }
+
+        this.submit = function (tournament) {
+            var request = createRequest(tournament)
+
+            if (tournament._id) {
+                return tournamentService.update({ tournamentId: tournament._id.$oid }, request).$promise;
             }
             
-            return tournamentService.save(model).$promise;
+            return tournamentService.save(request).$promise;
         }
 
         return this;

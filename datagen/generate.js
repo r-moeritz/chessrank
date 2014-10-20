@@ -106,6 +106,7 @@ module.exports = {
     
         return {
             tournamentId: tournament._id,
+            ownerUserId: tournament.ownerUserId,
             name: sectionNames[Util.randomInt(0, sectionNames.length)] + ' Section',
             playSystem: playSystem,
             tieBreaks: tieBreaks,

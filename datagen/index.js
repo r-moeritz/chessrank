@@ -70,6 +70,25 @@ function populateAdminUser(db) {
         .then(function (users) { return users[0]._id; });
 }
 
+function populateDummyUsers(db) {
+    var p1 = Gen.generatePlayer(Const.gender.female, ['Player', 'One']);
+    
+    var colPlayers = db.collection('players');
+    return Q.ninvoke(colPlayers, 'insert', p1)
+        .then(function (players) {
+        var u1 = {
+            email: 'playerone@gmail.com',
+            passwordHash: '$2a$12$r2J9LpUc0XEwzLu1CCzL7ONNYKlz4orj4P3JB99muNyNbZEE1oYX.', // Password1234$
+            playerId: players[0]._id,
+            status: Const.userStatus.active
+        };
+        
+        var colUsers = db.collection('users');
+        return Q.ninvoke(colUsers, 'insert', u1);
+        })
+        .then(function () { return db; });
+}
+
 function populateSettings(db) {
     var settings = {
         session_lifespan: 7, // in days
@@ -137,7 +156,8 @@ function populatePlayerRegistrations(db) {
 }
 
 function populateCollections(db) {
-    return Q.all([populateSettings(db), populateLookups(db), populatePlayers(db, 50)])
+    return Q.all([populateSettings(db), populateLookups(db), populatePlayers(db, 50), 
+        populateDummyUsers(db)])
         .then(function () { return populateAdminUser(db); })
         .then(function (userId) { return populateTournaments(db, 10, userId); })
         .then(function (tournaments) { return populateSections(db, tournaments); })

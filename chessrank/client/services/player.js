@@ -1,6 +1,6 @@
 ﻿angular.module('chessRank')
     .factory('playerService', function ($resource) {
         return $resource('api/players/:playerId',
-            { tournamentId: '@id' },
+            { playerId: '@id' },
             { update: { method: 'PUT' } });
     });

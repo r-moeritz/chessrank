@@ -1,7 +1,7 @@
 ﻿angular.module('chessRank')
     .factory('sectionService', function ($resource) {
         return $resource('api/sections/:sectionId',
-            { tournamentId: '@id' },
+            { sectionId: '@id' },
             { update: { method: 'PUT' } });
     })
     .service('sectionEditService', function (_, sectionService, dateUtil) {
@@ -44,6 +44,8 @@
             request = angular.copy(section);
 
             delete request._id;
+            delete request.ownerUserId;
+
             request.timeControls = angular.fromJson(section.timeControls);
             request.tournamentId = section.tournamentId.$oid;
             request.registeredPlayerIds = _.map(section.registeredPlayerIds,
