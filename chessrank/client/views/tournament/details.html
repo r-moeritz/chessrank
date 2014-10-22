@@ -39,7 +39,6 @@
                 <th>System</th>
                 <th>Rounds</th>
                 <th>Time Controls</th>
-                <th>Tie Breaks</th>
                 <th>Fee</th>
                 <th></th>
             </tr>
@@ -52,13 +51,16 @@
                 <td>{{ item.playSystem | playSystem }}</td>
                 <td>{{ item.rounds }}</td>
                 <td>{{ item.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</td>
-                <td>{{ item.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</td>
                 <td>
                     <tournament-currency tournament="tournament"
                                          amount="item.registrationFee" />
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-xs"
+                    <a class="btn btn-xs btn-primary"
+                       ui-sref="a.tournaments.details.section({ sectionId: item._id.$oid })">
+                        Details
+                    </a>
+                    <button class="btn btn-xs btn-success"
                             popover="{{ registerPopover }}"
                             popover-trigger="focus"
                             ng-if="!registered(item)"

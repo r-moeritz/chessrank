@@ -56,7 +56,7 @@ module.exports = {
             federation: Data.fideFederations[Util.randomInt(0, Data.fideFederations.length)].value,
             union: null,
             contactNumber: null,
-            emailAddress: null
+            emailAddress: fullName[0].toLowerCase() + '@example.com'
         };
     },
     

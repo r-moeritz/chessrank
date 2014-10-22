@@ -29,6 +29,25 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     ncyBreadcrumbLabel: 'Home'
                 }
             })
+            .state('a.players', {
+                url: '/players',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/player/list.html',
+                        controller: 'playerListCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Players',
+                    ncyBreadcrumbParent: 'a.home',
+                },
+                resolve: {
+                    playerService: 'playerService',
+                    players: function (playerService) {
+                        return playerService.query().$promise;
+                    }
+                }
+            })
             .state('a.tournaments', {
                 url: '/tournaments',
                 views: {
@@ -60,14 +79,50 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     ncyBreadcrumbLabel: '{{ tournament.name }}'
                 },
                 resolve: {
-                    tournament: function ($stateParams, $q, tournaments, _) {
+                    tournament: function ($stateParams, tournaments, _) {
                         var res = _.find(tournaments,
                             function (tm) { return tm._id.$oid === $stateParams.tournamentId; });
-                        return $q.when(res);
+                        return res;
                     },
                     sectionService: 'sectionService',
                     sections: function ($stateParams, sectionService) {
                         return sectionService.query({ tournamentId: $stateParams.tournamentId }).$promise;
+                    }
+                }
+            })
+            .state('a.tournaments.details.section', {
+                url: '/section/{sectionId:[0-9a-fA-F]{24}}',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/details.html',
+                        controller: 'sectionDetailsCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: '{{ section.name }}'
+                },
+                resolve: {
+                    section: function ($stateParams, _, sections, tournament, lookups) {
+                        var res = _.find(sections,
+                            function (sec) { return sec._id.$oid === $stateParams.sectionId; });
+                        return res;
+                    }
+                }
+            })
+            .state('a.tournaments.details.section.edit', {
+                url: '/edit',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/edit.html',
+                        controller: 'sectionEditCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Edit'
+                },
+                resolve: {
+                    section: function (section, tournament, lookups) {
+                        return section;
                     }
                 }
             })
@@ -102,26 +157,6 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                 resolve: {
                     tournament: function (tournament, lookups) {
                         return tournament;
-                    }
-                }
-            })
-            .state('a.tournaments.details.edit.edit_section', {
-                url: '/{sectionId:[0-9a-fA-F]{24}}',
-                views: {
-                    '@': {
-                        templateUrl: 'static/views/tournament/section/edit.html',
-                        controller: 'sectionEditCtrl'
-                    }
-                },
-                data: {
-                    ncyBreadcrumbLabel: '{{ section.name }}'
-                },
-                resolve: {
-                    section: function (_, $stateParams, tournament, sections, lookups) {
-                        var res = _.find(sections, function (sec) {
-                            return sec._id.$oid === $stateParams.sectionId;
-                        });
-                        return res;
                     }
                 }
             })

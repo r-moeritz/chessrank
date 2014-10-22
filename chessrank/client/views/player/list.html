@@ -1,0 +1,30 @@
+﻿<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>DOB</th>
+                <th>Rating (FIDE / Fed.)</th>
+                <th>Title (FIDE / Fed.)</th>
+                <th>Federation</th>
+                <th>Email</th>
+                <!--<th></th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in players">
+                <td>{{ item.name + ' ' + item.surname }}</td>
+                <td>{{ item.dateOfBirth.$date | date }}</td>
+                <td>{{ (item.fideRating || '-') +  ' / ' + (item.federationRating || '-') }}</td>
+                <td>{{ (item.fideTitle || '-') + ' / ' + (item.federationTitle || '-') }}</td>
+                <td><federation value="item.federation"></federation></td>
+                <td><a href="mailto:{{ item.emailAddress }}">{{ item.emailAddress }}</a></td>
+                <!--<td>
+                    <button class="btn btn-xs btn-primary">
+
+                    </button>
+                </td>-->
+            </tr>
+        </tbody>
+    </table>
+</div>

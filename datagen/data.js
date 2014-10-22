@@ -170,7 +170,7 @@ module.exports = {
       {
         value: 77,
         region: 'Asia',
-        name: 'Papau New Guinea'
+        name: 'Papua New Guinea'
     },
       {
         value: 78,

@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('tournamentDetailsCtrl', function ($scope, $stateParams, sprintf, _, toaster, tournament, sections,
+    .controller('tournamentDetailsCtrl', function ($scope, sprintf, _, toaster, tournament, sections,
                                                    authEvent, sectionService, sectionRegistrationAction) {
         $scope.tournament = tournament;
         $scope.sections = sections;
