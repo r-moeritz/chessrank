@@ -1,7 +1,6 @@
 ﻿angular.module('chessRank')
     .controller('tournamentDetailsCtrl', function ($scope, $stateParams, sprintf, _, toaster, tournament, sections,
-                                                   authService, authEvent, sectionService, sectionRegistrationAction) {
-        $scope.currentUser = authService.currentUser;
+                                                   authEvent, sectionService, sectionRegistrationAction) {
         $scope.tournament = tournament;
         $scope.sections = sections;
 
@@ -10,11 +9,9 @@
             : 'You need to login or sign up before you can register for tournaments';
 
         $scope.$on(authEvent.loginSuccess, function () {
-            $scope.currentUser = authService.currentUser;
             $scope.registerPopover = null;
         });
         $scope.$on(authEvent.logoutSuccess, function () {
-            $scope.currentUser = null;
             $scope.registerPopover = 'You need to login or sign up before you can register for tournaments';
         });
 

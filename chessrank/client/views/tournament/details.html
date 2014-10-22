@@ -3,20 +3,28 @@
 <h3>Details</h3>
 <div class="container-fluid">
     <div class="row padded-row">
-        <div class="col-xs-6 col-md-4">Location</div>
-        <div class="col-xs-6 col-md-4">{{ tournament.location }}</div>
+        <div class="col-md-4">Location</div>
+        <div class="col-md-4">{{ tournament.location }}</div>
+        <div class="col-md-4">
+            <a ng-if="currentUser && currentUser.userId.$oid == tournament.ownerUserId.$oid"
+               ui-sref="a.tournaments.details.edit({ tournamentId: tournament._id.$oid })"
+               class="btn btn-xs btn-primary">Edit</a>
+        </div>
     </div>
     <div class="row padded-row">
-        <div class="col-xs-6 col-md-4">Date</div>
-        <div class="col-xs-6 col-md-4">{{ tournament.startDate.$date | date }} - {{ tournament.endDate.$date | date }}</div>
+        <div class="col-md-4">Date</div>
+        <div class="col-md-4">{{ tournament.startDate.$date | date }} - {{ tournament.endDate.$date | date }}</div>
+        <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
-        <div class="col-xs-6 col-md-4">Tournament Director</div>
-        <div class="col-xs-6 col-md-4"><user-link user-id="tournament.ownerUserId" /></div>
+        <div class="col-md-4">Tournament Director</div>
+        <div class="col-md-4"><user-link user-id="tournament.ownerUserId.$oid" /></div>
+        <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
-        <div class="col-xs-6 col-md-4">Status</div>
-        <div class="col-xs-6 col-md-4"><b>TODO</b></div>
+        <div class="col-md-4">Status</div>
+        <div class="col-md-4"><b>TODO</b></div>
+        <div class="col-md-4"></div>
     </div>
 </div>
 

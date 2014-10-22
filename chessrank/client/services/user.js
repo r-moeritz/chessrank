@@ -4,6 +4,39 @@
             { userId: '@id' },
             { update: { method: 'PUT' } });
     })
+    .service('userLookupService', function ($q, _, userService) {
+        var _this = this;
+
+        this._users = [];
+
+        this.findUser = function (userId) {
+            if (_this.promise) {
+                return _this.promise;
+            }
+
+            var user = _.find(_this._users, function (u) {
+                return u.userId.$oid === userId;
+            });
+
+            if (user) {
+                return $q.when(user);
+            }
+
+            _this.promise = userService.query().$promise.then(
+                function (userList) {
+                    _this._users = userList;
+                    _this.promise = null;
+
+                    var user = _.find(_this._users, function (u) {
+                        return u.userId.$oid === userId;
+                    });
+                    return user;
+                });
+            return _this.promise;
+        };
+
+        return this;
+    })
     .service('signupService', function (userService, $q, sprintf, dateUtil) {
         this.validationRules = {
             name: {

@@ -4,7 +4,63 @@
             { sectionId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .service('sectionEditService', function (_, sectionService, dateUtil) {
+    .factory('sectionEditHelper', function ($state, _, moment, playSystem, tieBreak, timeControlFilter) {
+        return function () {
+            this.attach = function (scope, tournament, lookups) {
+                scope.datePickerOptions = {
+                    start: 'year',
+                    format: 'dd MMM yyyy',
+                    min: moment().subtract(6, 'months').toDate(),
+                    max: moment().add(6, 'months').toDate()
+                };
+
+                scope.currency = _.find(lookups.currencies,
+                    function (cur) {
+                        return cur.value === tournament.registrationFeeCurrencyId;
+                    });
+
+                scope.playSystemOptions = [
+                    { label: 'Round Robin', value: playSystem.roundRobin },
+                    { label: 'Double Round Robin', value: playSystem.doubleRoundRobin },
+                    { label: 'Swiss', value: playSystem.swiss }
+                ];
+
+                scope.tieBreakOptions = {
+                    dataTextField: 'label',
+                    dataValueField: 'value',
+                    dataSource: [
+                        { label: 'Neustadl', value: tieBreak.neustadl },
+                        { label: 'Buchholz', value: tieBreak.buchholz },
+                        { label: 'Median', value: tieBreak.median },
+                        { label: 'Modified Median', value: tieBreak.modifiedMedian }
+                    ]
+                };
+
+                scope.timeControlOptions = _.map(lookups.stdTimeControls,
+                    function (tc) {
+                        return {
+                            value: angular.toJson(tc),
+                            label: _.map(tc, function (ctrl) {
+                                return timeControlFilter(ctrl);
+                            }).join(', ')
+                        }
+                    });
+
+                scope.editComplete = function () {
+                    $state.go('^');
+                }
+
+                scope.editFailed = function (error) {
+                    scope.editError = error.data.message || 'Unknown error';
+                }
+
+                scope.clearError = function () {
+                    scope.editError = null
+                }
+            };
+        };
+    })
+    .service('sectionEditService', function ($q, tournamentEditService) {
         this.validationRules = {
             name: {
                 required: true,
@@ -40,31 +96,14 @@
             };
         }
 
-        function createRequest(section) {
-            request = angular.copy(section);
-
-            delete request._id;
-            delete request.ownerUserId;
-
-            request.timeControls = angular.fromJson(section.timeControls);
-            request.tournamentId = section.tournamentId.$oid;
-            request.registeredPlayerIds = _.map(section.registeredPlayerIds,
-                function (playerId) { return playerId.$oid });
-            request.startDate = dateUtil.localDateToUtc(section.startDate);
-            request.endDate = dateUtil.localDateToUtc(section.endDate);
-            request.registrationStartDate = dateUtil.localDateToUtc(section.registrationStartDate);
-            request.registrationEndDate = dateUtil.localDateToUtc(section.registrationEndDate);
-
-            return request;
-        }
-
         this.submit = function (section) {
-            var request = createRequest(section);
             if (section._id) {
-                return sectionService.update({ sectionId: section._id.$oid }, request).$promise;
+                tournamentEditService.updateSection(section);
+            } else {
+                tournamentEditService.addSection(section);
             }
 
-            return sectionService.save(request).$promise;
+            return $q.when(true);
         }
 
         return this;

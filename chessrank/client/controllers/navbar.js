@@ -10,21 +10,16 @@
         $scope.logout = function () {
             authService.logout()
                 .then(function () {
+                    $rootScope.currentUser = null;
                     $rootScope.$broadcast(authEvent.logoutSuccess);
                 });
         }
 
         $scope.checkLoginStatus = function () {
             authService.checkLoginStatus()
-                .then(function () {
+                .then(function (loggedInUser) {
+                    $rootScope.currentUser = loggedInUser;
                     $rootScope.$broadcast(authEvent.loginSuccess);
                 });
         }
-
-        $scope.$on(authEvent.loginSuccess, function () {
-            $scope.currentUser = authService.currentUser;
-        });
-        $scope.$on(authEvent.logoutSuccess, function () {
-            $scope.currentUser = null;
-        });
     });

@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .directive('userLink', function (userService) {
+    .directive('userLink', function (userLookupService) {
         return {
             restrict: 'E',
             scope: {
@@ -7,7 +7,10 @@
             },
             template: '<a href="">{{ user.name }} {{ user.surname }}</a>',
             link: function (scope) {
-                scope.user = userService.get({ userId: scope.userId.$oid });
+                userLookupService.findUser(scope.userId)
+                    .then(function (user) {
+                        scope.user = user;
+                    });
             }
         }
     });

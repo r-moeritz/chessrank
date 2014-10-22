@@ -11,6 +11,7 @@
                 })
                 .then(function (response) {
                     _this.currentUser = response.data;
+                    return _this.currentUser;
                 });
         }
 
@@ -27,6 +28,7 @@
                 .get('api/session')
                 .then(function (response) {
                     _this.currentUser = response.data;
+                    return _this.currentUser;
                 });
         }
 

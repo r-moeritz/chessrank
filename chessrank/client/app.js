@@ -67,7 +67,7 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     },
                     sectionService: 'sectionService',
                     sections: function ($stateParams, sectionService) {
-                        return sectionService.query({ tournamentId: $stateParams.tournamentId });
+                        return sectionService.query({ tournamentId: $stateParams.tournamentId }).$promise;
                     }
                 }
             })
@@ -80,12 +80,11 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 },
                 data: {
-                    ncyBreadcrumbLabel: 'Edit',
-                    action: 'Edit'
+                    ncyBreadcrumbLabel: 'Edit'
                 },
                 resolve: {
-                    sections: function (_, $q, tournament, sections, lookups) {
-                        return $q.when(sections);
+                    sections: function (tournament, sections, lookups) {
+                        return sections;
                     }
                 }
             })
@@ -98,12 +97,11 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 },
                 data: {
-                    ncyBreadcrumbLabel: 'Add Section',
-                    action: 'Add'
+                    ncyBreadcrumbLabel: 'Add Section'
                 },
                 resolve: {
-                    tournament: function ($q, tournament, lookups) {
-                        return $q.when(tournament);
+                    tournament: function (tournament, lookups) {
+                        return tournament;
                     }
                 }
             })
@@ -116,33 +114,72 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 },
                 data: {
-                    ncyBreadcrumbLabel: '{{ section.name }}',
-                    action: 'Edit'
+                    ncyBreadcrumbLabel: '{{ section.name }}'
                 },
                 resolve: {
-                    section: function ($q, _, $stateParams, tournament, sections, lookups) {
+                    section: function (_, $stateParams, tournament, sections, lookups) {
                         var res = _.find(sections, function (sec) {
                             return sec._id.$oid === $stateParams.sectionId;
                         });
-                        return $q.when(res);
+                        return res;
                     }
                 }
             })
-            .state('a.tournaments.create', {
+            .state('a.tournaments.add', {
                 url: '/create',
                 views: {
                     '@': {
                         templateUrl: 'static/views/tournament/edit.html',
-                        controller: 'tournamentEditCtrl',
+                        controller: 'tournamentAddCtrl',
                     }
                 },
                 data: {
-                    ncyBreadcrumbLabel: 'Create Tournament',
-                    action: 'Create'
+                    ncyBreadcrumbLabel: 'Create Tournament'                    
                 },
                 resolve: {
-                    tournament: function ($q) {
-                        return $q.when({});
+                    lookups: function (lookups) {
+                        return lookups;
+                    }
+                }
+            })
+            .state('a.tournaments.add.add_section', {
+                url: '/add_section',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/edit.html',
+                        controller: 'sectionAddCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Add Section'
+                },
+                tournamentEditService: 'tournamentEditService',
+                resolve: {
+                    tournament: function (tournamentEditService, lookups) {
+                        return tournamentEditService.getTournamentToAdd();
+                    }
+                }
+            })
+            .state('a.tournaments.add.edit_section', {
+                url: '/{sectionId:[0-9]{13}}',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/edit.html',
+                        controller: 'sectionEditCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: '{{ section.name }}'
+                },
+                tournamentEditService: 'tournamentEditService',
+                resolve: {
+                    section: function (_, $stateParams, tournamentEditService) {
+                        var res = _.find(tournamentEditService.getSectionsToAddOrUpdate(),
+                            function (sec) { return sec.fakeId === $stateParams.sectionId; });
+                        return res;
+                    },
+                    tournament: function (tournamentEditService, lookups) {
+                        return tournamentEditService.getTournamentToAdd();
                     }
                 }
             })
@@ -155,8 +192,8 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     ncyBreadcrumbParent: 'a.home',
                 },
                 resolve: {
-                    lookups: function ($q, lookups) {
-                        return $q.when(lookups);
+                    lookups: function (lookups) {
+                        return lookups;
                     }
                 }
             });

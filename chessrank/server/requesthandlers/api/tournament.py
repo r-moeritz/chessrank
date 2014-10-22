@@ -8,6 +8,7 @@ import pymongo
 import json
 import dateutil.parser
 
+from urllib.parse import urlunsplit
 from tornado import gen
 from bson.objectid import ObjectId
 from validation.tournament import TournamentUpdateValidator
@@ -71,6 +72,36 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
 
         # 5. Perform update
         db.tournaments.update(spec, request)
+
+    @util.authenticated_async
+    @gen.coroutine
+    def post(self, _):
+        request = json.loads(self.request.body.decode('utf-8'))
+        
+        # 1. Validate insert request
+        validator = TournamentUpdateValidator(request)
+        result = validator.validate()
+        if not result[0]:
+            raise tornado.web.HTTPError(400, result[1])
+
+        # 2. Massage request
+        self._format_upsert_request(request)
+
+        # 3. Perform insert
+        db = self.settings['db']
+        tournamentId = yield db.tournaments.insert(spec, request)
+        if not tournamentId:
+            raise tornado.web.HTTPError(500)
+
+        # 4. Write response
+        request['_id'] = tournamentId
+        url = urlunsplit((self.request.protocol,
+                          self.request.host,
+                          'api/tournaments/{0}'.format(tournamentId), '', ''))
+        
+        self.write(bson.json_util.dumps(request))
+        self.set_header('Content-Type', 'application/json')
+        self.set_header('Location', url)
 
     def _format_upsert_request(self, request):
         request['ownerUserId'] = self.current_user

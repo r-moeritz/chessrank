@@ -2,9 +2,11 @@
     .controller('loginCtrl', function ($scope, $rootScope, $modalInstance, authEvent, authService) {
         $scope.request = {};
 
-        $scope.loginComplete = function () {
-            $modalInstance.close();
+        $scope.loginComplete = function (loggedInUser) {
+            $rootScope.currentUser = loggedInUser;
             $rootScope.$broadcast(authEvent.loginSuccess);
+
+            $modalInstance.close();
         }
 
         $scope.loginFailed = function (error) {
