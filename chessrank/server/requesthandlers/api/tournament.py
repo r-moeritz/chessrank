@@ -89,7 +89,7 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
 
         # 3. Perform insert
         db = self.settings['db']
-        tournamentId = yield db.tournaments.insert(spec, request)
+        tournamentId = yield db.tournaments.insert(request)
         if not tournamentId:
             raise tornado.web.HTTPError(500)
 

@@ -2,8 +2,8 @@
     .controller('loginCtrl', function ($scope, $rootScope, $modalInstance, authEvent, authService) {
         $scope.request = {};
 
-        $scope.loginComplete = function (loggedInUser) {
-            $rootScope.currentUser = loggedInUser;
+        $scope.loginComplete = function () {
+            $rootScope.currentUser = authService.getCurrentUser();
             $rootScope.$broadcast(authEvent.loginSuccess);
 
             $modalInstance.close();

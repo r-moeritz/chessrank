@@ -7,10 +7,10 @@
             },
             templateUrl: 'static/views/tournament/list.html',
             link: function (scope) {
-                scope.currentUser = authService.currentUser;
+                scope.currentUser = authService.getCurrentUser();
 
                 scope.$on(authEvent.loginSuccess, function () {
-                    scope.currentUser = authService.currentUser;
+                    scope.currentUser = authService.getCurrentUser();
                 });
                 scope.$on(authEvent.logoutSuccess, function () {
                     scope.currentUser = null;

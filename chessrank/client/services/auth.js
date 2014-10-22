@@ -1,8 +1,12 @@
 ﻿angular.module('chessRank')
     .service('authService', function ($http) {
-        this.currentUser = null;
-
         var _this = this;
+
+        this._currentUser = null;
+
+        this.getCurrentUser = function () {
+            return _this._currentUser;
+        }
 
         this.login = function (request) {
             return $http
@@ -10,8 +14,8 @@
                     withCredentials: true
                 })
                 .then(function (response) {
-                    _this.currentUser = response.data;
-                    return _this.currentUser;
+                    _this._currentUser = response.data;
+                    return _this._currentUser;
                 });
         }
 
@@ -19,7 +23,7 @@
             return $http
                 .delete('api/session')
                 .then(function () {
-                    _this.currentUser = null;
+                    _this._currentUser = null;
                 });
         }
 
@@ -27,8 +31,8 @@
             return $http
                 .get('api/session')
                 .then(function (response) {
-                    _this.currentUser = response.data;
-                    return _this.currentUser;
+                    _this._currentUser = response.data;
+                    return _this._currentUser;
                 });
         }
 

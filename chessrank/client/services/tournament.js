@@ -7,8 +7,6 @@
     .factory('tournamentEditHelper', function ($state, $modal, moment, sprintf, tournamentEditService) {
         return function () {
             this.attach = function (scope) {
-                //tournamentEditService.reset();
-
                 scope.datePickerOptions = {
                     start: 'year',
                     format: 'dd MMM yyyy',
@@ -17,7 +15,8 @@
                 };
 
                 scope.editComplete = function () {
-                    $state.go('^');
+                    tournamentEditService.reset();
+                    $state.go('^', null, { reload: true });
                 }
 
                 scope.editFailed = function (error) {
@@ -26,6 +25,11 @@
 
                 scope.clearError = function () {
                     scope.editError = null
+                }
+
+                scope.cancel = function () {
+                    tournamentEditService.reset();
+                    $state.go('^');
                 }
 
                 scope.confirmDeleteSection = function () {
@@ -87,7 +91,7 @@
             });
 
             if (!found) {
-                _this._sectionsToAdd.push(fixSection(section));
+                _this._sectionsToAdd.push(fixSectionData(section));
             }
         }
 
@@ -100,7 +104,7 @@
             });
 
             if (!found) {
-                _this._sectionsToUpdate.push(fixSection(section));
+                _this._sectionsToUpdate.push(fixSectionData(section));
             }
         }
 
@@ -139,14 +143,16 @@
 
             delete request._id;
             delete request.ownerUserId;
+            delete request.currency;
 
             request.startDate = dateUtil.localDateToUtc(tournament.startDate);
             request.endDate = dateUtil.localDateToUtc(tournament.endDate);
+            request.registrationFeeCurrencyId = tournament.currency.value;
 
             return request;
         }
 
-        function fixSection(section) {
+        function fixSectionData(section) {
             section.timeControls = angular.fromJson(section.timeControls);
             section.startDate = dateUtil.localDateToUtc(section.startDate);
             section.endDate = dateUtil.localDateToUtc(section.endDate);
@@ -194,16 +200,18 @@
                 promises = promises.concat(_.map(updateRequests,
                     function (req) { return sectionService.update(req).$promise; }));
 
-                promises = promises.concat(_.map(_this.sectionsToDelete,
+                promises = promises.concat(_.map(_this._sectionsToDelete,
                     function (sec) { return sectionService.delete({ sectionId: sec._id.$oid }).$promise; }));
             } else {
                 // New tournament
-                tournamentService.save(request).then(
+                var request = createTournamentRequest(tournament);
+                promises.push(tournamentService.save(request).$promise.then(
                     function (data) {
                         var insertRequests = createUpsertRequests(data._id, true);
-                        promises = _.map(insertRequests,
+                        var insertPromises = _.map(insertRequests,
                             function (req) { return sectionService.save(req).$promise; });
-                    });
+                        return $q.all(insertPromises);
+                    }));
             }
 
             return $q.all(promises);
