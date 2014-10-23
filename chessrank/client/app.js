@@ -29,25 +29,6 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     ncyBreadcrumbLabel: 'Home'
                 }
             })
-            .state('a.players', {
-                url: '/players',
-                views: {
-                    '@': {
-                        templateUrl: 'static/views/player/list.html',
-                        controller: 'playerListCtrl'
-                    }
-                },
-                data: {
-                    ncyBreadcrumbLabel: 'Players',
-                    ncyBreadcrumbParent: 'a.home',
-                },
-                resolve: {
-                    playerService: 'playerService',
-                    players: function (playerService) {
-                        return playerService.query().$promise;
-                    }
-                }
-            })
             .state('a.tournaments', {
                 url: '/tournaments',
                 views: {
@@ -111,10 +92,18 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     ncyBreadcrumbLabel: '{{ section.name }}'
                 },
                 resolve: {
-                    section: function ($stateParams, _, sections, tournament, lookups) {
+                    section: function (_, $stateParams, sections, tournament) {
                         var res = _.find(sections,
                             function (sec) { return sec._id.$oid === $stateParams.sectionId; });
                         return res;
+                    },
+                    players: function (section, playerLookupService, lookups) {
+                        var playerIds = _.map(section.registeredPlayerIds,
+                            function (pid) { return pid.$oid; });
+                        playerIds = playerIds.concat(_.map(section.confirmedPlayerIds,
+                            function (pid) { return pid.$oid; }));
+
+                        return playerLookupService.findPlayers(playerIds);
                     }
                 }
             })
@@ -123,14 +112,31 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                 views: {
                     '@': {
                         templateUrl: 'static/views/tournament/section/edit.html',
-                        controller: 'sectionEditCtrl'
+                        controller: 'sectionEditDetailsCtrl'
                     }
                 },
                 data: {
-                    ncyBreadcrumbLabel: 'Edit'
+                    ncyBreadcrumbLabel: 'Edit Details'
                 },
                 resolve: {
                     section: function (section, tournament, lookups) {
+                        return section;
+                    }
+                }
+            })
+            .state('a.tournaments.details.section.players', {
+                url: '/players',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/players.html',
+                        controller: 'sectionEditPlayersCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Edit Players'
+                },
+                resolve: {
+                    section: function (section, tournament, lookups, players) {
                         return section;
                     }
                 }

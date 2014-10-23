@@ -82,7 +82,6 @@
   <ItemGroup>
     <Folder Include="client\controllers\" />
     <Folder Include="client\controllers\auth\" />
-    <Folder Include="client\controllers\player\" />
     <Folder Include="client\controllers\tournament\" />
     <Folder Include="client\controllers\tournament\section\" />
     <Folder Include="client\images\" />
@@ -94,7 +93,6 @@
     <Folder Include="client\views\" />
     <Folder Include="client\views\auth\" />
     <Folder Include="client\views\form\" />
-    <Folder Include="client\views\player\" />
     <Folder Include="client\views\tournament\" />
     <Folder Include="client\" />
     <Folder Include="client\views\tournament\section\" />
@@ -111,17 +109,18 @@
     <Content Include="client\controllers\auth\signup.js" />
     <Content Include="client\controllers\home.js" />
     <Content Include="client\controllers\auth\login.js" />
-    <Content Include="client\controllers\player\list.js" />
     <Content Include="client\controllers\tournament\details.js" />
     <Content Include="client\controllers\tournament\edit.js" />
     <Content Include="client\controllers\tournament\list.js" />
     <Content Include="client\controllers\tournament\section\details.js" />
     <Content Include="client\controllers\tournament\section\edit.js" />
+    <Content Include="client\controllers\tournament\section\players.js" />
     <Content Include="client\directives\navbar.js" />
     <Content Include="client\directives\form.js" />
     <Content Include="client\directives\player.js" />
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\directives\user.js" />
+    <Content Include="client\filters\player.js" />
     <Content Include="client\images\logo.png" />
     <Content Include="client\filters\section.js" />
     <Content Include="client\util\rmutils.js" />
@@ -142,7 +141,7 @@
     <Content Include="client\views\form\datePicker.html" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\auth\login.html" />
-    <Content Include="client\views\player\list.html" />
+    <Content Include="client\views\tournament\section\players.html" />
     <Content Include="client\views\tournament\details.html" />
     <Content Include="client\views\tournament\edit.html" />
     <Content Include="client\views\tournament\list.html" />

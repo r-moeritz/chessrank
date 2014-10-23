@@ -66,14 +66,21 @@
                     </td>
                     <td>
                         <a ng-show="action === 'Edit'"
-                           ui-sref="a.tournaments.details.section.edit({ sectionId: item._id.$oid })">
+                           ui-sref="a.tournaments.details.section.edit({ sectionId: item._id.$oid })"
+                           class="glyph-margin-right">
                             <i class="glyphicon glyphicon-edit" />
                         </a>
                         <a ng-show="action === 'Create'"
-                           ui-sref="a.tournaments.add.edit_section({ sectionId: item.fakeId })">
+                           ui-sref="a.tournaments.add.edit_section({ sectionId: item.fakeId })"
+                           class="glyph-margin-right">
                             <i class="glyphicon glyphicon-edit" />
                         </a>
-                        <a href="" ng-click="confirmDeleteSection()" style="margin-left: 10px;">
+                        <a ng-show="action === 'Edit'"
+                           ui-sref="a.tournaments.details.section.players({ sectionId: item._id.$oid })"
+                           class="glyph-margin-right">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </a>
+                        <a href="" ng-click="confirmDeleteSection()">
                             <i class="glyphicon glyphicon-remove" />
                         </a>
                     </td>

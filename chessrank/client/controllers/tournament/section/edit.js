@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('sectionEditCtrl', function (_, $scope, $state, tournament, section, lookups, sectionEditHelper) {
+    .controller('sectionEditDetailsCtrl', function (_, $scope, $state, tournament, section, lookups, sectionEditHelper) {
         $scope.action = 'Edit';
         $scope.section = angular.copy(section);
         $scope.section.timeControls = angular.toJson($scope.section.timeControls);

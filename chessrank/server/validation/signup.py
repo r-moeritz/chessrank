@@ -13,20 +13,20 @@ class SignupValidator(validation.Validator):
 
         self._required = {
             'name': self._verify_name, 
-         'surname': self._verify_name, 
-          'gender': self._verify_gender, 
-           'email': self._verify_email,
-        'password': self._verify_password
+            'surname': self._verify_name, 
+            'gender': self._verify_gender, 
+            'email': self._verify_email,
+            'password': self._verify_password
         }
         self._optional = {
             'dateOfBirth': self._verify_date_of_birth, 
-          'contactNumber': self._verify_telno, 
-             'fideRating': self._verify_rating, 
-              'federationRating': self._verify_rating,
-              'fideTitle': self._verify_fide_title,
-              'federationTitle': self._verify_name,
-              'federation': self._verify_federation,
-              'union': self._verify_name
+            'contactNumber': self._verify_telno, 
+            'fideRating': self._verify_rating, 
+            'federationRating': self._verify_rating,
+            'fideTitle': self._verify_fide_title,
+            'federationTitle': self._verify_name,
+            'federation': self._verify_federation,
+            'union': self._verify_name
         }
 
     def validate(self):

@@ -1,99 +1,95 @@
 ﻿<h2 class="text-center">{{ tournament.name }} - {{ section.name }}</h2>
 
-<h3>Details</h3>
-<div class="container-fluid">
+<h3 class="v-middle">Details</h3>
+<a ng-show="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
+   ui-sref="a.tournaments.details.section.edit({ sectionId: section._id.$oid })"
+   class="v-middle padded-cell">
+    <i class="glyphicon glyphicon-edit"></i>
+</a>
+        
+<div class="container">
     <div class="row padded-row">
         <div class="col-md-4">Schedule</div>
-        <div class="col-md-4">{{ section.startDate.$date | date }} - {{ section.endDate.$date | date }}</div>
-        <div class="col-md-4">
-            <a ng-show="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
-               ui-sref="a.tournaments.details.section.edit({ sectionId: section._id.$oid })"
-               class="btn btn-xs btn-primary">Edit</a>
-        </div>
+        <div class="col-md-8">{{ section.startDate.$date | date }} - {{ section.endDate.$date | date }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Registration</div>
-        <div class="col-md-4">{{ section.registrationStartDate.$date | date }} - {{ section.registrationEndDate.$date | date }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.registrationStartDate.$date | date }} - {{ section.registrationEndDate.$date | date }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Play System</div>
-        <div class="col-md-4">{{ section.playSystem | playSystem }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.playSystem | playSystem }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Time Controls</div>
-        <div class="col-md-4">{{ section.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Tie Breaks</div>
-        <div class="col-md-4">{{ section.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Rounds</div>
-        <div class="col-md-4">{{ section.rounds }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.rounds }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Maximum No. Players</div>
-        <div class="col-md-4">{{ section.maxPlayers }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.maxPlayers }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Chief Arbiter</div>
-        <div class="col-md-4">{{ section.chiefArbiter }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.chiefArbiter }}</div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Registration Fee</div>
-        <div class="col-md-4">{{ section.registrationFee }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">
+            <tournament-currency tournament="tournament"
+                                 amount="section.registrationFee" />
+        </div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Invitation only</div>
-        <div class="col-md-4">
+        <div class="col-md-8">
             <i ng-show="section.invitationOnly" class="glyphicon glyphicon-ok"></i>
             <i ng-hide="section.invitationOnly" class="glyphicon glyphicon-remove"></i>
         </div>
-        <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Provisional rating (for unrated players)</div>
-        <div class="col-md-4">{{ section.provisionalRating }}</div>
-        <div class="col-md-4"></div>
+        <div class="col-md-8">{{ section.provisionalRating }}</div>
     </div>
 </div>
 
-<h3>Players</h3>
-<p ng-hide="players.length">There are currently no players registered for this section.</p>
-<div class="table-responsive" ng-show="players.length">
+<h3 class="v-middle">Players</h3>
+<a ng-show="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
+    ui-sref="a.tournaments.details.section.players({ sectionId: section._id.$oid })"
+    class="v-middle padded-cell">
+    <i class="glyphicon glyphicon-edit"></i>
+</a>
+
+<p ng-hide="confirmedPlayers.length">There are currently no players confirmed registered for this section.</p>
+<div class="table-responsive" ng-show="confirmedPlayers.length">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>DOB</th>
-                <th>Rating (FIDE / Fed.)</th>
-                <th>Title (FIDE / Fed.)</th>
+                <th>DoB</th>
                 <th>Federation</th>
-                <th>Email</th>
-                <!--<th></th>-->
+                <th>Rating (FIDE)</th>
+                <th>Rating (Fed)</th>
+                <th>Title (FIDE)</th>
+                <th>Title (Fed)</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in players">
+            <tr ng-repeat="item in confirmedPlayers">
                 <td>{{ item.name + ' ' + item.surname }}</td>
                 <td>{{ item.dateOfBirth.$date | date }}</td>
-                <td>{{ (item.fideRating || '-') +  ' / ' + (item.federationRating || '-') }}</td>
-                <td>{{ (item.fideTitle || '-') + ' / ' + (item.federationTitle || '-') }}</td>
                 <td><federation value="item.federation"></federation></td>
-                <td><a href="mailto:{{ item.emailAddress }}">{{ item.emailAddress }}</a></td>
-                <!--<td>
-                    <button class="btn btn-xs btn-primary">
-
-                    </button>
-                </td>-->
+                <td>{{ item.fideRating || '-' }}</td>
+                <td>{{ item.federationRating || '-' }}</td>
+                <td>{{ (item.fideTitle | fideTitle) || '-' }}</td>
+                <td>{{ item.federationTitle || '-' }}</td>
             </tr>
         </tbody>
     </table>

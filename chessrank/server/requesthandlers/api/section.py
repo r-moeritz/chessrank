@@ -177,4 +177,5 @@ class SectionHandler(requesthandlers.api.ApiHandler):
 
         request['tournamentId'] = ObjectId(request['tournamentId'])
         request['registeredPlayerIds'] = [ObjectId(id) for id in request['registeredPlayerIds']]
+        request['confirmedPlayerIds'] = [ObjectId(id) for id in request['confirmedPlayerIds']]
         request['ownerUserId'] = self.current_user

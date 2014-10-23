@@ -15,21 +15,23 @@
             $scope.registerPopover = 'You need to login or sign up before you can register for tournaments';
         });
 
-        $scope.registered = function (section) {
+        $scope.registered = function () {
             if (!$scope.currentUser) {
                 return false;
             }
 
+            var section = this.item;
             return _.find(section.registeredPlayerIds, function (playerId) {
                 return playerId.$oid === $scope.currentUser.playerId.$oid;
             });
         }
 
-        $scope.registrationClosed = function (section, allSections) {
+        $scope.registrationClosed = function (allSections) {
             if (section.invitationOnly) {
                 return true;
             }
 
+            var section = this.item;
             var now = moment.utc();
             var regStart = moment.utc(section.registrationStartDate.$date)
             var regEnd = moment.utc(section.registrationEndDate.$date)
@@ -50,11 +52,12 @@
             return false;
         }
 
-        $scope.register = function (section) {
+        $scope.register = function() {
             if (!$scope.currentUser) {
                 return;
             }
 
+            var section = this.item;
             var request = {
                 action: sectionRegistrationAction.register
             };
@@ -69,11 +72,12 @@
                 });;
         }
 
-        $scope.unregister = function (section) {
+        $scope.unregister = function () {
             if (!$scope.currentUser) {
                 return;
             }
 
+            var section = this.item;
             var request = {
                 action: sectionRegistrationAction.unregister
             };

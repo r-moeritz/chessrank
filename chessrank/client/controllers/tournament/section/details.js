@@ -1,13 +1,11 @@
 ﻿angular.module('chessRank')
-    .controller('sectionDetailsCtrl', function ($scope, _, section, tournament, lookups, playerLookupService) {
+    .controller('sectionDetailsCtrl', function (_, $scope, section, tournament, players, rmArrayUtil) {
         $scope.tournament = tournament;
         $scope.section = section;
+        $scope.players = players;
 
-        var playerIds = _.map(section.registeredPlayerIds,
-            function (pid) { return pid.$oid; });
-
-        playerLookupService.findPlayers(playerIds).then(
-            function (players) {
-                $scope.players = players;
-            });
+        $scope.confirmedPlayers = _.filter(players, function (p) {
+            return rmArrayUtil.indexOf(section.confirmedPlayerIds,
+                function (pid) { return pid.$oid === p._id.$oid; }) >= 0;
+        });
     });

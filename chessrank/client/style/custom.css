@@ -31,3 +31,13 @@
 .nav>li>button {
     margin-left: 5px;
 }
+
+.v-middle {
+    display: table-cell; 
+    vertical-align: middle;
+}
+
+.padded-cell {
+    padding-left: 10px;
+    padding-right: 10px;
+}
