@@ -47,6 +47,7 @@ class SectionUpdateValidator(validation.Validator):
             'registrationFee': self._verify_non_negative_number,
             'invitationOnly': self._verify_boolean,
             'registeredPlayerIds': self._verify_list_of_objectids,
+            'confirmedPlayerIds': self._verify_list_of_objectids,
             'tournamentId': self._verify_objectid
         }
 

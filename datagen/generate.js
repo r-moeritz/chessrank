@@ -121,7 +121,8 @@ module.exports = {
             registrationFee: fees[Util.randomInt(0, fees.length)],
             invitationOnly: Util.randomBool(),
             provisionalRating: 1000,
-            registeredPlayerIds: []
+            registeredPlayerIds: [],
+            confirmedPlayerIds: []
         };
     },
     

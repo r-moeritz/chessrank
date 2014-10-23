@@ -85,6 +85,7 @@ class SectionHandler(requesthandlers.api.ApiHandler):
 
             action = request['action']
             registeredPlayerIds = section['registeredPlayerIds']
+            confirmedPlayerIds = section['confirmedPlayerIds']
 
             user = yield db.users.find_one({ '_id': self.current_user })
             if not user:
@@ -93,7 +94,7 @@ class SectionHandler(requesthandlers.api.ApiHandler):
             playerId = user['playerId']
             
             if action == SectionRegistrationAction.register:
-                if playerId in registeredPlayerIds:
+                if playerId in registeredPlayerIds or playerId in confirmedPlayerIds:
                     raise tornado.web.HTTPError(409, 'Player already registered')
 
                 if section['invitationOnly']:
@@ -101,10 +102,12 @@ class SectionHandler(requesthandlers.api.ApiHandler):
                 
                 registeredPlayerIds.append(playerId)
             else:
-                if playerId not in registeredPlayerIds:
+                if playerId in confirmedPlayerIds:
+                    confirmedPlayerIds.remove(playerId)
+                elif playerId in registeredPlayerIds:
+                    registeredPlayerIds.remove(playerId)
+                else:
                     raise tornado.web.HTTPError(409, 'Player not registered')
-
-                registeredPlayerIds.remove(playerId)
 
             db.sections.update(spec, section)
 

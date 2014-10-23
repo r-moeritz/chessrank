@@ -175,6 +175,8 @@
             request.tournamentId = tournamentId || section.tournamentId.$oid;
             request.registeredPlayerIds = _.map(section.registeredPlayerIds,
                 function (playerId) { return playerId.$oid });
+            request.confirmedPlayerIds = _.map(section.confirmedPlayerIds,
+                function (playerId) { return playerId.$oid });
 
             return request;
         }

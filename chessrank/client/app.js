@@ -85,8 +85,17 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                         return res;
                     },
                     sectionService: 'sectionService',
-                    sections: function ($stateParams, sectionService) {
-                        return sectionService.query({ tournamentId: $stateParams.tournamentId }).$promise;
+                    sections: function ($q, $stateParams, sectionService) {
+                        return sectionService.query({ tournamentId: $stateParams.tournamentId }).$promise
+                            .catch(function (error) {
+                                if (error.status === 404) {
+                                    return [];
+                                }
+
+                                var deferred = $q.defer();
+                                deferred.reject(error);
+                                return deferred.promise;
+                            });
                     }
                 }
             })

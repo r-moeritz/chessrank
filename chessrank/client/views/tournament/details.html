@@ -29,7 +29,8 @@
 </div>
 
 <h3>Sections</h3>
-<div class="table-responsive">
+<p ng-hide="sections.length">This tournament does not yet contain any sections.</p>
+<div class="table-responsive" ng-show="sections.length">
     <table class="table table-striped">
         <thead>
             <tr>
