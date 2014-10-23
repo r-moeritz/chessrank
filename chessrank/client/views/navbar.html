@@ -16,22 +16,22 @@
         <div class="navbar-collapse collapse">
             <ncy-breadcrumb></ncy-breadcrumb>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-if="currentUser">
+                <li ng-show="currentUser">
                     <p class="navbar-text">Hi {{ currentUser.name }}</p>
                 </li>
-                <li ng-if="currentUser">
+                <li ng-show="currentUser">
                     <button class="btn btn-default navbar-btn"
                             ng-click="logout()">
                         <span class="glyphicon glyphicon-log-out"></span> Logout
                     </button>
                 </li>
-                <li ng-if="!currentUser">
+                <li ng-hide="currentUser">
                     <button class="btn btn-default navbar-btn"
                             ng-click="showLoginDialog()">
                         <span class="glyphicon glyphicon-log-in"></span> Login
                     </button>
                 </li>
-                <li ng-if="!currentUser">
+                <li ng-hide="currentUser">
                     <button class="btn btn-default navbar-btn"
                             ui-sref="a.signup">
                         <span class="glyphicon glyphicon-pencil"></span> Sign up

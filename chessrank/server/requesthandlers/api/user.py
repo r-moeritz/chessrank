@@ -141,8 +141,8 @@ class UserHandler(requesthandlers.api.ApiHandler):
             # Optional details
             'fideRating': details.get('fideRating'),
             'fideTitle': details.get('fideTitle'),
-            'federationRating': details.get('fedRating'),
-            'federationTitle': details.get('fedTitle'),
+            'federationRating': details.get('federationRating'),
+            'federationTitle': details.get('federationTitle'),
             'dateOfBirth': details.get('dateOfBirth'),
             'federation': details.get('federation'),
             'union': details.get('union'),

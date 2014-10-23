@@ -18,11 +18,14 @@
                 <td>{{ item.endDate.$date | date }}</td>
                 <td><user-link user-id="item.ownerUserId.$oid" /></td>
                 <td>
-                    <a ui-sref="a.tournaments.details({ tournamentId: item._id.$oid })"
-                       class="btn btn-xs btn-primary">Details</a>
-                    <a ng-if="currentUser && currentUser.userId.$oid == item.ownerUserId.$oid"
+                    <a ui-sref="a.tournaments.details({ tournamentId: item._id.$oid })">
+                        <i class="glyphicon glyphicon-list"></i>
+                    </a>
+                    <a ng-show="currentUser && currentUser.userId.$oid == item.ownerUserId.$oid"
                        ui-sref="a.tournaments.details.edit({ tournamentId: item._id.$oid })"
-                       class="btn btn-xs btn-warning">Edit</a>
+                       style="margin-left: 10px;">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
                 </td>
             </tr>
         </tbody>

@@ -22,8 +22,11 @@ class SignupValidator(validation.Validator):
             'dateOfBirth': self._verify_date_of_birth, 
           'contactNumber': self._verify_telno, 
              'fideRating': self._verify_rating, 
-              'fedRating': self._verify_rating,
-              'fideTitle': self._verify_fide_title
+              'federationRating': self._verify_rating,
+              'fideTitle': self._verify_fide_title,
+              'federationTitle': self._verify_name,
+              'federation': self._verify_federation,
+              'union': self._verify_name
         }
 
     def validate(self):
@@ -55,7 +58,7 @@ class SignupValidator(validation.Validator):
 
     def _verify_optional_fields(self):
         for field in self._optional:
-            if field in self._data:
+            if self._data.get(field):
                 validate = self._optional[field]
                 result = validate(field, self._data[field])
                 if not result[0]:
@@ -63,8 +66,7 @@ class SignupValidator(validation.Validator):
 
         return (True, None)
 
-    @staticmethod
-    def _verify_password(field, value):
+    def _verify_password(self, field, value):
         minDigits  = 1
         minUpper   = 1
         minLower   = 1
@@ -104,31 +106,26 @@ class SignupValidator(validation.Validator):
 
         return (True, None)
 
-    @staticmethod
-    def _verify_name(field, value):
+    def _verify_name(self, field, value):
         return ((True, None) if type(value) == str
                 and len(value) > 1 and len(value) < 51
                 else (False, "Field '{0}' must be between 2 and 50 characters long".format(field)))
 
-    @staticmethod
-    def _verify_email(field, value):
+    def _verify_email(self, field, value):
         return ((True, None) if type(value) == str 
                 and re.fullmatch(r'^[\w\.\+]+@\w+\.\w+$', value)
                 else (False, "Field '{0}' must be a valid email address".format(field)))
 
-    @staticmethod
-    def _verify_gender(field, value):
+    def _verify_gender(self, field, value):
         return ((True, None) if value in ('0', '1')
                 else (False, "Field '{0}' must be either '0' or '1'".format(field)))
 
-    @staticmethod
-    def _verify_telno(field, value):
+    def _verify_telno(self, field, value):
         return ((True, None) if type(value) == str
                 and re.fullmatch(r'^\+\d{11}$', value)
                 else (False, "Field '{0}' must be a valid telephone number".format(field)))
-
-    @staticmethod
-    def _verify_date_of_birth(field, value):
+    
+    def _verify_date_of_birth(self, field, value):
         dob = dateutil.parser.parse(value)
         now = datetime.now(tzutc())
         min = now - relativedelta(years=120)
@@ -137,12 +134,14 @@ class SignupValidator(validation.Validator):
                 else (False, "Field '{0}' must be a date at least 4 years and at most 120 years in the past"
                       .format(field)))
 
-    @staticmethod
-    def _verify_rating(field, value):
+    def _verify_rating(self, field, value):
         return ((True, None) if type(value) == int and value > 0
                 else (False, "Field '{0}' must be a positive integer".format(field)))
 
-    @staticmethod
-    def _verify_fide_title(field, value):
+    def _verify_fide_title(self, field, value):
         return ((True, None) if value in list(FideTitle)
                 else (False, "Field '{0}' must be an integer between 0 and 7".format(field)))
+
+    def _verify_federation(self, field, value):
+        return ((True, None) if type(value) == dict and value.get('value', 0) in range(1, 181) # TODO: Don't hard-code!
+                else (False, "Field '{0}' must be an integer between 1 and 181".format(field)))
