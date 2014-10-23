@@ -37,7 +37,7 @@
 
         return this;
     })
-    .service('signupService', function (userService, $q, sprintf, dateUtil) {
+    .service('signupService', function (userService, $q, sprintf, rmDateUtil) {
         this.validationRules = {
             name: {
                 required: true,
@@ -131,7 +131,7 @@
         function createRequest(model) {
             var request = angular.copy(model);
 
-            request.dateOfBirth = dateUtil.localDateToUtc(model.dateOfBirth);
+            request.dateOfBirth = rmDateUtil.localDateToUtc(model.dateOfBirth);
             delete request.password2;
 
             return request;

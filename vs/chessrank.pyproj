@@ -89,7 +89,6 @@
     <Folder Include="client\filters\" />
     <Folder Include="client\directives\" />
     <Folder Include="client\services\" />
-    <Folder Include="client\rmUtils\" />
     <Folder Include="client\util\" />
     <Folder Include="client\style\" />
     <Folder Include="client\views\" />
@@ -124,8 +123,8 @@
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\directives\user.js" />
     <Content Include="client\images\logo.png" />
-    <Content Include="client\rmUtils\filters.js" />
     <Content Include="client\filters\section.js" />
+    <Content Include="client\util\rmutils.js" />
     <Content Include="client\services\auth.js" />
     <Content Include="client\services\lookups.js" />
     <Content Include="client\services\section.js" />
@@ -133,8 +132,6 @@
     <Content Include="client\services\user.js" />
     <Content Include="client\style\custom.css" />
     <Content Include="client\services\player.js" />
-    <Content Include="client\style\kendo-bootstrap.css" />
-    <Content Include="client\util\date.js" />
     <Content Include="client\util\globals.js" />
     <Content Include="client\views\form\autoComplete.html" />
     <Content Include="client\views\form\multiSelect.html" />

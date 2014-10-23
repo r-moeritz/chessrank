@@ -63,13 +63,13 @@
                     <button class="btn btn-xs btn-success"
                             popover="{{ registerPopover }}"
                             popover-trigger="focus"
-                            ng-if="!registered(item)"
+                            ng-hide="registered(item)"
                             ng-disabled="registrationClosed(item, sections)"
                             ng-click="register(item)">
                         Register
                     </button>
                     <button class="btn btn-xs btn-warning"
-                            ng-if="registered(item)"
+                            ng-show="registered(item)"
                             ng-disabled="registrationClosed(item)"
                             ng-click="unregister(item)">
                         Unregister

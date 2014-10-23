@@ -1,4 +1,4 @@
-﻿<h2 class="text-center">{{ section.name }}</h2>
+﻿<h2 class="text-center">{{ tournament.name }} - {{ section.name }}</h2>
 
 <h3>Details</h3>
 <div class="container-fluid">
@@ -6,10 +6,15 @@
         <div class="col-md-4">Schedule</div>
         <div class="col-md-4">{{ section.startDate.$date | date }} - {{ section.endDate.$date | date }}</div>
         <div class="col-md-4">
-            <a ng-if="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
+            <a ng-show="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
                ui-sref="a.tournaments.details.section.edit({ sectionId: section._id.$oid })"
                class="btn btn-xs btn-primary">Edit</a>
         </div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-md-4">Registration</div>
+        <div class="col-md-4">{{ section.registrationStartDate.$date | date }} - {{ section.registrationEndDate.$date | date }}</div>
+        <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Play System</div>
@@ -17,13 +22,8 @@
         <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
-        <div class="col-md-4">Rounds</div>
-        <div class="col-md-4">{{ section.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</div>
-        <div class="col-md-4"></div>
-    </div>
-    <div class="row padded-row">
         <div class="col-md-4">Time Controls</div>
-        <div class="col-md-4">{{ section.rounds }}</div>
+        <div class="col-md-4">{{ section.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</div>
         <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
@@ -31,25 +31,44 @@
         <div class="col-md-4">{{ section.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</div>
         <div class="col-md-4"></div>
     </div>
-    <!--<div class="row padded-row">
-        <div class="col-md-4">Rounds</div>
-        <div class="col-md-4">{{ section.rounds }}</div>
-        <div class="col-md-4"></div>
-    </div>
     <div class="row padded-row">
         <div class="col-md-4">Rounds</div>
         <div class="col-md-4">{{ section.rounds }}</div>
         <div class="col-md-4"></div>
     </div>
     <div class="row padded-row">
-        <div class="col-md-4">Rounds</div>
-        <div class="col-md-4">{{ section.rounds }}</div>
+        <div class="col-md-4">Maximum No. Players</div>
+        <div class="col-md-4">{{ section.maxPlayers }}</div>
         <div class="col-md-4"></div>
-    </div>-->
+    </div>
+    <div class="row padded-row">
+        <div class="col-md-4">Chief Arbiter</div>
+        <div class="col-md-4">{{ section.chiefArbiter }}</div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-md-4">Registration Fee</div>
+        <div class="col-md-4">{{ section.registrationFee }}</div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-md-4">Invitation only</div>
+        <div class="col-md-4">
+            <i ng-show="section.invitationOnly" class="glyphicon glyphicon-ok"></i>
+            <i ng-hide="section.invitationOnly" class="glyphicon glyphicon-remove"></i>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row padded-row">
+        <div class="col-md-4">Provisional rating (for unrated players)</div>
+        <div class="col-md-4">{{ section.provisionalRating }}</div>
+        <div class="col-md-4"></div>
+    </div>
 </div>
 
 <h3>Players</h3>
-<div class="table-responsive">
+<p ng-hide="players.length">There are currently no players registered for this section.</p>
+<div class="table-responsive" ng-show="players.length">
     <table class="table table-striped">
         <thead>
             <tr>

@@ -47,7 +47,7 @@
                     });
 
                 scope.editComplete = function () {
-                    $state.go('^');
+                    $state.go('^', null, { reload: true });
                 }
 
                 scope.editFailed = function (error) {
@@ -97,13 +97,9 @@
         }
 
         this.submit = function (section) {
-            if (section._id) {
-                tournamentEditService.updateSection(section);
-            } else {
-                tournamentEditService.addSection(section);
-            }
-
-            return $q.when(true);
+            return section._id
+                ? tournamentEditService.updateSection(section)
+                : tournamentEditService.addSection(section);
         }
 
         return this;

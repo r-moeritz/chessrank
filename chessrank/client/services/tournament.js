@@ -4,8 +4,10 @@
             { tournamentId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .factory('tournamentEditHelper', function ($state, $modal, moment, sprintf, tournamentEditService) {
-        return function () {
+    .factory('tournamentEditHelper', function (_, $state, $modal, moment, sprintf, tournamentEditService, rmArrayUtil) {
+        return function (tournamentId) {
+            tournamentEditService.setTournamentId(tournamentId);
+
             this.attach = function (scope) {
                 scope.datePickerOptions = {
                     start: 'year',
@@ -50,8 +52,13 @@
                     inst.result.then(function () {
                         tournamentEditService.deleteSection(section);
 
-                        var i = scope.sections.indexOf(section);
-                        scope.sections.splice(i);
+                        var i = rmArrayUtil.indexOf(scope.sections,
+                            function (sec) {
+                                return (sec._id && section._id
+                                    && sec._id.$oid === section._id.$oid)
+                                || (sec.fakeId && section.fakeId && sec.fakeId === section.fakeId);
+                            });
+                        scope.sections.splice(i, 1);
 
                         if (section._id) {
                             $('#section_' + section._id.$oid).fadeOut();
@@ -63,29 +70,42 @@
             };
         }
     })
-    .service('tournamentEditService', function ($q, _, tournamentService, sectionService, dateUtil) {
+    .service('tournamentEditService', function ($q, _, tournamentService, sectionService, rmDateUtil) {
         var _this = this;
 
         this._tournamentToAdd = {};
         this._sectionsToAdd = [];
-        this._sectionsToUpdate = [];
-        this._sectionsToDelete = [];
+        this._tournamentId = null;
 
         this.reset = function () {
+            _this._tournamentId = null;
             _this._tournamentToAdd = {};
             _this._sectionsToAdd.splice(0);
-            _this._sectionsToUpdate.splice(0);
-            _this._sectionsToDelete.splice(0);
         }
 
-        this.getTournamentToAdd = function () {
-            return _this._tournamentToAdd;
+        this.setTournamentId = function (tournamentId) {
+            return _this._tournamentId = tournamentId;
+        }
+
+        this.getSectionsToAdd = function () {
+            return _this._sectionsToAdd;
+        }
+
+        this.setExistingTournament = function() {
+            _this._existingTournament = true;
         }
 
         this.addSection = function (section) {
+            if (_this._tournamentId) {
+                // Existing tournament
+                fixSectionData(section);
+                var request = createSectionRequest(section, _this._tournamentId);
+                return sectionService.save(request).$promise;
+            }
+
             var found = _.find(_this._sectionsToAdd, function (s) {
                 if ((s._id && section._id && s._id.$oid === section._id.$oid)
-                    || s.fakeId === section.fakeId) {
+                    || (s.fakeId && section.fakeId && s.fakeId === section.fakeId)) {
                     return true;
                 }
             });
@@ -93,36 +113,20 @@
             if (!found) {
                 _this._sectionsToAdd.push(fixSectionData(section));
             }
+
+            return $q.when(true);
         }
 
         this.updateSection = function (section) {
-            var found = _.find(_this._sectionsToUpdate, function (s) {
-                if ((s._id && section._id && s._id.$oid === section._id.$oid)
-                    || s.fakeId === section.fakeId) {
-                    return true;
-                }
-            });
-
-            if (!found) {
-                _this._sectionsToUpdate.push(fixSectionData(section));
-            }
+            fixSectionData(section);
+            var request = createSectionRequest(section);
+            return sectionService.update({ sectionId: section._id.$oid }, request).$promise;
         }
 
         this.deleteSection = function (section) {
-            var found = _.find(_this._sectionsToDelete, function (s) {
-                if ((s._id && section._id && s._id.$oid === section._id.$oid)
-                    || s.fakeId === section.fakeId) {
-                    return true;
-                }
-            });
-
-            if (!found) {
-                _this._sectionsToDelete.push(section);
+            if (section._id) {
+                return sectionService.delete({ sectionId: section._id.$oid }).$promise;
             }
-        }
-
-        this.getSectionsToAddOrUpdate = function () {
-            return _this._sectionsToAdd.concat(_this._sectionsToUpdate);
         }
 
         this.validationRules = {
@@ -145,8 +149,8 @@
             delete request.ownerUserId;
             delete request.currency;
 
-            request.startDate = dateUtil.localDateToUtc(tournament.startDate);
-            request.endDate = dateUtil.localDateToUtc(tournament.endDate);
+            request.startDate = rmDateUtil.localDateToUtc(tournament.startDate);
+            request.endDate = rmDateUtil.localDateToUtc(tournament.endDate);
             request.registrationFeeCurrencyId = tournament.currency.value;
 
             return request;
@@ -154,67 +158,40 @@
 
         function fixSectionData(section) {
             section.timeControls = angular.fromJson(section.timeControls);
-            section.startDate = dateUtil.localDateToUtc(section.startDate);
-            section.endDate = dateUtil.localDateToUtc(section.endDate);
-            section.registrationStartDate = dateUtil.localDateToUtc(section.registrationStartDate);
-            section.registrationEndDate = dateUtil.localDateToUtc(section.registrationEndDate);
+            section.startDate = rmDateUtil.localDateToUtc(section.startDate);
+            section.endDate = rmDateUtil.localDateToUtc(section.endDate);
+            section.registrationStartDate = rmDateUtil.localDateToUtc(section.registrationStartDate);
+            section.registrationEndDate = rmDateUtil.localDateToUtc(section.registrationEndDate);
             return section;
         }
 
-        function createSectionRequest(section) {
+        function createSectionRequest(section, tournamentId) {
             request = angular.copy(section);
 
             delete request._id;
             delete request.ownerUserId;
             delete request.fakeId;
 
-            request.tournamentId = section.tournamentId.$oid;
+            request.tournamentId = tournamentId || section.tournamentId.$oid;
             request.registeredPlayerIds = _.map(section.registeredPlayerIds,
                 function (playerId) { return playerId.$oid });
 
             return request;
         }
 
-        function createUpsertRequests(tournamentId, insert) {
-            var sections = insert ? _this._sectionsToAdd : _this._sectionsToUpdate;
-            return _.map(sections, function (sec) {
-                sec.tournamentId = tournamentId;
-                return createSectionRequest(sec);
-            });
-        }
-
         this.submit = function (tournament) {
-            var promises = [];
-
-            if (tournament._id) {
-                // Existing tournament
-                var request = createTournamentRequest(tournament);
-                var p = tournamentService.update({ tournamentId: tournament._id.$oid }, request).$promise;
-                promises.push(p);
-
-                var insertRequests = createUpsertRequests(tournament._id, true);
-                promises = promises.concat(_.map(insertRequests, 
-                    function (req) { return sectionService.save(req).$promise; }));
-
-                var updateRequests = createUpsertRequests(tournament._id, false);
-                promises = promises.concat(_.map(updateRequests,
-                    function (req) { return sectionService.update(req).$promise; }));
-
-                promises = promises.concat(_.map(_this._sectionsToDelete,
-                    function (sec) { return sectionService.delete({ sectionId: sec._id.$oid }).$promise; }));
-            } else {
-                // New tournament
-                var request = createTournamentRequest(tournament);
-                promises.push(tournamentService.save(request).$promise.then(
+            var request = createTournamentRequest(tournament);
+            return tournament._id
+                ? tournamentService.update({ tournamentId: tournament._id.$oid }, request).$promise
+                : tournamentService.save(request).$promise.then(
                     function (data) {
-                        var insertRequests = createUpsertRequests(data._id, true);
+                        var insertRequests = _.map(_this._sectionsToAdd, function (sec) {
+                            return createSectionRequest(sec, tournamentId);
+                        });
                         var insertPromises = _.map(insertRequests,
                             function (req) { return sectionService.save(req).$promise; });
                         return $q.all(insertPromises);
-                    }));
-            }
-
-            return $q.all(promises);
+                });
         };
 
         return this;

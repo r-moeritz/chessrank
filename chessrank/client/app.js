@@ -2,7 +2,7 @@
 
 angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angular-breadcrumb',
     'ui.bootstrap', 'kendo.directives', 'formFor', 'formFor.bootstrapTemplates', 'toaster',
-    'underscore', 'momentjs', 'sprintfjs', 'rmUtils.filters'])
+    'underscore', 'momentjs', 'sprintfjs', 'rmUtils'])
     .config(function ($stateProvider, $urlRouterProvider, $breadcrumbProvider) {
         $breadcrumbProvider.setOptions({
             templateUrl: 'static/views/breadcrumb.html'

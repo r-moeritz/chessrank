@@ -65,11 +65,11 @@
                                              amount="item.registrationFee" />
                     </td>
                     <td>
-                        <a ng-if="action === 'Edit'"
+                        <a ng-show="action === 'Edit'"
                            ui-sref="a.tournaments.details.section.edit({ sectionId: item._id.$oid })">
                             <i class="glyphicon glyphicon-edit" />
                         </a>
-                        <a ng-if="action === 'Create'"
+                        <a ng-show="action === 'Create'"
                            ui-sref="a.tournaments.add.edit_section({ sectionId: item.fakeId })">
                             <i class="glyphicon glyphicon-edit" />
                         </a>
