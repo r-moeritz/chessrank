@@ -87,12 +87,12 @@
             return _this._tournamentId = tournamentId;
         }
 
-        this.getSectionsToAdd = function () {
-            return _this._sectionsToAdd;
+        this.getTournamentToAdd = function () {
+            return _this._tournamentToAdd;
         }
 
-        this.setExistingTournament = function() {
-            _this._existingTournament = true;
+        this.getSectionsToAdd = function () {
+            return _this._sectionsToAdd;
         }
 
         this.addSection = function (section) {
@@ -186,7 +186,7 @@
                 : tournamentService.save(request).$promise.then(
                     function (data) {
                         var insertRequests = _.map(_this._sectionsToAdd, function (sec) {
-                            return createSectionRequest(sec, tournamentId);
+                            return createSectionRequest(sec, data._id.$oid);
                         });
                         var insertPromises = _.map(insertRequests,
                             function (req) { return sectionService.save(req).$promise; });
