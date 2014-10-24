@@ -162,6 +162,10 @@
             section.endDate = rmDateUtil.localDateToUtc(section.endDate);
             section.registrationStartDate = rmDateUtil.localDateToUtc(section.registrationStartDate);
             section.registrationEndDate = rmDateUtil.localDateToUtc(section.registrationEndDate);
+            section.registrationManuallyClosed = section.registrationManuallyClosed
+                ? new Date(section.registrationManuallyClosed.$date)
+                : null;
+
             return section;
         }
 
