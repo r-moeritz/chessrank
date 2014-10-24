@@ -61,15 +61,15 @@
                     <button class="btn btn-xs btn-success"
                             popover="{{ registerPopover }}"
                             popover-trigger="focus"
-                            ng-hide="registered() || currentUser.userId.$oid === item.ownerUserId.$oid"
-                            ng-disabled="registrationClosed(sections)"
-                            ng-click="register()">
+                            ng-hide="registered(item) || currentUser.userId.$oid === item.ownerUserId.$oid"
+                            ng-disabled="registrationClosed(item, sections)"
+                            ng-click="register(item)">
                         Register
                     </button>
                     <button class="btn btn-xs btn-warning"
-                            ng-show="registered()"
-                            ng-disabled="registrationClosed()"
-                            ng-click="unregister()">
+                            ng-show="registered(item)"
+                            ng-disabled="registrationClosed(item)"
+                            ng-click="unregister(item)">
                         Unregister
                     </button>
                 </td>

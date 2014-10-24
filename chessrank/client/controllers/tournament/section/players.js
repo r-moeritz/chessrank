@@ -5,16 +5,14 @@
         $scope.tournament = tournament;
         $scope.players = players;
 
-        $scope.confirmed = function () {
-            var player = this.item;
+        $scope.confirmed = function (player) {
             return _.find(section.confirmedPlayerIds,
                 function (pid) {
                     return pid.$oid === player._id.$oid;
                 });
         }
 
-        $scope.confirm = function () {
-            var player = this.item;
+        $scope.confirm = function (player) {
             var sectionCopy = angular.copy(section);
 
             var i = rmArrayUtil.indexOf(sectionCopy.registeredPlayerIds,
@@ -36,8 +34,7 @@
                 });
         }
 
-        $scope.unconfirm = function () {
-            var player = this.item;
+        $scope.unconfirm = function (player) {
             var sectionCopy = angular.copy(section);
 
             var i = rmArrayUtil.indexOf(sectionCopy.confirmedPlayerIds,
@@ -59,9 +56,7 @@
                 });
         }
 
-        $scope.unregister = function () {
-            var player = this.item;
-
+        $scope.unregister = function (player) {
             $scope.model = {
                 title: 'Really?',
                 description: sprintf('Are you sure you want to unregister %s %s?',

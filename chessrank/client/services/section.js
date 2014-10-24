@@ -84,6 +84,24 @@
             },
             provisionalRating: {
                 required: true
+            },
+            startDate: {
+                required: true
+            },
+            endDate: {
+                required: true
+            },
+            registrationStartDate: {
+                required: true
+            },
+            registrationEndDate: {
+                required: true
+            },
+            registrationFee: {
+                required: true
+            },
+            tieBreaks: {
+                required: true
             }
         };
 

@@ -34,9 +34,7 @@
                     $state.go('^');
                 }
 
-                scope.confirmDeleteSection = function () {
-                    var section = this.item;
-
+                scope.confirmDeleteSection = function (section) {
                     scope.model = {
                         title: 'Confirm delete',
                         description: sprintf('Are you sure you want to delete the %s?',
@@ -139,6 +137,15 @@
                 required: true,
                 minlength: 2,
                 maxlength: 50
+            },
+            startDate: {
+                required: true
+            },
+            endDate: {
+                required: true
+            },
+            currency: {
+                required: true
             }
         };
 
