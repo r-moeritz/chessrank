@@ -171,9 +171,9 @@ class SectionHandler(requesthandlers.api.ApiHandler):
         db.sections.remove(spec)    
 
     def _format_owner_request(self, request):
-        dateFields = ('startDate', 'endDate', 'registrationStartDate', 'registrationEndDate')
+        dateFields = ('startDate', 'endDate', 'registrationStartDate', 'registrationEndDate', 'registrationManuallyClosed')
         for field in dateFields:
-            request[field] = dateutil.parser.parse(request[field])
+            request[field] = dateutil.parser.parse(request[field]) if request[field] else None
 
         request['tournamentId'] = ObjectId(request['tournamentId'])
         request['registeredPlayerIds'] = [ObjectId(id) for id in request['registeredPlayerIds']]

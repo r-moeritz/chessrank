@@ -61,7 +61,7 @@
                     <button class="btn btn-xs btn-success"
                             popover="{{ registerPopover }}"
                             popover-trigger="focus"
-                            ng-hide="registered()"
+                            ng-hide="registered() || currentUser.userId.$oid === item.ownerUserId.$oid"
                             ng-disabled="registrationClosed(sections)"
                             ng-click="register()">
                         Register

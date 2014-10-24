@@ -27,11 +27,11 @@
         }
 
         $scope.registrationClosed = function (allSections) {
+            var section = this.item;
             if (section.invitationOnly) {
                 return true;
             }
 
-            var section = this.item;
             var now = moment.utc();
             var regStart = moment.utc(section.registrationStartDate.$date)
             var regEnd = moment.utc(section.registrationEndDate.$date)

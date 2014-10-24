@@ -108,6 +108,20 @@
             });
         }
 
+        $scope.allowEditRegistration = function () {
+            if (!$scope.currentUser || $scope.currentUser.userId.$oid !== section.ownerUserId.$oid
+                || section.registrationManuallyClosed) {
+                return false;
+            }
+
+            var now = moment().utc();
+            if (section.registrationEndDate < now) {
+                return false;
+            }
+
+            return true;
+        }
+
         function fixSectionData(sectionCopy) {
             delete sectionCopy._id;
             delete sectionCopy.ownerUserId;

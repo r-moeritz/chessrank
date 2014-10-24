@@ -56,7 +56,7 @@ module.exports = {
             federation: Data.fideFederations[Util.randomInt(0, Data.fideFederations.length)].value,
             union: null,
             contactNumber: null,
-            emailAddress: fullName[0].toLowerCase() + '@example.com'
+            emailAddress: fullName[0].toLowerCase() + fullName[1].toLowerCase() + '@example.com'
         };
     },
     
@@ -68,7 +68,7 @@ module.exports = {
         var durations = [1, 2, 3, 5, 7];
         
         var city = cities[Util.randomInt(0, cities.length)];
-        var startDate = Util.randomDate(new Date(Date.UTC(2014, 0, 1)), new Date(Date.UTC(2015, 0, 1)));
+        var startDate = Util.randomDate(new Date(Date.UTC(2014, 10, 1)), new Date(Date.UTC(2015, 1, 1)));
         var endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + durations[Util.randomInt(0, durations.length)]);
         
@@ -122,7 +122,8 @@ module.exports = {
             invitationOnly: Util.randomBool(),
             provisionalRating: 1000,
             registeredPlayerIds: [],
-            confirmedPlayerIds: []
+            confirmedPlayerIds: [],
+            registrationManuallyClosed: null
         };
     },
     

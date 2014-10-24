@@ -1,6 +1,7 @@
 import validation
 import dateutil.parser
 
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc
 from bson.objectid import ObjectId
@@ -48,7 +49,8 @@ class SectionUpdateValidator(validation.Validator):
             'invitationOnly': self._verify_boolean,
             'registeredPlayerIds': self._verify_list_of_objectids,
             'confirmedPlayerIds': self._verify_list_of_objectids,
-            'tournamentId': self._verify_objectid
+            'tournamentId': self._verify_objectid,
+            'registrationManuallyClosed': self._verify_nullable_date
         }
 
     def validate(self):
@@ -174,3 +176,9 @@ class SectionUpdateValidator(validation.Validator):
                         .format(i, field))
 
         return (True, None)
+
+    def _verify_nullable_date(self, field, value):
+        date = dateutil.parser.parse(value) if value else None
+        return ((True, None) if date is None or type(date) == datetime
+                else (False, "Field '{0}' must be a valid date or null"
+                      .format(field)))

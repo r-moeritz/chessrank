@@ -29,16 +29,17 @@
                 </td>
                 <td>
                     <button class="btn btn-xs btn-success"
-                            ng-hide="confirmed()"
+                            ng-hide="confirmed() || !allowEditRegistration()"
                             ng-click="confirm()">
                         Confirm
                     </button>
                     <button class="btn btn-xs btn-warning"
-                            ng-show="confirmed()"
+                            ng-show="confirmed() && allowEditRegistration()"
                             ng-click="unconfirm()">
                         Unconfirm
                     </button>
                     <button class="btn btn-xs btn-danger"
+                            ng-show="allowEditRegistration()"
                             ng-click="unregister()">
                         Unregister
                     </button>

@@ -1,7 +1,7 @@
 ﻿<h2 class="text-center">{{ tournament.name }} - {{ section.name }}</h2>
 
 <h3 class="v-middle">Details</h3>
-<a ng-show="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
+<a ng-show="currentUser.userId.$oid === section.ownerUserId.$oid"
    ui-sref="a.tournaments.details.section.edit({ sectionId: section._id.$oid })"
    class="v-middle padded-cell">
     <i class="glyphicon glyphicon-edit"></i>
@@ -14,7 +14,20 @@
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Registration</div>
-        <div class="col-md-8">{{ section.registrationStartDate.$date | date }} - {{ section.registrationEndDate.$date | date }}</div>
+        <div ng-if="section.registrationManuallyClosed"
+             class="col-md-8">
+            Closed on {{ section.registrationManuallyClosed.$date | date }}
+        </div>
+        <div ng-if="!section.registrationManuallyClosed"
+             class="col-md-8">
+            {{ section.registrationStartDate.$date | date }} - {{ section.registrationEndDate.$date | date }}
+            <button class="btn btn-xs btn-primary"
+                    ng-show="allowCloseRegistration()"
+                    style="margin-left: 10px;"
+                    ng-click="closeRegistration()">
+                Close Registration
+            </button>
+        </div>
     </div>
     <div class="row padded-row">
         <div class="col-md-4">Play System</div>
@@ -60,8 +73,8 @@
     </div>
 </div>
 
-<h3 class="v-middle">Players</h3>
-<a ng-show="currentUser && currentUser.userId.$oid == section.ownerUserId.$oid"
+<h3 class="v-middle">Confirmed Players</h3>
+<a ng-show="currentUser.userId.$oid === section.ownerUserId.$oid"
     ui-sref="a.tournaments.details.section.players({ sectionId: section._id.$oid })"
     class="v-middle padded-cell">
     <i class="glyphicon glyphicon-edit"></i>
