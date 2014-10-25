@@ -33,7 +33,7 @@ function generateFullName(gender) {
 
 module.exports = {
     generatePlayer: function (gender, fullName) {
-        gender = gender ? gender : Util.randomInt(0, 2);
+        gender = gender ? gender : Util.randomInt(1, 3);
         fullName = fullName ? fullName : generateFullName(gender);
         var fedRating = Util.randomInt(800, 2900);
         fedRating = (fedRating < 1000) ? null : fedRating;
@@ -67,6 +67,8 @@ module.exports = {
         var types = ['Open', 'Closed', 'Cup', 'Championship', 'Memorial', 'Rapid', 'Blitz'];
         var durations = [1, 2, 3, 5, 7];
         
+        var ratingType = Util.randomInt(1, 3);
+        var federation = Data.fideFederations[Util.randomInt(0, Data.fideFederations.length)].value;
         var city = cities[Util.randomInt(0, cities.length)];
         var startDate = Util.randomDate(new Date(Date.UTC(2014, 10, 1)), new Date(Date.UTC(2015, 1, 1)));
         var endDate = new Date(startDate);
@@ -78,7 +80,9 @@ module.exports = {
             startDate: startDate,
             endDate: endDate,
             registrationFeeCurrencyId: 154,
-            ownerUserId: ownerUserId
+            ownerUserId: ownerUserId,
+            ratingType: ratingType,
+            federation: federation
         };
     },
     

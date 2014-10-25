@@ -29,7 +29,6 @@ class SectionPairingValidator(validation.Validator):
         return ((True, None) if action == SectionOwnerAction.pair_round
                 else (False, "Field '{0}' must be equal to {1}"
                       .format(field, int(SectionOwnerAction.pair_round))))
-        
 
     def validate(self):
         spurious = set(self._data.keys()) - set(self._required.keys())

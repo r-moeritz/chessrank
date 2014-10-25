@@ -1,7 +1,7 @@
 ﻿module.exports = {
     gender: {
-        male: 0,
-        female: 1
+        male: 1,
+        female: 2
     },
     playSystem: {
         roundRobin: 1,
@@ -36,5 +36,9 @@
         unconfirmed: 0,
         active: 1,
         disabled: 2
+    },
+    ratingType: {
+        fide: 1,
+        federation: 2
     }
 };

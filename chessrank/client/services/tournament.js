@@ -8,7 +8,9 @@
         return function (tournamentId) {
             tournamentEditService.setTournamentId(tournamentId);
 
-            this.attach = function (scope) {
+            this.attach = function (scope, lookups) {
+                scope.fideFederationList = lookups.fideFederations;
+
                 scope.datePickerOptions = {
                     start: 'year',
                     format: 'dd MMM yyyy',
@@ -69,16 +71,17 @@
         }
     })
     .service('tournamentEditService', function ($q, _, tournamentService, sectionService,
-                                                moment, baseTypeConverter) {
+                                                moment, baseTypeConverter, ratingType) {
         var _this = this;
 
-        this._tournamentToAdd = {};
+        this._newTournamentTemplate = { ratingType: ratingType.fide };
+        this._tournamentToAdd = angular.copy(this._newTournamentTemplate);
         this._sectionsToAdd = [];
         this._tournamentId = null;
 
         this.reset = function () {
             _this._tournamentId = null;
-            _this._tournamentToAdd = {};
+            _this._tournamentToAdd = angular.copy(_this._newTournamentTemplate);
             _this._sectionsToAdd.splice(0);
         }
 
@@ -148,6 +151,22 @@
             },
             currency: {
                 required: true
+            },
+            ratingType: {
+                required: true
+            },
+            federation: {
+                custom: function (value, model) {
+                    var deferred = $q.defer();
+
+                    if (model.ratingType == ratingType.federation && !value) {
+                        deferred.reject('Must select a federation if using federation rating');
+                    } else {
+                        deferred.resolve();
+                    }
+
+                    return deferred.promise;
+                }
             }
         };
 

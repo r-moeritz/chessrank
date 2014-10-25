@@ -4,7 +4,7 @@ import validation
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc
 from datetime import datetime
-from util.enums import FideTitle
+from util.enums import FideTitle, Gender
 
 class SignupValidator(validation.Validator):
     def __init__(self, data):
@@ -116,7 +116,7 @@ class SignupValidator(validation.Validator):
                 else (False, "Field '{0}' must be a valid email address".format(field)))
 
     def _verify_gender(self, field, value):
-        return ((True, None) if value in ('0', '1')
+        return ((True, None) if value in list(Gender)
                 else (False, "Field '{0}' must be either '0' or '1'".format(field)))
 
     def _verify_telno(self, field, value):
@@ -139,7 +139,7 @@ class SignupValidator(validation.Validator):
 
     def _verify_fide_title(self, field, value):
         return ((True, None) if value in list(FideTitle)
-                else (False, "Field '{0}' must be an integer between 0 and 7".format(field)))
+                else (False, "Field '{0}' must be one of {1}".format(field, [int(t) for t in list(FideTitle)])))
 
     def _verify_federation(self, field, value):
         return ((True, None) if type(value) == dict and value.get('value', 0) in range(1, 181) # TODO: Don't hard-code!

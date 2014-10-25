@@ -1,5 +1,7 @@
 import validation
 
+from util.enums import RatingType
+
 class TournamentUpdateValidator(validation.Validator):
     def __init__(self, data):
         super().__init__(data)
@@ -9,7 +11,9 @@ class TournamentUpdateValidator(validation.Validator):
             'startDate': self._verify_start_and_end_dates,
             'endDate': lambda field, value: (True, None),
             'location': self._verify_name,
-            'registrationFeeCurrencyId': self._verify_currency_id
+            'registrationFeeCurrencyId': self._verify_currency_id,
+            'ratingType': self._verify_rating_type,
+            'federation': self._verify_federation
         }
 
     def validate(self):
@@ -49,3 +53,11 @@ class TournamentUpdateValidator(validation.Validator):
     def _verify_currency_id(self, field, value):
         return ((True, None) if value in range(1, 157) # TODO: Don't hard-code!
                 else (False, 'Unknown currency'))
+
+    def _verify_rating_type(self, field, value):
+        return ((True, None) if value in list(RatingType)
+                else (False, "Field '{0}' must be one of {1}".format(field, [int(r) for r in list(RatingType)])))
+
+    def _verify_federation(self, field, value):
+        return ((True, None) if not(value) or type(value) == dict and value.get('value', 0) in range(1, 181) # TODO: Don't hard-code!
+                else (False, "Field '{0}' must be an integer between 1 and 181".format(field)))

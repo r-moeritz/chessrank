@@ -15,7 +15,7 @@
         $scope.currencyList = lookups.currencies;
 
         var helper = new tournamentEditHelper(tournament._id);
-        helper.attach($scope);
+        helper.attach($scope, lookups);
     })
     .controller('tournamentAddCtrl', function ($scope, lookups, tournamentEditHelper, tournamentEditService) {
         $scope.action = 'Create';
@@ -25,5 +25,5 @@
         $scope.currencyList = lookups.currencies;
 
         var helper = new tournamentEditHelper();
-        helper.attach($scope);
+        helper.attach($scope, lookups);
     });

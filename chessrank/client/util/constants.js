@@ -9,8 +9,8 @@
 
 angular.module('chessRank')
     .constant('gender', {
-        male: 0,
-        female: 1
+        male: 1,
+        female: 2
     })
     .constant('playSystem', {
         roundRobin: 1,
@@ -56,4 +56,8 @@ angular.module('chessRank')
     .constant('sectionRegistrationAction', {
         register: 0,
         unregister: 1
+    })
+    .constant('ratingType', {
+        fide: 1,
+        federation: 2
     });

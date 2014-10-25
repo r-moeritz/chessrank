@@ -4,26 +4,64 @@
       service="tournamentEditService"
       submit-complete="editComplete()"
       submit-error="editFailed(error)" novalidate>
-    <text-field label="Name" 
-                attribute="name"
-                placeholder="My Tournament"
-                focused="clearError()"
-                autofocus></text-field>
-    <text-field label="Location"
-                attribute="location"
-                placeholder="Somwhere"
-                focused="clearError()"></text-field>
-    <date-picker-field label="Start Date" 
-                       attribute="startDate"
-                       options="datePickerOptions"></date-picker-field>
-    <date-picker-field label="End Date"
-                       attribute="endDate"
-                       options="datePickerOptions"></date-picker-field>
-    <auto-complete-field label="Registration fee currency" 
-                         attribute="currency" 
-                         options="currencyList"
-                         placeholder="South African rand" 
-                         editable="false"></auto-complete-field>
+    <div class="row">
+        <div class="col-md-6">
+            <text-field label="Name"
+                        attribute="name"
+                        placeholder="My Tournament"
+                        focused="clearError()"
+                        autofocus></text-field>
+        </div>
+        <div class="col-md-6">
+            <text-field label="Location"
+                        attribute="location"
+                        placeholder="Somwhere"
+                        focused="clearError()"></text-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <date-picker-field label="Start Date"
+                               attribute="startDate"
+                               options="datePickerOptions"></date-picker-field>
+        </div>
+        <div class="col-md-6">
+            <date-picker-field label="End Date"
+                               attribute="endDate"
+                               options="datePickerOptions"></date-picker-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Rated by</label>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-md-2">
+                    <radio-field label="FIDE" attribute="ratingType" value="0"></radio-field>
+                </div>
+                <div class="col-md-10">
+                    <radio-field label="Federation" attribute="ratingType" value="1"></radio-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <auto-complete-field label="Registration fee currency"
+                                 attribute="currency"
+                                 options="currencyList"
+                                 placeholder="South African rand"
+                                 editable="false"></auto-complete-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <auto-complete-field ng-show="tournament.ratingType == 2"
+                                 label="Federation" attribute="federation" options="fideFederationList"
+                                 placeholder="South Africa" editable="false"></auto-complete-field>
+        </div>
+    </div>
 
     <h3>Sections</h3>
 

@@ -20,6 +20,13 @@
         <div class="col-md-8"><user-link user-id="tournament.ownerUserId.$oid" /></div>
     </div>
     <div class="row padded-row">
+        <div class="col-md-4">Rated by</div>
+        <div ng-show="tournament.ratingType == 1"
+             class="col-md-8">{{ tournament.ratingType | ratingType }}</div>
+        <div ng-hide="tournament.ratingType == 1"
+             class="col-md-8"><federation value="tournament.federation"></federation></div>
+    </div>
+    <div class="row padded-row">
         <div class="col-md-4">Status</div>
         <div class="col-md-8"><b>TODO</b></div>
     </div>

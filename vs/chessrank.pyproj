@@ -29,6 +29,9 @@
     <Compile Include="server\app.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="server\engines\pairing.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="server\engines\verify.py">
       <SubType>Code</SubType>
     </Compile>
@@ -125,6 +128,7 @@
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\directives\user.js" />
     <Content Include="client\filters\player.js" />
+    <Content Include="client\filters\tournament.js" />
     <Content Include="client\images\logo.png" />
     <Content Include="client\filters\section.js" />
     <Content Include="client\util\conversion.js" />

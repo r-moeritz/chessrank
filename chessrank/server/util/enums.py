@@ -38,3 +38,11 @@ class SectionOwnerAction(enum.IntEnum):
 class TimeControlBonus(enum.IntEnum):
     increment = 1,
     delay = 2
+
+class RatingType(enum.IntEnum):
+    fide = 1,
+    federation = 2
+
+class Gender(enum.IntEnum):
+    male = 1,
+    female = 2

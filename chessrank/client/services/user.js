@@ -53,6 +53,9 @@
                 required: true,
                 type: 'email'
             },
+            gender: {
+                required: true
+            },
             password: {
                 required: true,
                 minlength: 8,
