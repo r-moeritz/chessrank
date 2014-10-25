@@ -68,7 +68,8 @@
             };
         }
     })
-    .service('tournamentEditService', function ($q, _, tournamentService, sectionService, rmDateUtil) {
+    .service('tournamentEditService', function ($q, _, tournamentService, sectionService,
+                                                moment, baseTypeConverter) {
         var _this = this;
 
         this._tournamentToAdd = {};
@@ -82,7 +83,7 @@
         }
 
         this.setTournamentId = function (tournamentId) {
-            return _this._tournamentId = tournamentId;
+            _this._tournamentId = tournamentId;
         }
 
         this.getTournamentToAdd = function () {
@@ -96,7 +97,6 @@
         this.addSection = function (section) {
             if (_this._tournamentId) {
                 // Existing tournament
-                fixSectionData(section);
                 var request = createSectionRequest(section, _this._tournamentId);
                 return sectionService.save(request).$promise;
             }
@@ -109,14 +109,13 @@
             });
 
             if (!found) {
-                _this._sectionsToAdd.push(fixSectionData(section));
+                _this._sectionsToAdd.push(fixEditedSection(section));
             }
 
             return $q.when(true);
         }
 
         this.updateSection = function (section) {
-            fixSectionData(section);
             var request = createSectionRequest(section);
             return sectionService.update({ sectionId: section._id.$oid }, request).$promise;
         }
@@ -151,45 +150,45 @@
 
         function createTournamentRequest(tournament) {
             var request = angular.copy(tournament);
+            var converter = new baseTypeConverter();
 
             delete request._id;
             delete request.ownerUserId;
             delete request.currency;
 
-            request.startDate = rmDateUtil.localDateToUtc(tournament.startDate);
-            request.endDate = rmDateUtil.localDateToUtc(tournament.endDate);
+            request.startDate = converter.jsDateToBsonUtcDropTime(tournament.startDate);
+            request.endDate = converter.jsDateToBsonUtcDropTime(tournament.endDate);
             request.registrationFeeCurrencyId = tournament.currency.value;
 
-            return request;
+            return JSON.stringify(request);
         }
 
-        function fixSectionData(section) {
-            section.timeControls = angular.fromJson(section.timeControls);
-            section.startDate = rmDateUtil.localDateToUtc(section.startDate);
-            section.endDate = rmDateUtil.localDateToUtc(section.endDate);
-            section.registrationStartDate = rmDateUtil.localDateToUtc(section.registrationStartDate);
-            section.registrationEndDate = rmDateUtil.localDateToUtc(section.registrationEndDate);
-            section.registrationManuallyClosed = section.registrationManuallyClosed
-                ? new Date(section.registrationManuallyClosed.$date)
-                : null;
+        function fixEditedSection(section) {
+            var sectionCopy = angular.copy(section);
+            var converter = new baseTypeConverter();
 
-            return section;
+            sectionCopy.timeControls = angular.fromJson(sectionCopy.timeControls);
+            sectionCopy.startDate = converter.jsDateToBsonUtcDropTime(sectionCopy.startDate);
+            sectionCopy.endDate = converter.jsDateToBsonUtcDropTime(sectionCopy.endDate);
+            sectionCopy.registrationStartDate = converter.jsDateToBsonUtcDropTime(sectionCopy.registrationStartDate);
+            sectionCopy.registrationEndDate = converter.jsDateToBsonUtcDropTime(sectionCopy.registrationEndDate);
+            _.each(sectionCopy.roundData, function (rd) {
+                rd.startTime = converter.momentToBsonDate(moment(rd.startTime).utc());
+            });
+
+            return sectionCopy;
         }
 
         function createSectionRequest(section, tournamentId) {
-            request = angular.copy(section);
+            var request = fixEditedSection(section);
 
             delete request._id;
             delete request.ownerUserId;
             delete request.fakeId;
 
-            request.tournamentId = tournamentId || section.tournamentId.$oid;
-            request.registeredPlayerIds = _.map(section.registeredPlayerIds,
-                function (playerId) { return playerId.$oid });
-            request.confirmedPlayerIds = _.map(section.confirmedPlayerIds,
-                function (playerId) { return playerId.$oid });
+            request.tournamentId = tournamentId || section.tournamentId;
 
-            return request;
+            return JSON.stringify(request);
         }
 
         this.submit = function (tournament) {
@@ -199,7 +198,7 @@
                 : tournamentService.save(request).$promise.then(
                     function (data) {
                         var insertRequests = _.map(_this._sectionsToAdd, function (sec) {
-                            return createSectionRequest(sec, data._id.$oid);
+                            return createSectionRequest(sec, data._id);
                         });
                         var insertPromises = _.map(insertRequests,
                             function (req) { return sectionService.save(req).$promise; });

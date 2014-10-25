@@ -1,75 +1,85 @@
 ﻿<h2 class="text-center">{{ tournament.name }} - {{ section.name }}</h2>
 
-<h3 class="v-middle">Details</h3>
-<a ng-show="currentUser.userId.$oid === section.ownerUserId.$oid"
-   ui-sref="a.tournaments.details.section.edit({ sectionId: section._id.$oid })"
-   class="v-middle padded-cell">
-    <i class="glyphicon glyphicon-edit"></i>
-</a>
-        
-<div class="container">
-    <div class="row padded-row">
-        <div class="col-md-4">Schedule</div>
-        <div class="col-md-8">{{ section.startDate.$date | date }} - {{ section.endDate.$date | date }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Registration</div>
-        <div ng-if="section.registrationManuallyClosed"
-             class="col-md-8">
-            Closed on {{ section.registrationManuallyClosed.$date | date }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-7">
+            <!-- Details -->
+            <h3 class="v-middle">Details</h3>
+            <a ng-show="currentUser.userId.$oid === section.ownerUserId.$oid"
+               ui-sref="a.tournaments.details.section.edit({ sectionId: section._id.$oid })"
+               class="v-middle padded-cell">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+
+            <div class="row padded-row">
+                <div class="col-md-5">Registration</div>
+                <div ng-show="section.registrationManuallyClosed"
+                     class="col-md-7">
+                    Closed on {{ section.registrationManuallyClosed.$date | date:'dd MMM yyyy' }}
+                </div>
+                <div ng-hide="section.registrationManuallyClosed"
+                     class="col-md-7">
+                    {{ section.registrationStartDate.$date | date:'dd MMM yyyy' }} - {{ section.registrationEndDate.$date | date:'dd MMM yyyy' }}
+                    <button class="btn btn-xs btn-primary"
+                            ng-show="allowCloseRegistration()"
+                            style="margin-left: 10px;"
+                            ng-click="closeRegistration()">
+                        Close Registration
+                    </button>
+                </div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Play System</div>
+                <div class="col-md-7">{{ section.playSystem | playSystem }}</div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Time Controls</div>
+                <div class="col-md-7">{{ section.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Tie Breaks</div>
+                <div class="col-md-7">{{ section.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Rounds</div>
+                <div class="col-md-7">{{ section.rounds }}</div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Maximum No. Players</div>
+                <div class="col-md-7">{{ section.maxPlayers }}</div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Chief Arbiter</div>
+                <div class="col-md-7">{{ section.chiefArbiter }}</div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Registration Fee</div>
+                <div class="col-md-7">
+                    <tournament-currency tournament="tournament"
+                                         amount="section.registrationFee" />
+                </div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Invitation only</div>
+                <div class="col-md-7">
+                    <i ng-show="section.invitationOnly" class="glyphicon glyphicon-ok"></i>
+                    <i ng-hide="section.invitationOnly" class="glyphicon glyphicon-remove"></i>
+                </div>
+            </div>
+            <div class="row padded-row">
+                <div class="col-md-5">Provisional rating (for unrated players)</div>
+                <div class="col-md-7">{{ section.provisionalRating }}</div>
+            </div>
         </div>
-        <div ng-if="!section.registrationManuallyClosed"
-             class="col-md-8">
-            {{ section.registrationStartDate.$date | date }} - {{ section.registrationEndDate.$date | date }}
-            <button class="btn btn-xs btn-primary"
-                    ng-show="allowCloseRegistration()"
-                    style="margin-left: 10px;"
-                    ng-click="closeRegistration()">
-                Close Registration
-            </button>
+        <div class="col-md-5">
+            <!-- Schedule -->
+            <h3>Schedule</h3>
+
+            <div class="row padded-row" ng-repeat="rd in section.roundData">
+                <div class="col-md-3">Round {{ $index + 1 }}</div>
+                <div class="col-md-9">{{ rd.startTime.$date | date:'dd MMM yyyy hh:mm a' }}</div>
+            </div>
         </div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Play System</div>
-        <div class="col-md-8">{{ section.playSystem | playSystem }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Time Controls</div>
-        <div class="col-md-8">{{ section.timeControls | rmTransform:'timeControl' | rmJoin:', ' }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Tie Breaks</div>
-        <div class="col-md-8">{{ section.tieBreaks | rmTransform:'tieBreak' | rmJoin:', ' }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Rounds</div>
-        <div class="col-md-8">{{ section.rounds }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Maximum No. Players</div>
-        <div class="col-md-8">{{ section.maxPlayers }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Chief Arbiter</div>
-        <div class="col-md-8">{{ section.chiefArbiter }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Registration Fee</div>
-        <div class="col-md-8">
-            <tournament-currency tournament="tournament"
-                                 amount="section.registrationFee" />
-        </div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Invitation only</div>
-        <div class="col-md-8">
-            <i ng-show="section.invitationOnly" class="glyphicon glyphicon-ok"></i>
-            <i ng-hide="section.invitationOnly" class="glyphicon glyphicon-remove"></i>
-        </div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Provisional rating (for unrated players)</div>
-        <div class="col-md-8">{{ section.provisionalRating }}</div>
     </div>
 </div>
 
@@ -97,7 +107,7 @@
         <tbody>
             <tr ng-repeat="item in confirmedPlayers">
                 <td>{{ item.name + ' ' + item.surname }}</td>
-                <td>{{ item.dateOfBirth.$date | date }}</td>
+                <td>{{ item.dateOfBirth.$date | date:'dd MMM yyyy' }}</td>
                 <td><federation value="item.federation"></federation></td>
                 <td>{{ item.fideRating || '-' }}</td>
                 <td>{{ item.federationRating || '-' }}</td>

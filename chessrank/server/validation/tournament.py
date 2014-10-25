@@ -1,9 +1,4 @@
 import validation
-import dateutil.parser
-
-from dateutil.relativedelta import relativedelta
-from dateutil.tz import tzutc
-from bson.objectid import ObjectId
 
 class TournamentUpdateValidator(validation.Validator):
     def __init__(self, data):
@@ -45,10 +40,11 @@ class TournamentUpdateValidator(validation.Validator):
                 else (False, "Field '{0}' must be between 2 and 50 characters long".format(field)))
 
     def _verify_start_and_end_dates(self, field, value):
-        beg = dateutil.parser.parse(self._data['startDate'])
-        end = dateutil.parser.parse(self._data['endDate'])
+        beg = self._data['startDate']
+        end = self._data['endDate']
+
         return ((True, None) if beg < end
-                else (False, "Field 'startDate' must be earlier than field 'endDate'"))
+            else (False, "Field 'startDate' must be earlier than field 'endDate'"))
 
     def _verify_currency_id(self, field, value):
         return ((True, None) if value in range(1, 157) # TODO: Don't hard-code!

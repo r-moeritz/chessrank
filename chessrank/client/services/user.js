@@ -37,7 +37,7 @@
 
         return this;
     })
-    .service('signupService', function (userService, $q, sprintf, rmDateUtil) {
+    .service('signupService', function (userService, $q, sprintf, baseTypeConverter) {
         this.validationRules = {
             name: {
                 required: true,
@@ -130,11 +130,12 @@
 
         function createRequest(model) {
             var request = angular.copy(model);
+            var converter = new baseTypeConverter();
 
-            request.dateOfBirth = rmDateUtil.localDateToUtc(model.dateOfBirth);
             delete request.password2;
+            request.dateOfBirth = converter.jsDateToBsonUtcDropTime(model.dateOfBirth);
 
-            return request;
+            return JSON.stringify(request);
         }
 
         this.submit = function (model) {

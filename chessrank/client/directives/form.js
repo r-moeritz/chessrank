@@ -8,7 +8,8 @@
                 attribute: '@',
                 disable: '=',
                 help: '@?',
-                options: '='
+                options: '=',
+                time: '='
             },
             link: function ($scope, $element, $attributes, formForController) {
                 if (!$scope.attribute) {

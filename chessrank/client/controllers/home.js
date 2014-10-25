@@ -1,18 +1,21 @@
 ﻿angular.module('chessRank')
-    .controller('homeCtrl', function ($scope, filterFilter, tournamentService) {
+    .controller('homeCtrl', function ($scope, filterFilter, tournamentService, baseTypeConverter) {
+        var _this = this;
+        this.converter = new baseTypeConverter();
+
         function isCurrentTournament(tournament) {
-            var now = moment.utc();
-            return moment.utc(tournament.startDate.$date).isBefore(now)
-                && moment.utc(tournament.endDate.$date).isAfter(now);
+            var now = moment();
+            return _this.converter.bsonDateToMoment(tournament.startDate).isBefore(now)
+                && _this.converter.bsonDateToMoment(tournament.endDate).isAfter(now);
         }
 
         function isFutureTournament(tournament) {
-            return moment.utc(tournament.startDate.$date).isAfter(moment.utc());
+            return _this.converter.bsonDateToMoment(tournament.startDate).isAfter(moment());
         }
 
         function isRecentTournament(tournament) {
-            var endDate = moment.utc(tournament.endDate.$date);
-            var now = moment.utc();
+            var endDate = _this.converter.bsonDateToMoment(tournament.endDate);
+            var now = moment();
             return endDate.isBefore(now)
                 && now.diff(endDate, 'days') < 90;
         }

@@ -14,6 +14,12 @@
                     max: moment().add(6, 'months').toDate()
                 };
 
+                scope.dateTimePickerOptions = {
+                    format: 'dd MMM yyyy hh:mm tt',
+                    min: moment().subtract(6, 'months').toDate(),
+                    max: moment().add(6, 'months').toDate()
+                };
+
                 scope.currency = _.find(lookups.currencies,
                     function (cur) {
                         return cur.value === tournament.registrationFeeCurrencyId;
@@ -57,6 +63,25 @@
                 scope.clearError = function () {
                     scope.editError = null
                 }
+
+                scope.schedulePanelCollapsed = true;
+
+                scope.toggleSchedulePanelCollapsed = function (rounds, roundData) {
+                    scope.schedulePanelCollapsed = !scope.schedulePanelCollapsed;
+
+                    if (!scope.schedulePanelCollapsed && roundData.length != rounds) {
+                        var diff = rounds - roundData.length;
+                        if (diff > 0) {
+                            for (var i = 0; i != diff; ++i) {
+                                roundData.push({});
+                            }
+                        } else {
+                            for (var i = roundData.length - 1; i != rounds - 1; --i) {
+                                roundData.splice(i, 1);
+                            }
+                        }
+                    }
+                }
             };
         };
     })
@@ -75,6 +100,26 @@
             },
             rounds: {
                 required: true
+            },
+            roundData:{ 
+                collection: {
+                    min: {
+                        rule: 2,
+                        message: 'Section must consist of at least two rounds'
+                    },
+                    max: {
+                        rule: 50,
+                        message: 'Section cannot consist of more than fifty rounds'
+                    },
+                    fields: {
+                        startTime: {
+                            required: true
+                        }
+                    }
+                },
+                custom: function (value, model) {
+
+                }
             },
             maxPlayers: {
                 required: true

@@ -14,8 +14,8 @@
             <tr ng-repeat="item in tournaments">
                 <td>{{ item.name }}</td>
                 <td>{{ item.location }}</td>
-                <td>{{ item.startDate.$date | date }}</td>
-                <td>{{ item.endDate.$date | date }}</td>
+                <td>{{ item.startDate.$date | date:'dd MMM yyyy' }}</td>
+                <td>{{ item.endDate.$date | date:'dd MMM yyyy' }}</td>
                 <td><user-link user-id="item.ownerUserId.$oid" /></td>
                 <td>
                     <a ui-sref="a.tournaments.details({ tournamentId: item._id.$oid })">

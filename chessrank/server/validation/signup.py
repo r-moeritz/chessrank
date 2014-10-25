@@ -1,6 +1,5 @@
 import re
 import validation
-import dateutil.parser
 
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc
@@ -126,13 +125,13 @@ class SignupValidator(validation.Validator):
                 else (False, "Field '{0}' must be a valid telephone number".format(field)))
     
     def _verify_date_of_birth(self, field, value):
-        dob = dateutil.parser.parse(value)
+        dob = value
         now = datetime.now(tzutc())
         min = now - relativedelta(years=120)
         max = now - relativedelta(years=4)
         return ((True, None) if dob > min and dob < max
                 else (False, "Field '{0}' must be a date at least 4 years and at most 120 years in the past"
-                      .format(field)))
+                        .format(field)))
 
     def _verify_rating(self, field, value):
         return ((True, None) if type(value) == int and value > 0

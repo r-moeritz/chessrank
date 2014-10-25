@@ -22,7 +22,7 @@
             sectionCopy.registeredPlayerIds.splice(i, 1);
             sectionCopy.confirmedPlayerIds.push(player._id);
 
-            sectionService.update({ sectionId: section._id.$oid }, fixSectionData(sectionCopy)).$promise
+            sectionService.update({ sectionId: section._id.$oid }, createSectionRequest(sectionCopy)).$promise
                 .then(function () {
                     section.registeredPlayerIds.splice(i, 1);
                     section.confirmedPlayerIds.push(player._id);
@@ -44,7 +44,7 @@
             sectionCopy.confirmedPlayerIds.splice(i, 1);
             sectionCopy.registeredPlayerIds.push(player._id);
 
-            sectionService.update({ sectionId: section._id.$oid }, fixSectionData(sectionCopy)).$promise
+            sectionService.update({ sectionId: section._id.$oid }, createSectionRequest(sectionCopy)).$promise
                 .then(function () {
                     section.confirmedPlayerIds.splice(i, 1);
                     section.registeredPlayerIds.push(player._id);
@@ -84,7 +84,7 @@
                     sectionCopy.confirmedPlayerIds.splice(i, 1);
                 }
 
-                sectionService.update({ sectionId: section._id.$oid }, fixSectionData(sectionCopy)).$promise
+                sectionService.update({ sectionId: section._id.$oid }, createSectionRequest(sectionCopy)).$promise
                     .then(function () {
                         if (confirmed) {
                             section.confirmedPlayerIds.splice(i, 1);
@@ -117,20 +117,10 @@
             return true;
         }
 
-        function fixSectionData(sectionCopy) {
+        function createSectionRequest(sectionCopy) {
             delete sectionCopy._id;
             delete sectionCopy.ownerUserId;
 
-            sectionCopy.tournamentId = sectionCopy.tournamentId.$oid;
-            sectionCopy.startDate = new Date(sectionCopy.startDate.$date);
-            sectionCopy.endDate = new Date(sectionCopy.endDate.$date);
-            sectionCopy.registrationStartDate = new Date(sectionCopy.registrationStartDate.$date);
-            sectionCopy.registrationEndDate = new Date(sectionCopy.registrationEndDate.$date);
-            sectionCopy.registeredPlayerIds = _.map(sectionCopy.registeredPlayerIds,
-                function (playerId) { return playerId.$oid });
-            sectionCopy.confirmedPlayerIds = _.map(sectionCopy.confirmedPlayerIds,
-                function (playerId) { return playerId.$oid });
-
-            return sectionCopy;
+            return JSON.stringify(sectionCopy);
         }
     });

@@ -8,7 +8,14 @@
 
     <field-error error="model.error"></field-error>
 
-    <input kendo-date-picker
+    <input ng-if="time"
+           kendo-date-time-picker
+           k-ng-model="model.bindable"
+           k-options="options"
+           ng-disabled="disable || model.disabled" />
+
+    <input ng-if="!time"
+           kendo-date-picker
            k-ng-model="model.bindable"
            k-options="options"
            ng-disabled="disable || model.disabled" />

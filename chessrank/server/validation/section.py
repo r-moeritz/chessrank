@@ -1,11 +1,7 @@
 import validation
-import dateutil.parser
 
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from dateutil.tz import tzutc
 from bson.objectid import ObjectId
-
 from util.enums import (SectionRegistrationAction, PlaySystem, TimeControlBonus,
                         TieBreak)
 
@@ -50,7 +46,8 @@ class SectionUpdateValidator(validation.Validator):
             'registeredPlayerIds': self._verify_list_of_objectids,
             'confirmedPlayerIds': self._verify_list_of_objectids,
             'tournamentId': self._verify_objectid,
-            'registrationManuallyClosed': self._verify_nullable_date
+            'registrationManuallyClosed': self._verify_nullable_date,
+            'roundData': self._verify_list_of_rounds,
         }
 
     def validate(self):
@@ -81,20 +78,22 @@ class SectionUpdateValidator(validation.Validator):
                 else (False, "Field '{0}' must be between 2 and 50 characters long".format(field)))
 
     def _verify_start_and_end_dates(self, field, value):
-        beg = dateutil.parser.parse(self._data['startDate'])
-        end = dateutil.parser.parse(self._data['endDate'])
+        beg = self._data['startDate']
+        end = self._data['endDate']
+
         return ((True, None) if beg < end
-                else (False, "Field 'startDate' must be earlier than field 'endDate'"))
+            else (False, "Field 'startDate' must be earlier than field 'endDate'"))
 
     def _verify_registration_dates(self, field, value):
-        beg = dateutil.parser.parse(self._data['startDate'])
-        end = dateutil.parser.parse(self._data['endDate'])
-        reg_beg = dateutil.parser.parse(self._data['registrationStartDate'])
-        reg_end = dateutil.parser.parse(self._data['registrationEndDate'])
+        beg = self._data['startDate']
+        end = self._data['endDate']
+        reg_beg = self._data['registrationStartDate']
+        reg_end = self._data['registrationEndDate']
+
         return ((True, None) if reg_beg < reg_end and reg_beg < beg and reg_end < end
-                else (False, "Field 'registrationStartDate' must be earlier than field "
-                + "'registrationEndDate' and field 'startDate'. Also, field "
-                + "'registrationEndDate' must be earlier than field 'endDate'"))
+            else (False, "Field 'registrationStartDate' must be earlier than field "
+            + "'registrationEndDate' and field 'startDate'. Also, field "
+            + "'registrationEndDate' must be earlier than field 'endDate'"))
 
     def _verify_play_system(self, field, value):
         return ((True, None) if value in list(PlaySystem)
@@ -162,8 +161,8 @@ class SectionUpdateValidator(validation.Validator):
                 else (False, "Field '{0}' must be a boolean".format(field)))
 
     def _verify_objectid(self, field, value):
-        return ((True, None) if ObjectId.is_valid(value)
-                else (False, "Field '{0}' must be a valid ObjectId string".format(field)))
+        return ((True, None) if type(value) == ObjectId
+                else (False, "Field '{0}' must be a valid ObjectId".format(field)))
 
     def _verify_list_of_objectids(self, field, value):
         if type(value) != list:
@@ -171,14 +170,24 @@ class SectionUpdateValidator(validation.Validator):
 
         for i in range(0, len(value)):
             item = value[i]
-            if not ObjectId.is_valid(item):
-                return (False, "Item {0} of field '{1}' must be a valid ObjectId string"
+            if not type(item) == ObjectId:
+                return (False, "Item {0} of field '{1}' must be a valid ObjectId"
                         .format(i, field))
 
         return (True, None)
 
     def _verify_nullable_date(self, field, value):
-        date = dateutil.parser.parse(value) if value else None
-        return ((True, None) if date is None or type(date) == datetime
-                else (False, "Field '{0}' must be a valid date or null"
-                      .format(field)))
+        return ((True, None) if value is None or type(value) == datetime
+                else (False, "Field '{0}' must be a valid BSON date object or null".format(field)))
+
+    def _verify_list_of_rounds(self, field, value):
+        if type(value) != list:
+            return (False, "Field '{0}' must be an array".format(field))
+
+        for i in range(0, len(value)):
+            item = value[i]
+            if type(item['startTime']) != datetime:
+                return (False, "'startTime' field of item {0} of field '{1}' must be a valid BSON date object"
+                        .format(i, field))
+
+        return (True, None)

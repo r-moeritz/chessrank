@@ -4,59 +4,121 @@
       service="sectionEditService"
       submit-complete="editComplete()"
       submit-error="editFailed(error)" novalidate>
-    <text-field label="Name"
-                attribute="name"
-                placeholder="Open Section"
-                focused="clearError()"
-                autofocus></text-field>
-    <date-picker-field label="Start Date"
-                       attribute="startDate"
-                       options="datePickerOptions"></date-picker-field>
-    <date-picker-field label="End Date"
-                       attribute="endDate"
-                       options="datePickerOptions"></date-picker-field>
-    <date-picker-field label="Registration Start Date"
-                       attribute="registrationStartDate"
-                       options="datePickerOptions"></date-picker-field>
-    <date-picker-field label="Registration End Date"
-                       attribute="registrationEndDate"
-                       options="datePickerOptions"></date-picker-field>
-    <select-field label="Play System"
-                  attribute="playSystem"
-                  options="playSystemOptions"
-                  placeholder="Select system"></select-field>
-    <select-field label="Time Controls"
-                  attribute="timeControls"
-                  options="timeControlOptions"
-                  placeholder="Select time control"></select-field>
-    <multi-select-field label="Tie Breaks (applied in order)"
-                        attribute="tieBreaks"
-                        options="tieBreakOptions"
-                        placeholder="Select tie breaks"></multi-select-field>
-    <text-field label="Number of Rounds"
-                attribute="rounds"
-                placeholder="5"
-                focused="clearError"
-                type="number"></text-field>
-    <text-field label="Maximum number of players"
-                attribute="maxPlayers"
-                placeholder="30"
-                focused="clearError"
-                type="number"></text-field>
-    <text-field label="Chief Arbiter"
-                attribute="chiefArbiter"
-                placeholder="Joe Soap"
-                focused="clearError"></text-field>
-    <text-field label="Provisional player rating (Elo)"
-                attribute="provisionalRating"
-                focused="clearError"
-                type="number"></text-field>
-    <text-field label="Registration fee (in {{ currency.name }})"
-                attribute="registrationFee"
-                focused="clearError"
-                type="number"></text-field>
-    <checkbox-field label="Invitation only"
-                    attribute="invitationOnly"></checkbox-field>
+    <div class="row">
+        <div class="col-md-6">
+            <text-field label="Name"
+                        attribute="name"
+                        placeholder="Open Section"
+                        focused="clearError()"
+                        autofocus></text-field>
+        </div>
+        <div class="col-md-6"></div></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <date-picker-field label="Start Date"
+                               attribute="startDate"
+                               options="datePickerOptions"></date-picker-field>
+        </div>
+        <div class="col-md-6">
+            <date-picker-field label="End Date"
+                               attribute="endDate"
+                               options="datePickerOptions"></date-picker-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <date-picker-field label="Registration Start Date"
+                               attribute="registrationStartDate"
+                               options="datePickerOptions"></date-picker-field>
+        </div>
+        <div class="col-md-6">
+            <date-picker-field label="Registration End Date"
+                               attribute="registrationEndDate"
+                               options="datePickerOptions"></date-picker-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <select-field label="Play System"
+                          attribute="playSystem"
+                          options="playSystemOptions"
+                          placeholder="Select system"></select-field>
+        </div>
+        <div class="col-md-6">
+            <text-field label="Maximum number of players"
+                        attribute="maxPlayers"
+                        placeholder="30"
+                        focused="clearError"
+                        type="number"></text-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <multi-select-field label="Tie Breaks (applied in order)"
+                                attribute="tieBreaks"
+                                options="tieBreakOptions"
+                                placeholder="Select tie breaks"></multi-select-field>
+        </div>
+        <div class="col-md-6">
+            <select-field label="Time Controls"
+                          attribute="timeControls"
+                          options="timeControlOptions"
+                          placeholder="Select time control"></select-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <text-field label="Provisional player rating (Elo)"
+                        attribute="provisionalRating"
+                        focused="clearError"
+                        type="number"></text-field>
+        </div>
+        <div class="col-md-6">
+            <text-field label="Registration fee (in {{ currency.name }})"
+                        attribute="registrationFee"
+                        focused="clearError"
+                        type="number"></text-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <text-field label="Number of Rounds"
+                        attribute="rounds"
+                        placeholder="5"
+                        focused="clearError"
+                        type="number"
+                        icon-after="glyphicon glyphicon-calendar"
+                        icon-after-clicked="toggleSchedulePanelCollapsed(section.rounds, section.roundData)"></text-field>
+        </div>
+        <div class="col-md-6">
+            <text-field label="Chief Arbiter"
+                        attribute="chiefArbiter"
+                        placeholder="Joe Soap"
+                        focused="clearError"></text-field>
+        </div>
+    </div>
+    <div collapse="schedulePanelCollapsed" class="row padded-row bg-info">
+        <div class="col-md-12">
+            <h4>Round Schedules</h4>
+
+            <div class="row">
+                <div class="col-md-4" ng-repeat="item in section.roundData">
+                    <date-picker-field label="Round {{ $index + 1 }}"
+                                       attribute="roundData[{{ $index }}].startTime"
+                                       options="dateTimePickerOptions"
+                                       time="true"></date-picker-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <checkbox-field label="Private section (registration only by invitation)"
+                            attribute="invitationOnly"></checkbox-field>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
 
     <div class="alert alert-danger" ng-show="editError">
         {{ action }} failed ({{ editError }}). Please try again.

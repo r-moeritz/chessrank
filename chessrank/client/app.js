@@ -224,7 +224,7 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                 tournamentEditService: 'tournamentEditService',
                 resolve: {
                     section: function (_, $stateParams, tournamentEditService) {
-                        var res = _.find(tournamentEditService.getSectionsToAddOrUpdate(),
+                        var res = _.find(tournamentEditService.getSectionsToAdd(),
                             function (sec) { return sec.fakeId === $stateParams.sectionId; });
                         return res;
                     },

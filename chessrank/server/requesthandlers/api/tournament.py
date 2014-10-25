@@ -5,8 +5,6 @@ import requesthandlers.api
 import bson.json_util
 import util
 import pymongo
-import json
-import dateutil.parser
 
 from urllib.parse import urlunsplit
 from tornado import gen
@@ -48,7 +46,13 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
     @util.authenticated_async
     @gen.coroutine
     def put(self, id):
-        request = json.loads(self.request.body.decode('utf-8'))
+        request = None
+
+        try:
+            request = bson.json_util.loads(self.request.body.decode('utf-8'))
+        except ValueError as e:
+            raise tornado.web.HTTPError(400, e)
+
         db = self.settings['db']
         spec = { '_id': ObjectId(id) }
         
@@ -68,7 +72,7 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
             raise tornado.web.HTTPError(400, result[1])
         
         # 4. Massage request
-        self._format_upsert_request(request)
+        request['ownerUserId'] = self.current_user
 
         # 5. Perform update
         db.tournaments.update(spec, request)
@@ -76,7 +80,12 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
     @util.authenticated_async
     @gen.coroutine
     def post(self, _):
-        request = json.loads(self.request.body.decode('utf-8'))
+        request = None
+
+        try:
+            request = bson.json_util.loads(self.request.body.decode('utf-8'))
+        except ValueError as e:
+            raise tornado.web.HTTPError(400, e)
         
         # 1. Validate insert request
         validator = TournamentUpdateValidator(request)
@@ -85,7 +94,7 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
             raise tornado.web.HTTPError(400, result[1])
 
         # 2. Massage request
-        self._format_upsert_request(request)
+        request['ownerUserId'] = self.current_user
 
         # 3. Perform insert
         db = self.settings['db']
@@ -103,7 +112,3 @@ class TournamentHandler(requesthandlers.api.ApiHandler):
         self.set_header('Content-Type', 'application/json')
         self.set_header('Location', url)
 
-    def _format_upsert_request(self, request):
-        request['ownerUserId'] = self.current_user
-        request['startDate'] = dateutil.parser.parse(request['startDate'])
-        request['endDate'] = dateutil.parser.parse(request['endDate'])

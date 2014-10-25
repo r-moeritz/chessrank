@@ -123,7 +123,8 @@ module.exports = {
             provisionalRating: 1000,
             registeredPlayerIds: [],
             confirmedPlayerIds: [],
-            registrationManuallyClosed: null
+            registrationManuallyClosed: null,
+            roundData: []
         };
     },
     

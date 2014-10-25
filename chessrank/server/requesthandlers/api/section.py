@@ -1,8 +1,6 @@
-import json
 import tornado.web
 import pymongo
 import bson.json_util
-import dateutil.parser
 import requesthandlers.api
 import util
 
@@ -50,7 +48,13 @@ class SectionHandler(requesthandlers.api.ApiHandler):
     @util.authenticated_async
     @gen.coroutine
     def put(self, id):
-        request = json.loads(self.request.body.decode('utf-8'))
+        request = None
+
+        try:
+            request = bson.json_util.loads(self.request.body.decode('utf-8'))
+        except ValueError as e:
+            raise tornado.web.HTTPError(400, e)
+
         db = self.settings['db']
         spec = { '_id': ObjectId(id) }
         
@@ -70,7 +74,7 @@ class SectionHandler(requesthandlers.api.ApiHandler):
                 raise tornado.web.HTTPError(400, result[1])
 
             # 4a. Massage request data
-            self._format_owner_request(request)
+            request['ownerUserId'] = self.current_user
             
             # 5a. Perform update
             db.sections.update(spec, request)
@@ -114,7 +118,12 @@ class SectionHandler(requesthandlers.api.ApiHandler):
     @util.authenticated_async
     @gen.coroutine
     def post(self, _):
-        request = json.loads(self.request.body.decode('utf-8'))
+        request = None
+
+        try:
+            request = bson.json_util.loads(self.request.body.decode('utf-8'))
+        except ValueError as e:
+            raise tornado.web.HTTPError(400, e)
 
         # 1. Validate request
         validator = SectionUpdateValidator(request)
@@ -123,7 +132,7 @@ class SectionHandler(requesthandlers.api.ApiHandler):
             raise tornado.web.HTTPError(400, result[1])
 
         # 2. Massage request data
-        self._format_owner_request(request)
+        request['ownerUserId'] = self.current_user
 
         # 3. Retrieve parent tournament data
         db = self.settings['db']
@@ -169,13 +178,3 @@ class SectionHandler(requesthandlers.api.ApiHandler):
             raise tornado.web.HTTPError(403, 'Only tournament owner may delete sections')
         
         db.sections.remove(spec)    
-
-    def _format_owner_request(self, request):
-        dateFields = ('startDate', 'endDate', 'registrationStartDate', 'registrationEndDate', 'registrationManuallyClosed')
-        for field in dateFields:
-            request[field] = dateutil.parser.parse(request[field]) if request[field] else None
-
-        request['tournamentId'] = ObjectId(request['tournamentId'])
-        request['registeredPlayerIds'] = [ObjectId(id) for id in request['registeredPlayerIds']]
-        request['confirmedPlayerIds'] = [ObjectId(id) for id in request['confirmedPlayerIds']]
-        request['ownerUserId'] = self.current_user
