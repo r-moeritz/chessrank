@@ -97,6 +97,7 @@
         this.addSection = function (section) {
             if (_this._tournamentId) {
                 // Existing tournament
+                fixEditedSection(section);
                 var request = createSectionRequest(section, _this._tournamentId);
                 return sectionService.save(request).$promise;
             }
@@ -108,6 +109,7 @@
                 }
             });
 
+            fixEditedSection(section);
             if (!found) {
                 _this._sectionsToAdd.push(section);
             }
@@ -116,6 +118,7 @@
         }
 
         this.updateSection = function (section) {
+            fixEditedSection(section);
             var request = createSectionRequest(section);
             return sectionService.update({ sectionId: section._id.$oid }, request).$promise;
         }
@@ -163,24 +166,27 @@
             return JSON.stringify(request);
         }
 
+        function fixEditedSection(section) {
+            var converter = new baseTypeConverter();
+
+            section.timeControls = angular.fromJson(section.timeControls);
+            section.startDate = converter.jsDateToBsonUtcDropTime(section.startDate);
+            section.endDate = converter.jsDateToBsonUtcDropTime(section.endDate);
+            section.registrationStartDate = converter.jsDateToBsonUtcDropTime(section.registrationStartDate);
+            section.registrationEndDate = converter.jsDateToBsonUtcDropTime(section.registrationEndDate);
+            _.each(section.roundData, function (rd) {
+                rd.startTime = converter.momentToBsonDate(moment(rd.startTime).utc());
+            });
+        }
+
         function createSectionRequest(section, tournamentId) {
             var request = angular.copy(section);
-            var converter = new baseTypeConverter();
 
             delete request._id;
             delete request.ownerUserId;
             delete request.fakeId;
 
-            request.timeControls = angular.fromJson(request.timeControls);
             request.tournamentId = tournamentId || section.tournamentId;
-            request.startDate = converter.jsDateToBsonUtcDropTime(request.startDate);
-            request.endDate = converter.jsDateToBsonUtcDropTime(request.endDate);
-            request.registrationStartDate = converter.jsDateToBsonUtcDropTime(request.registrationStartDate);
-            request.registrationEndDate = converter.jsDateToBsonUtcDropTime(request.registrationEndDate);
-            _.each(request.roundData, function (rd) {
-                rd.startTime = converter.momentToBsonDate(moment(rd.startTime).utc());
-            });
-            
 
             return JSON.stringify(request);
         }
