@@ -1,7 +1,8 @@
 ﻿angular.module('chessRank')
     .controller('signupCtrl', function ($scope, $modal, moment, signupService, lookups, gender) {
         $scope.request = {
-            gender: gender.male
+            gender: gender.male,
+            federation: null
         };
 
         $scope.fideFederationList = lookups.fideFederations;

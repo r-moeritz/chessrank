@@ -74,7 +74,10 @@
                                                 moment, baseTypeConverter, ratingType) {
         var _this = this;
 
-        this._newTournamentTemplate = { ratingType: ratingType.fide };
+        this._newTournamentTemplate = {
+            ratingType: ratingType.fide,
+            federation: null
+        };
         this._tournamentToAdd = angular.copy(this._newTournamentTemplate);
         this._sectionsToAdd = [];
         this._tournamentId = null;
@@ -181,6 +184,10 @@
             request.startDate = converter.jsDateToBsonUtcDropTime(tournament.startDate);
             request.endDate = converter.jsDateToBsonUtcDropTime(tournament.endDate);
             request.registrationFeeCurrencyId = tournament.currency.value;
+            request.ratingType = parseInt(tournament.ratingType, 10);
+            if (tournament.federation) {
+                request.federation = tournament.federation.value;
+            }
 
             return JSON.stringify(request);
         }

@@ -137,6 +137,10 @@
 
             delete request.password2;
             request.dateOfBirth = converter.jsDateToBsonUtcDropTime(model.dateOfBirth);
+            request.gender = parseInt(model.gender, 10);
+            if (model.federation) {
+                request.federation = model.federation.value;
+            }
 
             return JSON.stringify(request);
         }

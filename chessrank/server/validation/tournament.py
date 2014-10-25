@@ -59,5 +59,5 @@ class TournamentUpdateValidator(validation.Validator):
                 else (False, "Field '{0}' must be one of {1}".format(field, [int(r) for r in list(RatingType)])))
 
     def _verify_federation(self, field, value):
-        return ((True, None) if not(value) or type(value) == dict and value.get('value', 0) in range(1, 181) # TODO: Don't hard-code!
+        return ((True, None) if not(value) or type(value) == int and value in range(1, 181) # TODO: Don't hard-code!
                 else (False, "Field '{0}' must be an integer between 1 and 181".format(field)))

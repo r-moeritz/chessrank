@@ -32,4 +32,5 @@ class PairingEngine(engines.Engine):
         # 4. Update section.roundData and write to db
         # 5. Return updated section
 
-        #userIds = self._section['confirmedUserIds'];
+        #userIds = self._section['confirmedUserIds']
+

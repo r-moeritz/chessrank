@@ -5,14 +5,18 @@
 
         var converter = new baseTypeConverter();
         $scope.tournament = angular.copy(tournament);
+        $scope.sections = sections;
         $scope.tournament.startDate = converter.bsonDateToJs($scope.tournament.startDate);
         $scope.tournament.endDate = converter.bsonDateToJs($scope.tournament.endDate);
+        $scope.currencyList = lookups.currencies;
         $scope.tournament.currency = _.find(lookups.currencies,
             function (cur) {
                 return cur.value === tournament.registrationFeeCurrencyId;
             });
-        $scope.sections = sections;
-        $scope.currencyList = lookups.currencies;
+        $scope.tournament.federation = _.find(lookups.fideFederations,
+            function (fed) {
+                return fed.value === tournament.federation;
+            });
 
         var helper = new tournamentEditHelper(tournament._id);
         helper.attach($scope, lookups);
