@@ -109,7 +109,7 @@
             });
 
             if (!found) {
-                _this._sectionsToAdd.push(fixEditedSection(section));
+                _this._sectionsToAdd.push(section);
             }
 
             return $q.when(true);
@@ -163,30 +163,24 @@
             return JSON.stringify(request);
         }
 
-        function fixEditedSection(section) {
-            var sectionCopy = angular.copy(section);
-            var converter = new baseTypeConverter();
-
-            sectionCopy.timeControls = angular.fromJson(sectionCopy.timeControls);
-            sectionCopy.startDate = converter.jsDateToBsonUtcDropTime(sectionCopy.startDate);
-            sectionCopy.endDate = converter.jsDateToBsonUtcDropTime(sectionCopy.endDate);
-            sectionCopy.registrationStartDate = converter.jsDateToBsonUtcDropTime(sectionCopy.registrationStartDate);
-            sectionCopy.registrationEndDate = converter.jsDateToBsonUtcDropTime(sectionCopy.registrationEndDate);
-            _.each(sectionCopy.roundData, function (rd) {
-                rd.startTime = converter.momentToBsonDate(moment(rd.startTime).utc());
-            });
-
-            return sectionCopy;
-        }
-
         function createSectionRequest(section, tournamentId) {
-            var request = fixEditedSection(section);
+            var request = angular.copy(section);
+            var converter = new baseTypeConverter();
 
             delete request._id;
             delete request.ownerUserId;
             delete request.fakeId;
 
+            request.timeControls = angular.fromJson(request.timeControls);
             request.tournamentId = tournamentId || section.tournamentId;
+            request.startDate = converter.jsDateToBsonUtcDropTime(request.startDate);
+            request.endDate = converter.jsDateToBsonUtcDropTime(request.endDate);
+            request.registrationStartDate = converter.jsDateToBsonUtcDropTime(request.registrationStartDate);
+            request.registrationEndDate = converter.jsDateToBsonUtcDropTime(request.registrationEndDate);
+            _.each(request.roundData, function (rd) {
+                rd.startTime = converter.momentToBsonDate(moment(rd.startTime).utc());
+            });
+            
 
             return JSON.stringify(request);
         }
