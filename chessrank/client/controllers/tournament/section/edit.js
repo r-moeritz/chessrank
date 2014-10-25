@@ -26,7 +26,9 @@
             invitationOnly: false,
             rounds: 3,
             roundData: [],
-            registrationManuallyClosed: null
+            registrationManuallyClosed: null,
+            registeredPlayerIds: [],
+            confirmedPlayerIds: []
         };
 
         var helper = new sectionEditHelper();
