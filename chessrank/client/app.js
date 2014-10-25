@@ -133,7 +133,7 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 },
                 data: {
-                    ncyBreadcrumbLabel: 'Edit Players'
+                    ncyBreadcrumbLabel: 'Edit Player Registrations'
                 },
                 resolve: {
                     section: function (section, tournament, lookups, players) {
@@ -151,6 +151,11 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                 },
                 data: {
                     ncyBreadcrumbLabel: 'Results'
+                },
+                resolve: {
+                    section: function (section, tournament, lookups, players) {
+                        return section;
+                    }
                 }
             })
             .state('a.tournaments.details.section.round.capture', {
@@ -163,6 +168,15 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                 },
                 data: {
                     ncyBreadcrumbLabel: 'Capture Results'
+                },
+                resolve: {
+                    round: function ($stateParams, section, players, tournament, lookups, 
+                                     sectionService, sectionOwnerAction) {
+                        return sectionService.update({ sectionId: section._id.$oid }, {
+                            action: sectionOwnerAction.pairRound,
+                            round: $stateParams.roundNumber
+                        }).$promise;
+                    }
                 }
             })
             .state('a.tournaments.details.edit', {

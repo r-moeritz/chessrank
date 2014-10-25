@@ -1,2 +1,18 @@
-﻿<h2>Capture Results</h2>
-<h3>Nothing to see here, move along...</h3>
+﻿<h2>Capture results for round {{ roundIndex + 1 }}</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>White</th>
+                <th>Black</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="res in results">
+                <td>{{ res.white.name }} {{ res.white.surname}}</td>
+                <td>{{ res.black.name }} {{ res.black.surname}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

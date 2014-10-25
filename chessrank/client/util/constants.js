@@ -39,14 +39,14 @@ angular.module('chessRank')
         notAuthenticated: 4,
     })
     .constant('fideTitle', {
-        WCM: 0,
-        WFM: 1,
-        CM: 2,
-        WIM: 3,
-        FM: 4,
-        WGM: 5,
-        IM: 6,
-        GM: 7
+        WCM: 1,
+        WFM: 2,
+        CM: 3,
+        WIM: 4,
+        FM: 5,
+        WGM: 6,
+        IM: 7,
+        GM: 8
     })
     .constant('userStatus', {
         unconfirmed: 0,
@@ -60,4 +60,14 @@ angular.module('chessRank')
     .constant('ratingType', {
         fide: 1,
         federation: 2
+    })
+    .constant('colour', {
+        black: -1,
+        none: 0,
+        white: 1
+    })
+    .constant('sectionOwnerAction', {
+        updateSection: 0,
+        pairRound: 1,
+        captureResults: 2
     });

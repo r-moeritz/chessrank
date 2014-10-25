@@ -18,7 +18,7 @@ class SectionPairingValidator(validation.Validator):
 
         self._required = {
             'action': self._verify_action,
-            'rounds': self._verify_positive_integer,
+            'round': self._verify_positive_integer,
         }
 
     def _verify_positive_integer(self, field, value):
@@ -26,7 +26,7 @@ class SectionPairingValidator(validation.Validator):
                 else (False, "Field '{0}' must be a positive integer".format(field)))
 
     def _verify_action(self, field, value):
-        return ((True, None) if action == SectionOwnerAction.pair_round
+        return ((True, None) if value == SectionOwnerAction.pair_round
                 else (False, "Field '{0}' must be equal to {1}"
                       .format(field, int(SectionOwnerAction.pair_round))))
 

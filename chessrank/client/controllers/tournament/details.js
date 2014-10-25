@@ -30,9 +30,9 @@
                 return true;
             }
 
-            var now = moment.utc();
-            var regStart = moment.utc(section.registrationStartDate.$date)
-            var regEnd = moment.utc(section.registrationEndDate.$date)
+            var now = moment();
+            var regStart = moment(section.registrationStartDate.$date)
+            var regEnd = moment(section.registrationEndDate.$date)
 
             if (regStart.isAfter(now) || regEnd.isBefore(now)) {
                 return true;

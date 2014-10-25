@@ -12,14 +12,14 @@ class TieBreak(enum.IntEnum):
     modified_median = 3
 
 class FideTitle(enum.IntEnum):
-    WCM = 0
-    WFM = 1
-    CM = 2
-    WIM = 3
-    FM = 4
-    WGM = 5
-    IM = 6
-    GM = 7
+    WCM = 1,
+    WFM = 2,
+    CM = 3,
+    WIM = 4,
+    FM = 5,
+    WGM = 6,
+    IM = 7,
+    GM = 8
 
 class UserStatus(enum.IntEnum):
     unconfirmed = 0,
