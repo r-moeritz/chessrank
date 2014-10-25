@@ -73,7 +73,7 @@
                         var diff = rounds - roundData.length;
                         if (diff > 0) {
                             for (var i = 0; i != diff; ++i) {
-                                roundData.push({});
+                                roundData.push({ results: [] });
                             }
                         } else {
                             for (var i = roundData.length - 1; i != rounds - 1; --i) {

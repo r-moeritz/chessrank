@@ -141,6 +141,30 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 }
             })
+            .state('a.tournaments.details.section.round', {
+                url: '/round/{roundNumber:[1-50]}',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/round/results.html',
+                        controller: 'roundResultsCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Results'
+                }
+            })
+            .state('a.tournaments.details.section.round.capture', {
+                url: '/capture',
+                views: {
+                    '@': {
+                        templateUrl: 'static/views/tournament/section/round/capture.html',
+                        controller: 'roundCaptureResultsCtrl'
+                    }
+                },
+                data: {
+                    ncyBreadcrumbLabel: 'Capture Results'
+                }
+            })
             .state('a.tournaments.details.edit', {
                 url: '/edit',
                 views: {

@@ -48,7 +48,7 @@ def main():
                 (r'/api.*', ApiHandler),
                 (r'/verify/(.+)', VerifyPageHandler),
                 (r'/', IndexPageHandler)
-                ]
+               ]
 
     options.parse_command_line()
     app = CustomApp(handlers, 'localhost', **settings)

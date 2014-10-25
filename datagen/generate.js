@@ -99,7 +99,16 @@ module.exports = {
                 : [Const.tieBreak.neustadl];
         var rounds = (playSystem === Const.playSystem.swiss)
                 ? Util.swissRounds(maxPlayers)
-                : 0;
+                : 0; // for RR tournaments the no. of rounds depends on the no. of participants
+        
+        var roundData = [];
+        if (playSystem === Const.playSystem.swiss) {
+            for (var i = 0; i != rounds; ++i) {
+                var startTime = new Date(tournament.startDate);
+                startTime.setHours(startTime.getHours() + 8 + i);
+                roundData.push({ startTime: startTime, results: [] });
+            }
+        }
     
         var registrationStartDate = new Date(tournament.startDate);
         registrationStartDate.setDate(tournament.startDate.getDate() - 60);
@@ -124,7 +133,7 @@ module.exports = {
             registeredPlayerIds: [],
             confirmedPlayerIds: [],
             registrationManuallyClosed: null,
-            roundData: []
+            roundData: roundData
         };
     },
     

@@ -3,7 +3,55 @@ import validation
 from datetime import datetime
 from bson.objectid import ObjectId
 from util.enums import (SectionRegistrationAction, PlaySystem, TimeControlBonus,
-                        TieBreak)
+                        TieBreak, SectionOwnerAction)
+
+class SectionCaptureValidator(validation.Validator):
+    def __init__(self, data):
+        super().__init__(data)
+
+    def validate(self):
+        pass
+
+class SectionPairingValidator(validation.Validator):
+    def __init__(self, data):
+        super().__init__(data)
+
+        self._required = {
+            'action': self._verify_action,
+            'rounds': self._verify_positive_integer,
+        }
+
+    def _verify_positive_integer(self, field, value):
+        return ((True, None) if type(value) == int and value > 0
+                else (False, "Field '{0}' must be a positive integer".format(field)))
+
+    def _verify_action(self, field, value):
+        return ((True, None) if action == SectionOwnerAction.pair_round
+                else (False, "Field '{0}' must be equal to {1}"
+                      .format(field, int(SectionOwnerAction.pair_round))))
+        
+
+    def validate(self):
+        spurious = set(self._data.keys()) - set(self._required.keys())
+        if spurious:
+            return (False, "Spurious fields included in request: {0}"
+                    .format(', '.join(spurious)))
+
+        return self._verify_required_fields()
+
+    def _verify_required_fields(self):
+        missing  = set(self._required.keys()) - set(self._data.keys())
+        if missing:
+            return (False, "Required field '{0}' missing"
+                    .format(next(iter(missing))))
+
+        for field in self._required:
+            validate = self._required[field]
+            result = validate(field, self._data[field])
+            if not result[0]:
+                return result
+
+        return (True, None)
 
 class SectionRegistrationValidator(validation.Validator):
     def __init__(self, data):

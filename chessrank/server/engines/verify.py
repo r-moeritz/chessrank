@@ -1,3 +1,4 @@
+import engines
 import tornado.web
 
 from datetime import datetime, timedelta
@@ -24,12 +25,12 @@ class EmailVerificationResult:
     def lifespan(self):
         return self._lifespan
 
-class EmailVerificationEngine:
+class EmailVerificationEngine(engines.Engine):
     def __init__(self, settings):
-        self._settings = settings
+        super().__init__(settings)
 
     @gen.coroutine
-    def verify(self, payload):
+    def execute(self, payload):
         # 1. Extract user id from payload
         key = self._settings['cookie_secret']
         s   = URLSafeSerializer(key)

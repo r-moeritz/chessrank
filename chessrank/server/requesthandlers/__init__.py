@@ -12,7 +12,7 @@ class VerifyPageHandler(tornado.web.RequestHandler):
     def get(self, payload):
         # 1. Activate user account and create new session (login)
         engine = EmailVerificationEngine(self.settings)
-        result = yield engine.verify(payload)
+        result = yield engine.execute(payload)
 
         # 2. Store session details in cookie
         self.set_secure_cookie('sessionId', str(result.sessionId), 

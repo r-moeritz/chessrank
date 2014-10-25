@@ -5,28 +5,45 @@
         $scope.section = section;
         $scope.players = players;
 
+        var converter = new baseTypeConverter();
+
         $scope.confirmedPlayers = _.filter(players, function (p) {
             return rmArrayUtil.indexOf(section.confirmedPlayerIds,
                 function (pid) { return pid.$oid === p._id.$oid; }) >= 0;
         });
 
         $scope.allowCloseRegistration = function () {
-            if (!$scope.currentUser.userId || $scope.currentUser.userId.$oid !== section.ownerUserId.$oid
-                || section.confirmedPlayerIds.length < 4 || section.registrationManuallyClosed) {
+            return $scope.allowEdit()
+                && section.confirmedPlayerIds.length > 3
+                && !registrationClosed();
+        }
+
+        $scope.allowPairing = function (roundIndex) {
+            if (!$scope.allowEdit() || !registrationClosed() || paired(roundIndex)) {
                 return false;
             }
 
-            var now = moment().utc();
-            if (section.registrationEndDate < now) {
-                return false;
-            }
+            return (roundIndex === 0)
+                ? true
+                : completed(roundIndex - 1);
+        }
 
-            return true;
+        $scope.allowCapture = function (roundIndex) {
+            return $scope.allowEdit() && paired(roundIndex) && !completed(roundIndex);
+        }
+
+        $scope.resultsAvailable = function (roundIndex) {
+            var round = section.roundData[roundIndex];
+            return _.some(round.results,
+                function (res) { return res.result; });
+        }
+
+        $scope.allowEdit = function () {
+            return $scope.currentUser && $scope.currentUser.userId.$oid === section.ownerUserId.$oid;
         }
 
         $scope.closeRegistration = function () {
             var sectionCopy = angular.copy(section);
-            var converter = new baseTypeConverter();
 
             sectionCopy.registrationManuallyClosed = converter.nowToBsonDate();
 
@@ -41,10 +58,26 @@
                 });
         }
 
+        function completed(roundIndex) {
+            var round = section.roundData[roundIndex];
+            return round.results.length &&
+                _.every(round.results, function (res) { return res.result; });
+        }
+
+        function registrationClosed() {
+            return section.registrationManuallyClosed 
+                || converter.bsonDateToMoment(section.registrationEndDate) < moment();
+        }
+
         function fixSectionData(sectionCopy) {
             delete sectionCopy._id;
             delete sectionCopy.ownerUserId;
 
             return JSON.stringify(sectionCopy);
+        }
+
+        function paired(roundIndex) {
+            var round = section.roundData[roundIndex];
+            return round.results.length;
         }
     });

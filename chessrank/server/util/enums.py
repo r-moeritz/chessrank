@@ -30,6 +30,11 @@ class SectionRegistrationAction(enum.IntEnum):
     register = 0,
     unregister = 1
 
+class SectionOwnerAction(enum.IntEnum):
+    update_section = 0,
+    pair_round = 1,
+    capture_results = 2
+
 class TimeControlBonus(enum.IntEnum):
     increment = 1,
     delay = 2
