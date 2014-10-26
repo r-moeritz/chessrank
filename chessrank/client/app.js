@@ -141,8 +141,8 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     }
                 }
             })
-            .state('a.tournaments.details.section.round', {
-                url: '/round/{roundNumber:[1-50]}',
+            .state('a.tournaments.details.section.results', {
+                url: '/results/{roundNumber:[1-50]}',
                 views: {
                     '@': {
                         templateUrl: 'static/views/tournament/section/round/results.html',
@@ -151,15 +151,10 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                 },
                 data: {
                     ncyBreadcrumbLabel: 'Results'
-                },
-                resolve: {
-                    section: function (section, tournament, lookups, players) {
-                        return section;
-                    }
                 }
             })
-            .state('a.tournaments.details.section.round.capture', {
-                url: '/capture',
+            .state('a.tournaments.details.section.capture_round', {
+                url: '/round/{roundNumber:[1-50]}/capture',
                 views: {
                     '@': {
                         templateUrl: 'static/views/tournament/section/round/capture.html',
@@ -170,12 +165,8 @@ angular.module('chessRank', ['ngResource', 'ui.router', 'ngAnimate', 'ncy-angula
                     ncyBreadcrumbLabel: 'Capture Results'
                 },
                 resolve: {
-                    round: function ($stateParams, section, players, tournament, lookups, 
-                                     sectionService, sectionOwnerAction) {
-                        return sectionService.update({ sectionId: section._id.$oid }, {
-                            action: sectionOwnerAction.pairRound,
-                            round: $stateParams.roundNumber
-                        }).$promise;
+                    section: function ($stateParams, section, players, tournament, lookups, sectionService) {
+                        return section;
                     }
                 }
             })

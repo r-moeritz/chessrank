@@ -42,4 +42,23 @@
                 });
             }
         }
+    })
+    .directive('federation', function (_, lookupsService) {
+        return {
+            restrict: 'E',
+            scope: {
+                value: '=',
+                flagOnly: '='
+            },
+            templateUrl: 'static/views/tournament/federation.html',
+            link: function (scope) {
+                lookupsService.getLookups()
+                    .then(function (lookups) {
+                        scope.federation = _.find(lookups.fideFederations,
+                            function (fed) {
+                                return fed.value === scope.value;
+                            });
+                    });
+            }
+        }
     });

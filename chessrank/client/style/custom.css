@@ -15,12 +15,21 @@
 
 .table-striped>tbody>tr:nth-child(odd)>td, 
 .table-striped>tbody>tr:nth-child(odd)>th {
-    background-color: #dddddd;
+    background-color: #F2F2F2;
  }
+
+.table tbody>tr>td {
+    vertical-align: middle;
+}
 
 .padded-row {
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.padded-cell {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .form-group .k-widget,
@@ -35,11 +44,4 @@
 .v-middle {
     display: table-cell; 
     vertical-align: middle;
-    padding-top: 20px;
-    padding-bottom: 10px;
-}
-
-.padded-cell {
-    padding-left: 10px;
-    padding-right: 10px;
 }

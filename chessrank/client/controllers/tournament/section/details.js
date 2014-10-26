@@ -1,6 +1,7 @@
 ﻿angular.module('chessRank')
-    .controller('sectionDetailsCtrl', function (_, $scope, section, tournament, players, rmArrayUtil, 
-                                                moment, sectionService, toaster, baseTypeConverter) {
+    .controller('sectionDetailsCtrl', function (_, $scope, $state, section, tournament, players, rmArrayUtil, 
+                                                moment, sectionService, toaster, baseTypeConverter,
+                                                sectionOwnerAction, roundStatus, $modal) {
         $scope.tournament = tournament;
         $scope.section = section;
         $scope.players = players;
@@ -11,6 +12,19 @@
             return rmArrayUtil.indexOf(section.confirmedPlayerIds,
                 function (pid) { return pid.$oid === p._id.$oid; }) >= 0;
         });
+
+        $scope.pair = function (roundIndex) {
+            sectionService.update({ sectionId: section._id.$oid }, {
+                action: sectionOwnerAction.pairRound,
+                round: roundIndex + 1
+            }).$promise.then(function () {
+                $state.go('a.tournaments.details.section.capture_round',
+                    { 'roundNumber': roundIndex + 1 },
+                    { reload: true });
+            }, function (error) {
+                toaster.pop('error', 'Error', error.data.message || 'Unknown error');
+            });
+        }
 
         $scope.allowCloseRegistration = function () {
             return $scope.allowEdit()
@@ -33,9 +47,10 @@
         }
 
         $scope.resultsAvailable = function (roundIndex) {
-            var round = section.roundData[roundIndex];
-            return _.some(round.results,
-                function (res) { return res.result; });
+            var haveResults = _.some(section.playerData, function (pd) {
+                return pd.results.length >= roundIndex + 1;
+            });
+            return haveResults;
         }
 
         $scope.allowEdit = function () {
@@ -43,25 +58,36 @@
         }
 
         $scope.closeRegistration = function () {
-            var sectionCopy = angular.copy(section);
+            $scope.model = {
+                title: 'Are you sure?',
+                description: sprintf('%d players registrations have not been confirmed; if you close registration '
+                    + 'these players will be unregistered. Do you want to proceeed?', section.registeredPlayerIds.length)
+            };
 
-            sectionCopy.registrationManuallyClosed = converter.nowToBsonDate();
+            var inst = $modal.open({
+                templateUrl: 'static/views/yesno.html',
+                size: 'sm',
+                scope: $scope
+            });
 
-            sectionService.update({ sectionId: section._id.$oid }, fixSectionData(sectionCopy)).$promise
-                .then(function () {
-                    section.registrationManuallyClosed = sectionCopy.registrationManuallyClosed;
-                    toaster.pop('success', 'Success', sprintf('Registration for %s - %s has been closed.',
-                        tournament.name, section.name));
-                },
-                function (error) {
-                    toaster.pop('error', 'Error', error.data.message || 'Unknown error');
-                });
+            inst.result.then(function () {
+                var sectionCopy = angular.copy(section);
+                sectionCopy.registrationManuallyClosed = converter.nowToBsonDate();
+
+                sectionService.update({ sectionId: section._id.$oid }, fixSectionData(sectionCopy)).$promise
+                    .then(function () {
+                        section.registrationManuallyClosed = sectionCopy.registrationManuallyClosed;
+                        toaster.pop('success', 'Success', sprintf('Registration has been closed for the %s of the %s.',
+                            tournament.name, section.name), 1000);
+                    },
+                    function (error) {
+                        toaster.pop('error', 'Error', error.data.message || 'Unknown error');
+                    });
+            });
         }
 
         function completed(roundIndex) {
-            var round = section.roundData[roundIndex];
-            return round.results.length &&
-                _.every(round.results, function (res) { return res.result; });
+            return section.roundData[roundIndex].status === roundStatus.completed;
         }
 
         function registrationClosed() {
@@ -77,7 +103,7 @@
         }
 
         function paired(roundIndex) {
-            var round = section.roundData[roundIndex];
-            return round.results.length;
+            var status = section.roundData[roundIndex].status;
+            return status !== roundStatus.unpaired;
         }
     });

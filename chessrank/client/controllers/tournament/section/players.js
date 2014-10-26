@@ -27,7 +27,7 @@
                     section.registeredPlayerIds.splice(i, 1);
                     section.confirmedPlayerIds.push(player._id);
                     toaster.pop('success', 'Success', sprintf('Registration confirmed for %s %s',
-                        player.name, player.surname));
+                        player.name, player.surname), 1000);
                 },
                 function (error) {
                     toaster.pop('error', 'Error', error.data.message || 'Unknown error');
@@ -49,7 +49,7 @@
                     section.confirmedPlayerIds.splice(i, 1);
                     section.registeredPlayerIds.push(player._id);
                     toaster.pop('success', 'Success', sprintf('Registration unconfirmed for %s %s',
-                        player.name, player.surname));
+                        player.name, player.surname), 1000);
                 },
                 function (error) {
                     toaster.pop('error', 'Error', error.data.message || 'Unknown error');
@@ -58,8 +58,8 @@
 
         $scope.unregister = function (player) {
             $scope.model = {
-                title: 'Really?',
-                description: sprintf('Are you sure you want to unregister %s %s?',
+                title: 'Are you sure?',
+                description: sprintf('Really unregister %s %s?',
                     player.name, player.surname)
             }
 
@@ -95,7 +95,7 @@
                         $('#player_' + player._id.$oid).fadeOut();
 
                         toaster.pop('success', 'Success', sprintf('%s %s has been unregistered from the %s',
-                            player.name, player.surname, section.name));
+                            player.name, player.surname, section.name), 1000);
                     },
                     function (error) {
                         toaster.pop('error', 'Error', error.data.message || 'Unknown error');

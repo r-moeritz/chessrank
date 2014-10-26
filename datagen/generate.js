@@ -91,8 +91,12 @@ module.exports = {
         var fees = [0, 50, 100, 150, 200, 250];
     
         // Determine play system based on no. of participants.
-        var maxPlayers = Util.randomInt(6, 201);
-        var playSystem = Util.randomInt(1, 3);
+        var maxPlayers = Util.randomInt(6, 51);
+        
+        // HACK: Since we can't handle anything except Swiss at the moment...
+        //var playSystem = Util.randomInt(1, 3);
+        var playSystem = Const.playSystem.swiss;
+
         var maxRounds = (playSystem + 1) * (maxPlayers - 1);
         if (maxRounds > 10) {
             playSystem = Const.playSystem.swiss;
@@ -110,7 +114,10 @@ module.exports = {
             for (var i = 0; i != rounds; ++i) {
                 var startTime = new Date(tournament.startDate);
                 startTime.setHours(startTime.getHours() + 8 + i);
-                roundData.push({ startTime: startTime, results: [] });
+                roundData.push({
+                    startTime: startTime, 
+                    status: Const.roundStatus.unpaired
+                });
             }
         }
     
@@ -137,7 +144,8 @@ module.exports = {
             registeredPlayerIds: [],
             confirmedPlayerIds: [],
             registrationManuallyClosed: null,
-            roundData: roundData
+            roundData: roundData,
+            playerData: [],
         };
     },
     

@@ -29,7 +29,7 @@
     <Compile Include="server\app.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="server\engines\pairing.py">
+    <Compile Include="server\engines\section.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\engines\verify.py">
@@ -124,7 +124,6 @@
     <Content Include="client\controllers\tournament\section\round\results.js" />
     <Content Include="client\directives\navbar.js" />
     <Content Include="client\directives\form.js" />
-    <Content Include="client\directives\player.js" />
     <Content Include="client\directives\tournament.js" />
     <Content Include="client\directives\user.js" />
     <Content Include="client\filters\player.js" />
@@ -150,6 +149,7 @@
     <Content Include="client\views\form\datePicker.html" />
     <Content Include="client\views\home.html" />
     <Content Include="client\views\auth\login.html" />
+    <Content Include="client\views\tournament\federation.html" />
     <Content Include="client\views\tournament\section\players.html" />
     <Content Include="client\views\tournament\details.html" />
     <Content Include="client\views\tournament\edit.html" />

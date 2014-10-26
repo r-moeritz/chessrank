@@ -1,0 +1,12 @@
+﻿<div ng-if="value">
+    <span ng-hide="flagOnly">
+        <img ng-src="static/images/flags/{{ federation.name }}.png" 
+             alt="Flag of {{ federation.name }}" />
+        {{ federation.name }}
+    </span>
+    <a tooltip="{{ federation.name }}">
+        <img ng-show="flagOnly"
+             ng-src="static/images/flags/{{ federation.name }}.png"
+             alt="Flag of {{ federation.name }}" />
+    </a>
+</div>

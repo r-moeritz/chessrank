@@ -69,5 +69,20 @@ angular.module('chessRank')
     .constant('sectionOwnerAction', {
         updateSection: 0,
         pairRound: 1,
-        captureResults: 2
+        captureResults: 2,
+        confirmRegistrations: 3
+    })
+    .constant('gameResult', {
+        blackWins: 0,
+        whiteWins: 1,
+        draw: 2,
+        blackForfeits: 3,
+        whiteForfeits: 4,
+        bothForfeit: 5,
+        bye: 6
+    })
+    .constant('roundStatus', {
+        unpaired: 0,
+        paired: 1,
+        completed: 2
     });

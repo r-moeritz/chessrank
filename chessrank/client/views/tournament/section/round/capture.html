@@ -1,18 +1,52 @@
-﻿<h2>Capture results for round {{ roundIndex + 1 }}</h2>
+﻿<h2 class="text-center">Capture Results</h2>
+
+<div class="alert alert-success" role="alert" ng-show="allResultsCaptured()">
+    <strong>Yay!</strong> All results have been captured. Do you want to finalize them?
+    <button class="btn btn-default"
+            style="margin-left: 20px;"
+            ng-click="finalizeResults()">
+        <strong><span class="glyphicon glyphicon-thumbs-up"></span> Finalize Results</strong>
+    </button>
+</div>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>White</th>
-                <th>Black</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="res in results">
-                <td>{{ res.white.name }} {{ res.white.surname}}</td>
-                <td>{{ res.black.name }} {{ res.black.surname}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="panel panel-primary">
+        <div class="panel-heading"><b>Round {{ roundNumber }}</b></div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>PN</th>
+                    <th>Fed</th>
+                    <th>White</th>
+                    <th>Result</th>
+                    <th>PN</th>
+                    <th>Fed</th>
+                    <th>Black</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="game in games">
+                    <td>{{ game.white.data.pairing_no }}</td>
+                    <th><federation value="game.white.player.federation" flag-only="true"></federation></th>
+                    <td>{{ game.white.player.name }} {{ game.white.player.surname}} <small>({{ game.white.data.rating }})</small></td>
+                    <td>
+                        <select ng-show="game.black.data"
+                                kendo-drop-down-list
+                                k-options="resultDropDownOptions"
+                                k-select="resultSelected"
+                                k-ng-model="game.result"
+                                style="max-width: 100px;"></select>
+                        <span ng-hide="game.black.data" class="text-info">
+                            <span class="glyphicon glyphicon-info-sign"></span> Player received a bye
+                        </span>
+                    </td>
+                    <td ng-if="game.black.data">{{ game.black.data.pairing_no }}</td>
+                    <th ng-if="game.black.data"><federation value="game.black.player.federation" flag-only="true"></federation></th>
+                    <td ng-if="game.black.data">{{ game.black.player.name }} {{ game.black.player.surname}} <small>({{ game.black.data.rating }})</small></td>
+                    <td ng-if="!game.black.data" colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

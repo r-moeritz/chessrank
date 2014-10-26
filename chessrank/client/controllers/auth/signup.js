@@ -1,5 +1,5 @@
 ﻿angular.module('chessRank')
-    .controller('signupCtrl', function ($scope, $modal, moment, signupService, lookups, gender) {
+    .controller('signupCtrl', function ($scope, $modal, moment, signupService, lookups, gender, fideTitle) {
         $scope.request = {
             gender: gender.male,
             federation: null
@@ -7,14 +7,14 @@
 
         $scope.fideFederationList = lookups.fideFederations;
         $scope.fideTitleList = [
-            { label: 'WCM', value: 0 },
-            { label: 'WFM', value: 1 },
-            { label: 'CM',  value: 2 },
-            { label: 'WIM', value: 3 },
-            { label: 'FM',  value: 4 },
-            { label: 'WGM', value: 5 },
-            { label: 'IM',  value: 6 },
-            { label: 'GM',  value: 7 }
+            { label: 'WCM', value: fideTitle.WCM },
+            { label: 'WFM', value: fideTitle.WFM },
+            { label: 'CM',  value: fideTitle.CM },
+            { label: 'WIM', value: fideTitle.WIM },
+            { label: 'FM',  value: fideTitle.FM },
+            { label: 'WGM', value: fideTitle.WGM },
+            { label: 'IM',  value: fideTitle.IM },
+            { label: 'GM',  value: fideTitle.GM }
         ];
 
         $scope.datePickerOptions = {

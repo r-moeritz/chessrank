@@ -26,7 +26,8 @@ setup(
         'python-dateutil == 2.2',
         'itsdangerous == 0.24',
         'swissdutch == 0.1.0',
-        'tornado-smtp == 0.1.0'
+        'tornado-smtp == 0.1.0',
+        'jsonschema == 2.4.0'
     ],
     classifiers      = [
         'Development Status :: 3 - Alpha',

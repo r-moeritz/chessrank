@@ -38,8 +38,8 @@
 
                 scope.confirmDeleteSection = function (section) {
                     scope.model = {
-                        title: 'Confirm delete',
-                        description: sprintf('Are you sure you want to delete the %s?',
+                        title: 'Are you sure?',
+                        description: sprintf('Do you really want to delete the %s?',
                             section.name)
                     }
 

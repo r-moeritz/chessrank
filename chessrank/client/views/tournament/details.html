@@ -1,35 +1,36 @@
 ﻿<h2 class="text-center">{{ tournament.name }}</h2>
 
-<h3 class="v-middle">Details</h3>
-<a ng-if="currentUser && currentUser.userId.$oid == tournament.ownerUserId.$oid"
-   ui-sref="a.tournaments.details.edit({ tournamentId: tournament._id.$oid })"
-   class="v-middle padded-cell">
-    <i class="glyphicon glyphicon-edit"></i>
-</a>
-<div class="container">
-    <div class="row padded-row">
-        <div class="col-md-4">Location</div>
-        <div class="col-md-8">{{ tournament.location }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Date</div>
-        <div class="col-md-8">{{ tournament.startDate.$date | date:'dd MMM yyyy' }} - {{ tournament.endDate.$date | date:'dd MMM yyyy' }}</div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Tournament Director</div>
-        <div class="col-md-8"><user-link user-id="tournament.ownerUserId.$oid" /></div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Rated by</div>
-        <div ng-show="tournament.ratingType == 1"
-             class="col-md-8">{{ tournament.ratingType | ratingType }}</div>
-        <div ng-hide="tournament.ratingType == 1"
-             class="col-md-8"><federation value="tournament.federation"></federation></div>
-    </div>
-    <div class="row padded-row">
-        <div class="col-md-4">Status</div>
-        <div class="col-md-8"><b>TODO</b></div>
-    </div>
+<p class="h3">
+    Details
+    <a ng-if="currentUser && currentUser.userId.$oid == tournament.ownerUserId.$oid"
+       ui-sref="a.tournaments.details.edit({ tournamentId: tournament._id.$oid })"
+       class="padded-cell">
+        <i class="glyphicon glyphicon-edit"></i>
+    </a>
+</p>
+
+<div class="row padded-row">
+    <div class="col-md-4">Location</div>
+    <div class="col-md-8">{{ tournament.location }}</div>
+</div>
+<div class="row padded-row">
+    <div class="col-md-4">Date</div>
+    <div class="col-md-8">{{ tournament.startDate.$date | date:'dd MMM yyyy' }} - {{ tournament.endDate.$date | date:'dd MMM yyyy' }}</div>
+</div>
+<div class="row padded-row">
+    <div class="col-md-4">Tournament Director</div>
+    <div class="col-md-8"><user-link user-id="tournament.ownerUserId.$oid" /></div>
+</div>
+<div class="row padded-row">
+    <div class="col-md-4">Rated by</div>
+    <div ng-show="tournament.ratingType == 1"
+            class="col-md-8">{{ tournament.ratingType | ratingType }}</div>
+    <div ng-hide="tournament.ratingType == 1"
+            class="col-md-8"><federation value="tournament.federation"></federation></div>
+</div>
+<div class="row padded-row">
+    <div class="col-md-4">Status</div>
+    <div class="col-md-8"><b>TODO</b></div>
 </div>
 
 <h3>Sections</h3>

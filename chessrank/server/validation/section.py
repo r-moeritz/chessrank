@@ -3,14 +3,49 @@ import validation
 from datetime import datetime
 from bson.objectid import ObjectId
 from util.enums import (SectionRegistrationAction, PlaySystem, TimeControlBonus,
-                        TieBreak, SectionOwnerAction)
+                        TieBreak, SectionOwnerAction, RoundStatus)
 
 class SectionCaptureValidator(validation.Validator):
     def __init__(self, data):
         super().__init__(data)
 
+        self._required = {
+            'action': self._verify_action,
+            'round': self._verify_positive_integer,
+            'results': lambda field, value: (True, None), # TODO
+            'finalize': lambda field, value: (True, None), # TODO
+        }
+
+    def _verify_positive_integer(self, field, value):
+        return ((True, None) if type(value) == int and value > 0
+                else (False, "Field '{0}' must be a positive integer".format(field)))
+
+    def _verify_action(self, field, value):
+        return ((True, None) if value == SectionOwnerAction.capture_results
+                else (False, "Field '{0}' must be equal to {1}"
+                      .format(field, int(SectionOwnerAction.capture_results))))
+
     def validate(self):
-        pass
+        spurious = set(self._data.keys()) - set(self._required.keys())
+        if spurious:
+            return (False, "Spurious fields included in request: {0}"
+                    .format(', '.join(spurious)))
+
+        return self._verify_required_fields()
+
+    def _verify_required_fields(self):
+        missing  = set(self._required.keys()) - set(self._data.keys())
+        if missing:
+            return (False, "Required field '{0}' missing"
+                    .format(next(iter(missing))))
+
+        for field in self._required:
+            validate = self._required[field]
+            result = validate(field, self._data[field])
+            if not result[0]:
+                return result
+
+        return (True, None)
 
 class SectionPairingValidator(validation.Validator):
     def __init__(self, data):
@@ -18,7 +53,7 @@ class SectionPairingValidator(validation.Validator):
 
         self._required = {
             'action': self._verify_action,
-            'round': self._verify_positive_integer,
+            'round': self._verify_positive_integer
         }
 
     def _verify_positive_integer(self, field, value):
@@ -95,6 +130,7 @@ class SectionUpdateValidator(validation.Validator):
             'tournamentId': self._verify_objectid,
             'registrationManuallyClosed': self._verify_nullable_date,
             'roundData': self._verify_list_of_rounds,
+            'playerData': lambda field, value: (True, None) # TODO
         }
 
     def validate(self):
@@ -233,8 +269,13 @@ class SectionUpdateValidator(validation.Validator):
 
         for i in range(0, len(value)):
             item = value[i]
-            if type(item['startTime']) != datetime:
+            if type(item.get('startTime')) != datetime:
                 return (False, "'startTime' field of item {0} of field '{1}' must be a valid BSON date object"
                         .format(i, field))
+
+            status = item.get('status')
+            if status not in list(RoundStatus):
+                return (False, "'status' field of item {0} of field '{1}' must be one of {2}"
+                        .format(i, field, [int(t) for t in list(RoundStatus)]))
 
         return (True, None)

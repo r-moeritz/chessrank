@@ -10,7 +10,8 @@ from bson.objectid import ObjectId
 from util.enums import SectionRegistrationAction, SectionOwnerAction
 from validation.section import (SectionRegistrationValidator, SectionUpdateValidator,
                                 SectionPairingValidator, SectionCaptureValidator)
-from engines.pairing import PairingEngine, PairingEngineInput
+from engines.section import (PairingEngine, PairingEngineInput, ResultsCaptureEngine,
+                             ResultsCaptureEngineInput)
 
 class SectionHandler(requesthandlers.api.ApiHandler):
     @gen.coroutine
@@ -97,6 +98,14 @@ class SectionHandler(requesthandlers.api.ApiHandler):
                 self.write(bson.json_util.dumps(result))
                 self.set_header('Content-Type', 'application/json')
             elif action == SectionOwnerAction.capture_results:
+                input  = ResultsCaptureEngineInput(section, request['round'], request['results'],
+                                                   request['finalize'])
+                engine = ResultsCaptureEngine(self.settings)
+                result = yield engine.execute(input)
+
+                self.write(bson.json_util.dumps(result))
+                self.set_header('Content-Type', 'application/json')
+            elif action == SectionOwnerAction.confirm_registrations:
                 pass # TODO
             else:
                 # Massage request data

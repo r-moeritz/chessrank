@@ -6,13 +6,13 @@
 
         $scope.registerPopover = $scope.currentUser
             ? null
-            : 'You need to login or sign up before you can register for tournaments';
+            : 'You need to logged in before you can register for tournaments';
 
         $scope.$on(authEvent.loginSuccess, function () {
             $scope.registerPopover = null;
         });
         $scope.$on(authEvent.logoutSuccess, function () {
-            $scope.registerPopover = 'You need to login or sign up before you can register for tournaments';
+            $scope.registerPopover = 'You need to be logged in to register for tournaments';
         });
 
         $scope.registered = function (section) {
@@ -61,8 +61,8 @@
             sectionService.update({ sectionId: section._id.$oid }, request,
                 function () {
                     section.registeredPlayerIds.push($scope.currentUser.playerId);
-                    toaster.pop('success', 'Success', sprintf('You have been provisionally registered in the %s',
-                        section.name));
+                    toaster.pop('success', 'Success', sprintf('You are registered for the %s; your registration is '
+                        + 'provisional pending confirmation by the tournament director.', section.name), 8000);
                 },
                 function (error) {
                     toaster.pop('error', 'Error', error.data.message || 'Unknown error');
@@ -84,7 +84,7 @@
                             return playerId.$oid === $scope.currentUser.playerId.$oid;
                         });
                     toaster.pop('success', 'Success', sprintf('You have been unregistered from the %s',
-                        section.name));
+                        section.name), 1000);
                 }, function (error) {
                     toaster.pop('error', 'Error', error.data.message || 'Unknown error');
                 });

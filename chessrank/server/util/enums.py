@@ -33,7 +33,8 @@ class SectionRegistrationAction(enum.IntEnum):
 class SectionOwnerAction(enum.IntEnum):
     update_section = 0,
     pair_round = 1,
-    capture_results = 2
+    capture_results = 2,
+    confirm_registrations = 3
 
 class TimeControlBonus(enum.IntEnum):
     increment = 1,
@@ -46,3 +47,17 @@ class RatingType(enum.IntEnum):
 class Gender(enum.IntEnum):
     male = 1,
     female = 2
+
+class RoundStatus(enum.IntEnum):
+    unpaired = 0,
+    paired = 1,
+    completed = 2
+
+class GameResult(enum.IntEnum):
+    black_wins = 0,
+    white_wins = 1,
+    draw = 2,
+    black_forfeits = 3,
+    white_forfeits = 4,
+    both_forfeit = 5,
+    bye = 6

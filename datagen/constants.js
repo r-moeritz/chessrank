@@ -40,5 +40,10 @@
     ratingType: {
         fide: 1,
         federation: 2
+    },
+    roundStatus: {
+        unpaired: 0,
+        paired: 1,
+        completed: 2
     }
 };

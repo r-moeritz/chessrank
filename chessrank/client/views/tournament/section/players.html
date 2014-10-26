@@ -17,7 +17,7 @@
             <tr ng-repeat="item in players" id="player_{{ item._id.$oid }}">
                 <td>{{ item.name + ' ' + item.surname }}</td>
                 <td>{{ item.dateOfBirth.$date | date:'dd MMM yyyy' }}</td>
-                <td><federation value="item.federation"></federation></td>
+                <td><federation value="item.federation" flag-only="true"></federation></td>
                 <td>{{ item.fideRating || '-' }}</td>
                 <td>{{ item.federationRating || '-' }}</td>
                 <td>{{ (item.fideTitle | fideTitle) || '-' }}</td>
