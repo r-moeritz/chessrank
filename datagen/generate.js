@@ -91,7 +91,7 @@ module.exports = {
         var fees = [0, 50, 100, 150, 200, 250];
     
         // Determine play system based on no. of participants.
-        var maxPlayers = Util.randomInt(6, 51);
+        var maxPlayers = Util.randomInt(10, 51);
         
         // HACK: Since we can't handle anything except Swiss at the moment...
         //var playSystem = Util.randomInt(1, 3);
@@ -105,9 +105,11 @@ module.exports = {
         var tieBreaks = (playSystem === Const.playSystem.swiss)
                 ? [Util.randomInt(1, 4)]
                 : [Const.tieBreak.neustadl];
-        var rounds = (playSystem === Const.playSystem.swiss)
-                ? Util.swissRounds(maxPlayers)
-                : 0; // for RR tournaments the no. of rounds depends on the no. of participants
+        // HACK: We don't want more than 3 rounds...
+        //var rounds = (playSystem === Const.playSystem.swiss)
+        //        ? Util.swissRounds(maxPlayers)
+        //        : 0; // for RR tournaments the no. of rounds depends on the no. of participants
+        var rounds = 3;
         
         var roundData = [];
         if (playSystem === Const.playSystem.swiss) {
