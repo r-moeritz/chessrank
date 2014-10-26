@@ -73,13 +73,13 @@ angular.module('chessRank')
         confirmRegistrations: 3
     })
     .constant('gameResult', {
-        blackWins: 0,
-        whiteWins: 1,
-        draw: 2,
-        blackForfeits: 3,
-        whiteForfeits: 4,
-        bothForfeit: 5,
-        bye: 6
+        blackWins: 1,
+        whiteWins: 2,
+        draw: 3,
+        blackForfeits: 4,
+        whiteForfeits: 5,
+        bothForfeit: 6,
+        bye: 7
     })
     .constant('roundStatus', {
         unpaired: 0,

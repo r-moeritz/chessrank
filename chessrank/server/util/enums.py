@@ -54,10 +54,10 @@ class RoundStatus(enum.IntEnum):
     completed = 2
 
 class GameResult(enum.IntEnum):
-    black_wins = 0,
-    white_wins = 1,
-    draw = 2,
-    black_forfeits = 3,
-    white_forfeits = 4,
-    both_forfeit = 5,
-    bye = 6
+    black_wins = 1,
+    white_wins = 2,
+    draw = 3,
+    black_forfeits = 4,
+    white_forfeits = 5,
+    both_forfeit = 6,
+    bye = 7

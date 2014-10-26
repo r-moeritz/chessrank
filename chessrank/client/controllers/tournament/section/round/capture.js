@@ -18,14 +18,19 @@
         $scope.resultDropDownOptions = {
             dataSource: resultOptions,
             dataTextField: 'label',
-            dataValueField: 'value'
+            dataValueField: 'value',
+            optionLabel: '*'
         };
 
         $scope.resultSelected = function (e) {
             var index = this.$angular_scope.$index;
             var result = this.dataItem(e.item.index()).value;
-            var pnWhite = $scope.games[index].white.data.pairing_no;
+            if (!result) {
+                e.preventDefault();
+                return;
+            }
 
+            var pnWhite = $scope.games[index].white.data.pairing_no;
             var whiteData = _.find(section.playerData, function (r) {
                 return r.pairing_no === pnWhite;
             });
@@ -89,7 +94,7 @@
 
         $scope.allResultsCaptured = function () {
             return _.every($scope.games, function (game) {
-                return game.result !== null;
+                return game.result;
             });
         }
 
