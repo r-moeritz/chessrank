@@ -1,7 +1,7 @@
 ﻿angular.module('chessRank')
     .controller('sectionDetailsCtrl', function (_, $scope, $state, section, tournament, players, rmArrayUtil, 
                                                 moment, sectionService, toaster, baseTypeConverter,
-                                                sectionOwnerAction, roundStatus, $modal) {
+                                                sectionOwnerAction, roundStatus, $modal, tieBreak) {
         $scope.tournament = tournament;
         $scope.section = section;
         $scope.players = players;
@@ -27,9 +27,10 @@
         }
 
         $scope.allowCloseRegistration = function () {
+            // HACK: hard-coding swiss logic
             return $scope.allowEdit()
-                && section.confirmedPlayerIds.length > 3
-                && !registrationClosed();
+                && !registrationClosed()
+                && swissRounds(section.confirmedPlayerIds.length) >= section.rounds;
         }
 
         $scope.allowPairing = function (roundIndex) {
@@ -47,11 +48,22 @@
         }
 
         $scope.resultsAvailable = function (roundIndex) {
-            var haveResults = _.some(section.playerData, function (pd) {
+            return _.some(section.playerData, function (pd) {
                 return pd.results.length >= roundIndex + 1;
             });
-            return haveResults;
         }
+
+        $scope.allRoundsComplete = function () {
+            return _.every(section.playerData, function (pd) {
+                return pd.results.length === section.rounds;
+            }) && _.every(section.roundData, function (rd) {
+                return rd.status === roundStatus.completed;
+            });
+        }
+
+        //$scope.rankPlayers = function () {
+        //    var compositePlayers = 
+        //}
 
         $scope.allowEdit = function () {
             return $scope.currentUser && $scope.currentUser.userId.$oid === section.ownerUserId.$oid;
@@ -73,10 +85,12 @@
             inst.result.then(function () {
                 var sectionCopy = angular.copy(section);
                 sectionCopy.registrationManuallyClosed = converter.nowToBsonDate();
+                sectionCopy.registeredPlayerIds = []
 
                 sectionService.update({ sectionId: section._id.$oid }, fixSectionData(sectionCopy)).$promise
                     .then(function () {
                         section.registrationManuallyClosed = sectionCopy.registrationManuallyClosed;
+                        section.registeredPlayerIds = []
                         toaster.pop('success', 'Success', sprintf('Registration has been closed for the %s of the %s.',
                             tournament.name, section.name), 1000);
                     },
@@ -105,5 +119,32 @@
         function paired(roundIndex) {
             var status = section.roundData[roundIndex].status;
             return status !== roundStatus.unpaired;
+        }
+
+        function swissRounds(players) {
+            // TODO: This function should be moved out of the details view
+            return Math.ceil(Math.log(players) / Math.log(2));
+        }
+
+        function tieBreakScore(playerId, tb) {
+            var playerRecord = _.find(section.playerData,
+                function (rec) {
+                    return rec.playerId === playerId;
+                });
+
+            switch (tb) {
+                case tieBreak.buchholz:
+                    return _.reduce(playerRecord.opponents,
+                        function (memo, pn) {
+                            var opponent = _.find(section.playerData,
+                                function (rec) {
+                                    return rec.pairing_no === pn;
+                                });
+
+                            return memo + opponent.score;
+                        }, 0);
+            }
+
+            return 0;
         }
     });

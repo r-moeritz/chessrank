@@ -26,8 +26,8 @@
                     });
 
                 scope.playSystemOptions = [
-                    { label: 'Round Robin', value: playSystem.roundRobin },
-                    { label: 'Double Round Robin', value: playSystem.doubleRoundRobin },
+                    //{ label: 'Round Robin', value: playSystem.roundRobin },
+                    //{ label: 'Double Round Robin', value: playSystem.doubleRoundRobin },
                     { label: 'Swiss', value: playSystem.swiss }
                 ];
 
@@ -35,10 +35,10 @@
                     dataTextField: 'label',
                     dataValueField: 'value',
                     dataSource: [
-                        { label: 'Neustadl', value: tieBreak.neustadl },
+                        //{ label: 'Neustadl', value: tieBreak.neustadl },
                         { label: 'Buchholz', value: tieBreak.buchholz },
-                        { label: 'Median', value: tieBreak.median },
-                        { label: 'Modified Median', value: tieBreak.modifiedMedian }
+                        //{ label: 'Median', value: tieBreak.median },
+                        //{ label: 'Modified Median', value: tieBreak.modifiedMedian }
                     ]
                 };
 

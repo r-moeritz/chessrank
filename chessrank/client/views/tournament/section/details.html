@@ -98,17 +98,17 @@
     </div>
 </div>
 
-<p class="h3">
+<p class="h3" ng-hide="allRoundsComplete()">
     Confirmed Players
     <a ng-show="allowEdit()"
-        ui-sref="a.tournaments.details.section.players({ sectionId: section._id.$oid })"
-        class="padded-cell">
+       ui-sref="a.tournaments.details.section.players({ sectionId: section._id.$oid })"
+       class="padded-cell">
         <i class="glyphicon glyphicon-edit"></i>
     </a>
 </p>
 
-<p ng-hide="confirmedPlayers.length">There are currently no players confirmed registered for this section.</p>
-<div class="table-responsive" ng-show="confirmedPlayers.length">
+<p ng-hide="confirmedPlayers.length || allRoundsComplete()">There are currently no players confirmed registered for this section.</p>
+<div class="table-responsive" ng-show="confirmedPlayers.length && !allRoundsComplete()">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -119,6 +119,38 @@
                 <th>Rating (Fed)</th>
                 <th>Title (FIDE)</th>
                 <th>Title (Fed)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in confirmedPlayers">
+                <td>{{ item.name + ' ' + item.surname }}</td>
+                <td>{{ item.dateOfBirth.$date | date:'dd MMM yyyy' }}</td>
+                <td><federation value="item.federation"></federation></td>
+                <td>{{ item.fideRating || '-' }}</td>
+                <td>{{ item.federationRating || '-' }}</td>
+                <td>{{ (item.fideTitle | fideTitle) || '-' }}</td>
+                <td>{{ item.federationTitle || '-' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h3 ng-show="allRoundsComplete()">Section Results</h3>
+
+<div class="table-responsive" ng-show="allRoundsComplete()">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Rk</th>
+                <th>SNo</th>
+                <th>Federation</th>
+                <th>Fed)</th>
+                <th>Rating</th>
+                <th ng-repeat="r in section.roundData">
+                    {{ $index + 1 }}
+                </th>
+                <th></th>
+                <th>TB</th>
             </tr>
         </thead>
         <tbody>

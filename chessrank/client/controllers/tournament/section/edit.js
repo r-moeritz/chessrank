@@ -26,6 +26,7 @@
             invitationOnly: false,
             rounds: 3,
             roundData: [],
+            playerData: [],
             registrationManuallyClosed: null,
             registeredPlayerIds: [],
             confirmedPlayerIds: []
