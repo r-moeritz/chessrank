@@ -52,13 +52,14 @@ function populateTournaments(db, count, ownerUserId) {
 }
 
 function populateAdminUser(db) {
-    var p1 = Gen.generatePlayer(Const.gender.male, ['Admin', 'User']);
+    var email = 'chessrank@outlook.com';
+    var p1 = Gen.generatePlayer(Const.gender.male, ['Admin', 'User'], email);
 
     var colPlayers = db.collection('players');
     return Q.ninvoke(colPlayers, 'insert', p1)
         .then(function (players) {
             var u1 = {
-                email:        'chessrank@outlook.com',
+                email:        email,
                 passwordHash: '$2a$12$r2J9LpUc0XEwzLu1CCzL7ONNYKlz4orj4P3JB99muNyNbZEE1oYX.', // Password1234$
                 playerId:     players[0]._id,
                 status:       Const.userStatus.active
@@ -71,13 +72,14 @@ function populateAdminUser(db) {
 }
 
 function populateDummyUsers(db) {
-    var p1 = Gen.generatePlayer(Const.gender.female, ['Player', 'One']);
+    var email = 'playerone@gmail.com';
+    var p1 = Gen.generatePlayer(Const.gender.female, ['Player', 'One'], email);
     
     var colPlayers = db.collection('players');
     return Q.ninvoke(colPlayers, 'insert', p1)
         .then(function (players) {
         var u1 = {
-            email: 'playerone@gmail.com',
+            email: email,
             passwordHash: '$2a$12$r2J9LpUc0XEwzLu1CCzL7ONNYKlz4orj4P3JB99muNyNbZEE1oYX.', // Password1234$
             playerId: players[0]._id,
             status: Const.userStatus.active
@@ -132,7 +134,7 @@ function disconnect(db) {
 
 function populatePlayerRegistrations(db) {
     var promises = [Q.ninvoke(db.collection('sections').find(), 'toArray'),
-                    Q.ninvoke(db.collection('players').find(), 'toArray')];
+                    Q.ninvoke(db.collection('players').find({ 'emailAddress': { '$ne': 'chessrank@outlook.com' } } ), 'toArray')];
 
     return Q.spread(promises, function (sections, players) {
         var section = Gen.registerPlayers(sections, players);

@@ -78,11 +78,11 @@
             <div class="col-md-2">Round {{ $index + 1 }}</div>
             <div class="col-md-4">{{ rd.startTime.$date | date:'dd MMM yyyy hh:mm a' }}</div>
             <div class="col-md-6">
-                <a ui-sref="a.tournaments.details.section.results({ roundNumber: $index + 1 })"
+                <!--<a ui-sref="a.tournaments.details.section.results({ roundNumber: $index + 1 })"
                     class="btn btn-xs btn-default"
                     ng-show="resultsAvailable($index)">
                     Results
-                </a>
+                </a>-->
                 <a ng-show="allowPairing($index)"
                     ng-click="pair($index)"
                     class="btn btn-xs btn-primary">
@@ -135,7 +135,7 @@
     </table>
 </div>
 
-<h3 ng-show="allRoundsComplete()">Section Results</h3>
+<h3 ng-show="allRoundsComplete()">Final Results</h3>
 
 <div class="table-responsive" ng-if="allRoundsComplete()">
     <table class="table table-striped">

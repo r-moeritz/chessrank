@@ -30,6 +30,8 @@
                 return;
             }
 
+            var backupPlayerData = angular.copy(section.playerData);
+
             var pnWhite = $scope.games[index].white.data.pairing_no;
             var whiteData = _.find(section.playerData, function (r) {
                 return r.pairing_no === pnWhite;
@@ -48,7 +50,7 @@
                 blackData.results = [result];
             } else {
                 whiteData.score += pts[0];
-                blackData.score += pts[0];
+                blackData.score += pts[1];
           
                 whiteData.results.push(result);
                 blackData.results.push(result);
@@ -62,6 +64,7 @@
             })).$promise.then(function () {
                 toaster.pop('success', 'Success', 'Result saved', 1000);
             }, function (error) {
+                setion.playerData = backupPlayerData;
                 toaster.pop('error', 'Error', error.data.message || 'Unknown error');
             });
         };

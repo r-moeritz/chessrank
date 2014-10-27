@@ -32,9 +32,11 @@ function generateFullName(gender) {
 }
 
 module.exports = {
-    generatePlayer: function (gender, fullName) {
-        gender = gender ? gender : Util.randomInt(1, 3);
-        fullName = fullName ? fullName : generateFullName(gender);
+    generatePlayer: function (gender, fullName, email) {
+        gender = gender || Util.randomInt(1, 3);
+        fullName = fullName || generateFullName(gender);
+        email = email || fullName[0].toLowerCase() + fullName[1].toLowerCase() + '@example.com';
+
         var fedRating = Util.randomInt(800, 2900);
         fedRating = (fedRating < 1000) ? null : fedRating;
         var fideRating = null;
@@ -56,7 +58,7 @@ module.exports = {
             federation: Data.fideFederations[Util.randomInt(0, Data.fideFederations.length)].value,
             union: null,
             contactNumber: null,
-            emailAddress: fullName[0].toLowerCase() + fullName[1].toLowerCase() + '@example.com'
+            emailAddress: email
         };
     },
     
@@ -101,10 +103,13 @@ module.exports = {
         if (maxRounds > 10) {
             playSystem = Const.playSystem.swiss;
         }
-    
-        var tieBreaks = (playSystem === Const.playSystem.swiss)
-                ? [Util.randomInt(1, 4)]
-                : [Const.tieBreak.neustadl];
+        
+        // HACK: We can only use Buchholz at the moment...
+        //var tieBreaks = (playSystem === Const.playSystem.swiss)
+        //        ? [Util.randomInt(1, 4)]
+        //        : [Const.tieBreak.neustadl];
+        var tieBreaks = [Const.tieBreak.buchholz];
+
         // HACK: We don't want more than 3 rounds...
         //var rounds = (playSystem === Const.playSystem.swiss)
         //        ? Util.swissRounds(maxPlayers)

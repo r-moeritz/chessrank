@@ -3,16 +3,18 @@
                                                 moment, sectionService, toaster, baseTypeConverter, colour,
                                                 sectionOwnerAction, roundStatus, $modal, tieBreak, scoringUtil,
                                                 gameResult) {
+        var converter = new baseTypeConverter();
+
         $scope.tournament = tournament;
         $scope.section = section;
         $scope.players = players;
-
-        var converter = new baseTypeConverter();
 
         $scope.confirmedPlayers = _.filter(players, function (p) {
             return rmArrayUtil.indexOf(section.confirmedPlayerIds,
                 function (pid) { return pid.$oid === p._id.$oid; }) >= 0;
         });
+
+        $scope.rankedPlayers = section.playerData.length ? getRankedPlayers() : [];
 
         $scope.pair = function (roundIndex) {
             sectionService.update({ sectionId: section._id.$oid }, {
@@ -62,8 +64,6 @@
             });
         }
 
-        $scope.rankedPlayers = getRankedPlayers();
-
         function getRankedPlayers() {
             var compositePlayerData = _.map($scope.confirmedPlayers,
                 function (p) {
@@ -78,7 +78,6 @@
                         data: playerRecord
                     };
                 });
-
             
             rankedPlayerData = _.sortBy(compositePlayerData,
                 function (cpd) {
@@ -167,7 +166,7 @@
                             return rec.pairing_no === pn;
                         });
 
-                    return memo + (opponent.score || 0);
+                    return memo + opponent ? opponent.score : 0;
                 }, 0);
         }
 
