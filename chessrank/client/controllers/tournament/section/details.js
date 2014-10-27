@@ -1,7 +1,8 @@
 ﻿angular.module('chessRank')
     .controller('sectionDetailsCtrl', function (_, $scope, $state, section, tournament, players, rmArrayUtil, 
                                                 moment, sectionService, toaster, baseTypeConverter, colour,
-                                                sectionOwnerAction, roundStatus, $modal, tieBreak, scoringUtil) {
+                                                sectionOwnerAction, roundStatus, $modal, tieBreak, scoringUtil,
+                                                gameResult) {
         $scope.tournament = tournament;
         $scope.section = section;
         $scope.players = players;
@@ -61,13 +62,16 @@
             });
         }
 
-        $scope.rankPlayers = function () {
+        $scope.rankedPlayers = getRankedPlayers();
+
+        function getRankedPlayers() {
             var compositePlayerData = _.map($scope.confirmedPlayers,
                 function (p) {
                     var playerRecord = _.find(section.playerData,
                         function (rec) {
-                            return rec.playerId === p.playerId;
+                            return rec.playerId.$oid === p._id.$oid;
                         });
+                    playerRecord.tieBreakScore = buchholzScore(playerRecord);
 
                     return {
                         player: p,
@@ -75,9 +79,10 @@
                     };
                 });
 
-            var rankedPlayerData = _.sortBy(compositePlayerData,
+            
+            rankedPlayerData = _.sortBy(compositePlayerData,
                 function (cpd) {
-                    return $scope.buchholzScore(cpd.data, tieBreak.buchholz);
+                    return cpd.data.tieBreakScore.toString() + cpd.data.rating.toString();
                 });
             rankedPlayerData = _.sortBy(rankedPlayerData,
                 function (cpd) {
@@ -87,19 +92,16 @@
             return rankedPlayerData.reverse();
         }
 
-        $scope.scoreOfFirstEncounter = function (playerRecord, opponentId) {
-            if (playerRecord.playerId === opponentId) {
+        $scope.scoreOfFirstEncounter = function (playerRecord, rankedPlayerIndex) {
+            var opponentRecord = $scope.rankedPlayers[rankedPlayerIndex].data;
+
+            if (playerRecord.playerId.$oid === opponentRecord.playerId.$oid) {
                 return '*';
             }
 
-            var opponentRecord = _.find(section.playerData,
-                function (rec) {
-                    return rec.playerId == opponentId;
-                });
-
             var gameIndex = -1;
-            for (var i = 0; i != playerRecord.opponents; ++i) {
-                var pn = playerRecord.opponents[i].pairing_no;
+            for (var i = 0; i != playerRecord.opponents.length; ++i) {
+                var pn = playerRecord.opponents[i];
                 if (pn === opponentRecord.pairing_no) {
                     gameIndex = i;
                     break;
@@ -111,15 +113,15 @@
                 return '-';
             }
 
-            var result = playerRecords.results[gameIndex];
+            var result = playerRecord.results[gameIndex];
             if (result === gameResult.bye) {
                 return 1;
             }
 
             var pts = scoringUtil.points(result);
-            var colour = playerRecord.colour_hist[gameIndex];
+            var col = playerRecord.colour_hist[gameIndex];
 
-            return (colour === colour.white) ? pts[0] : pts[1];
+            return (col === colour.white) ? pts[0] : pts[1];
         }
 
         $scope.allowEdit = function () {
@@ -157,7 +159,7 @@
             });
         }
 
-        $scope.buchholzScore = function (playerRecord) {
+        function buchholzScore(playerRecord) {
             return _.reduce(playerRecord.opponents,
                 function (memo, pn) {
                     var opponent = _.find(section.playerData,
@@ -165,7 +167,7 @@
                             return rec.pairing_no === pn;
                         });
 
-                    return memo + opponent.score;
+                    return memo + (opponent.score || 0);
                 }, 0);
         }
 

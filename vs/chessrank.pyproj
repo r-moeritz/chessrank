@@ -131,6 +131,7 @@
     <Content Include="client\images\logo.png" />
     <Content Include="client\filters\section.js" />
     <Content Include="client\util\conversion.js" />
+    <Content Include="client\util\scoring.js" />
     <Content Include="client\util\rmutils.js" />
     <Content Include="client\services\auth.js" />
     <Content Include="client\services\lookups.js" />

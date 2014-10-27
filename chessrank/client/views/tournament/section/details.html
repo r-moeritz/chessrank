@@ -137,16 +137,16 @@
 
 <h3 ng-show="allRoundsComplete()">Section Results</h3>
 
-<div class="table-responsive" ng-show="allRoundsComplete()">
+<div class="table-responsive" ng-if="allRoundsComplete()">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Rk</th>
                 <th>SNo</th>
-                <th>Federation</th>
-                <th>Fed)</th>
+                <td>Player</td>
+                <th>Fed</th>
                 <th>Rating</th>
-                <th ng-repeat="pid in section.confirmedPlayerIds">
+                <th ng-repeat="cp in confirmedPlayers">
                     {{ $index + 1 }}
                 </th>
                 <th>Score</th>
@@ -154,16 +154,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="p in rankPlayers()">
+            <tr ng-repeat="p in rankedPlayers">
                 <td>{{ $index + 1 }}</td>
                 <td>{{ p.data.pairing_no }}</td>
+                <td>{{ p.player.name }} {{ p.player.surname }}</td>
                 <td><federation value="p.player.federation" flag-only="true"></federation></td>
                 <td>{{ p.data.rating }}</td>
-                <td ng-repeat="op in section.confirmedPlayerIds">
-                    {{ scoreOfFirstEncounter(p.data.playerId, op) }}
+                <td ng-repeat="opp in confirmedPlayers">
+                    {{ scoreOfFirstEncounter(p.data, $index) }}
                 </td>
                 <th>{{ p.data.score }}</th>
-                <th>{{ buchholzScore(p.data) }}</th>
+                <th>{{ p.data.tieBreakScore }}</th>
             </tr>
         </tbody>
     </table>
