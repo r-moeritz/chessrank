@@ -73,7 +73,7 @@
                         var diff = rounds - roundData.length;
                         if (diff > 0) {
                             for (var i = 0; i != diff; ++i) {
-                                roundData.push({ status: unpaired });
+                                roundData.push({ status: roundStatus.unpaired });
                             }
                         } else {
                             for (var i = roundData.length - 1; i != rounds - 1; --i) {
@@ -117,9 +117,9 @@
                         }
                     }
                 },
-                custom: function (value, model) {
-
-                }
+                //custom: function (value, model) {
+                //    // TODO
+                //}
             },
             maxPlayers: {
                 required: true

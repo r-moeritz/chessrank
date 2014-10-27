@@ -77,7 +77,7 @@
 
             var rankedPlayerData = _.sortBy(compositePlayerData,
                 function (cpd) {
-                    return tieBreakScore(cpd.data, tieBreak.buchholz);
+                    return $scope.buchholzScore(cpd.data, tieBreak.buchholz);
                 });
             rankedPlayerData = _.sortBy(rankedPlayerData,
                 function (cpd) {
@@ -85,10 +85,6 @@
                 });
 
             return rankedPlayerData.reverse();
-        }
-
-        $scope.finalScore = function (playerId) {
-            // TODO
         }
 
         $scope.scoreOfFirstEncounter = function (playerRecord, opponentId) {
@@ -161,6 +157,18 @@
             });
         }
 
+        $scope.buchholzScore = function (playerRecord) {
+            return _.reduce(playerRecord.opponents,
+                function (memo, pn) {
+                    var opponent = _.find(section.playerData,
+                        function (rec) {
+                            return rec.pairing_no === pn;
+                        });
+
+                    return memo + opponent.score;
+                }, 0);
+        }
+
         function completed(roundIndex) {
             return section.roundData[roundIndex].status === roundStatus.completed;
         }
@@ -185,22 +193,5 @@
         function swissRounds(players) {
             // TODO: This function should be moved out of the details view
             return Math.ceil(Math.log(players) / Math.log(2));
-        }
-
-        function tieBreakScore(playerRecord, tb) {
-            switch (tb) {
-                case tieBreak.buchholz:
-                    return _.reduce(playerRecord.opponents,
-                        function (memo, pn) {
-                            var opponent = _.find(section.playerData,
-                                function (rec) {
-                                    return rec.pairing_no === pn;
-                                });
-
-                            return memo + opponent.score;
-                        }, 0);
-            }
-
-            return 0;
         }
     });

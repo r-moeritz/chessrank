@@ -149,7 +149,7 @@
                 <th ng-repeat="pid in section.confirmedPlayerIds">
                     {{ $index + 1 }}
                 </th>
-                <th></th>
+                <th>Score</th>
                 <th>TB</th>
             </tr>
         </thead>
@@ -162,7 +162,8 @@
                 <td ng-repeat="op in section.confirmedPlayerIds">
                     {{ scoreOfFirstEncounter(p.data.playerId, op) }}
                 </td>
-                <th></th>
+                <th>{{ p.data.score }}</th>
+                <th>{{ buchholzScore(p.data) }}</th>
             </tr>
         </tbody>
     </table>
