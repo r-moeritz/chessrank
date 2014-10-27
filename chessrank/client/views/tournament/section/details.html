@@ -74,7 +74,7 @@
     <!-- Schedule -->
     <div class="col-md-6">
         <p class="h3">Schedule</p>
-        <div class="row padded-row" ng-repeat="rd in section.roundData">
+        <div class="row padded-row" ng-repeat="rd in section.roundData" ng-class="{ 'bg-info': allowPairing($index) || allowCapture($index) }">
             <div class="col-md-2">Round {{ $index + 1 }}</div>
             <div class="col-md-4">{{ rd.startTime.$date | date:'dd MMM yyyy hh:mm a' }}</div>
             <div class="col-md-6">
