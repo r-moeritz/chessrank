@@ -4,7 +4,7 @@
             { sectionId: '@id' },
             { update: { method: 'PUT' } });
     })
-    .factory('sectionEditHelper', function ($state, _, moment, playSystem, tieBreak, timeControlFilter) {
+    .factory('sectionEditHelper', function ($state, _, moment, playSystem, tieBreak, timeControlFilter, roundStatus) {
         return function () {
             this.attach = function (scope, tournament, lookups) {
                 scope.datePickerOptions = {
@@ -73,7 +73,7 @@
                         var diff = rounds - roundData.length;
                         if (diff > 0) {
                             for (var i = 0; i != diff; ++i) {
-                                roundData.push({ results: [] });
+                                roundData.push({ status: unpaired });
                             }
                         } else {
                             for (var i = roundData.length - 1; i != rounds - 1; --i) {

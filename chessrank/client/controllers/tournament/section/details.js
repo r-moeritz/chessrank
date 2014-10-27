@@ -1,7 +1,7 @@
 ﻿angular.module('chessRank')
     .controller('sectionDetailsCtrl', function (_, $scope, $state, section, tournament, players, rmArrayUtil, 
-                                                moment, sectionService, toaster, baseTypeConverter,
-                                                sectionOwnerAction, roundStatus, $modal, tieBreak) {
+                                                moment, sectionService, toaster, baseTypeConverter, colour,
+                                                sectionOwnerAction, roundStatus, $modal, tieBreak, scoringUtil) {
         $scope.tournament = tournament;
         $scope.section = section;
         $scope.players = players;
@@ -61,9 +61,70 @@
             });
         }
 
-        //$scope.rankPlayers = function () {
-        //    var compositePlayers = 
-        //}
+        $scope.rankPlayers = function () {
+            var compositePlayerData = _.map($scope.confirmedPlayers,
+                function (p) {
+                    var playerRecord = _.find(section.playerData,
+                        function (rec) {
+                            return rec.playerId === p.playerId;
+                        });
+
+                    return {
+                        player: p,
+                        data: playerRecord
+                    };
+                });
+
+            var rankedPlayerData = _.sortBy(compositePlayerData,
+                function (cpd) {
+                    return tieBreakScore(cpd.data, tieBreak.buchholz);
+                });
+            rankedPlayerData = _.sortBy(rankedPlayerData,
+                function (cpd) {
+                    return cpd.data.score;
+                });
+
+            return rankedPlayerData.reverse();
+        }
+
+        $scope.finalScore = function (playerId) {
+            // TODO
+        }
+
+        $scope.scoreOfFirstEncounter = function (playerRecord, opponentId) {
+            if (playerRecord.playerId === opponentId) {
+                return '*';
+            }
+
+            var opponentRecord = _.find(section.playerData,
+                function (rec) {
+                    return rec.playerId == opponentId;
+                });
+
+            var gameIndex = -1;
+            for (var i = 0; i != playerRecord.opponents; ++i) {
+                var pn = playerRecord.opponents[i].pairing_no;
+                if (pn === opponentRecord.pairing_no) {
+                    gameIndex = i;
+                    break;
+                }
+            }
+
+            if (gameIndex < 0) {
+                // Encounter didn't take place
+                return '-';
+            }
+
+            var result = playerRecords.results[gameIndex];
+            if (result === gameResult.bye) {
+                return 1;
+            }
+
+            var pts = scoringUtil.points(result);
+            var colour = playerRecord.colour_hist[gameIndex];
+
+            return (colour === colour.white) ? pts[0] : pts[1];
+        }
 
         $scope.allowEdit = function () {
             return $scope.currentUser && $scope.currentUser.userId.$oid === section.ownerUserId.$oid;
@@ -126,12 +187,7 @@
             return Math.ceil(Math.log(players) / Math.log(2));
         }
 
-        function tieBreakScore(playerId, tb) {
-            var playerRecord = _.find(section.playerData,
-                function (rec) {
-                    return rec.playerId === playerId;
-                });
-
+        function tieBreakScore(playerRecord, tb) {
             switch (tb) {
                 case tieBreak.buchholz:
                     return _.reduce(playerRecord.opponents,

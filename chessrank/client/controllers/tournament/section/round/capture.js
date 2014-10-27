@@ -1,7 +1,7 @@
 ﻿angular.module('chessRank')
     .controller('roundCaptureResultsCtrl', function (_, $scope, $state, $stateParams, section, players, sectionService,
                                                      tournament, lookups, colour, gameResult, ratingType, toaster,
-                                                     sectionOwnerAction) {
+                                                     sectionOwnerAction, scoringUtil) {
         var roundIndex = $stateParams.roundNumber - 1
 
         $scope.roundNumber = $stateParams.roundNumber;
@@ -38,7 +38,7 @@
                 return r.pairing_no === whiteData.opponents[roundIndex];
             });
 
-            var pts = points(result);
+            var pts = scoringUtil.points(result);
             if (roundIndex == 0) {
                 // first round
                 whiteData.score = pts[0];
@@ -65,32 +65,6 @@
                 toaster.pop('error', 'Error', error.data.message || 'Unknown error');
             });
         };
-
-        function points(gameRes) {
-            var result = [null, null];
-
-            switch (gameRes) {
-                case gameResult.blackWins:
-                case gameResult.whiteForfeits:
-                    result = [0, 1];
-                    break;
-
-                case gameResult.whiteWins:
-                case gameResult.blackForfeits:
-                    result = [1, 0];
-                    break;
-
-                case gameResult.draw:
-                    result = [0.5, 0.5];
-                    break;
-
-                case gameResult.bothForfeit:
-                    result = [0, 0];
-                    break;
-            }
-
-            return result;
-        }
 
         $scope.allResultsCaptured = function () {
             return _.every($scope.games, function (game) {
